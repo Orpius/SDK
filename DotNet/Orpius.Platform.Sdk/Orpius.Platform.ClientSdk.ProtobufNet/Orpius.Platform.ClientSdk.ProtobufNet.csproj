@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>$(MSBuildProjectName.Replace(" ", "_").Replace(".ClientSdk.ProtobufNet", ""))</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\OperationsModel\RpcOperationsService\ConverseRequest.cs" Link="OperationsModel\RpcOperationsService\ConverseRequest.cs" />
+    <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform\OperationsModel\RpcOperationsService\IOperationsService.cs" Link="RpcServices\IOperationsService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.31.0" />
+    <PackageReference Include="protobuf-net.Grpc" Version="1.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="OperationsModel\RpcOperationsService\" />
+    <Folder Include="RpcServices\" />
+  </ItemGroup>
+
+</Project>
