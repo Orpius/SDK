@@ -1,0 +1,59 @@
+<Window xmlns="https://github.com/avaloniaui"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:s="clr-namespace:SampleProtobufNet"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:Class="SampleProtobufNet.MainWindow"
+		Title="Sample for ProtobufNet"
+		x:DataType="s:MainWindowViewModel">
+	<Grid RowDefinitions="Auto,*,Auto,Auto" Margin="12">
+
+		<TextBlock Text="Sample Operation Usage" />
+
+		<ItemsControl ItemsSource="{Binding Utterances}" Grid.Row="1">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Vertical" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.DataTemplates>
+				<DataTemplate DataType="s:UserUtterance">
+					<Border Padding="12"
+					        CornerRadius="8"
+					        Background="#FF0A84FF"
+					        HorizontalAlignment="Right"
+					        MaxWidth="400"
+					        Margin="8">
+						<TextBlock Text="{Binding Text}" Foreground="White" TextWrapping="Wrap" />
+					</Border>
+				</DataTemplate>
+				<DataTemplate DataType="s:AgentUtterance">
+					<Border Padding="12"
+					        CornerRadius="8"
+					        Background="#FF2F2F2F"
+					        HorizontalAlignment="Left"
+					        MaxWidth="400"
+					        Margin="8">
+						<TextBlock Text="{Binding Text}" Foreground="White" TextWrapping="Wrap" />
+					</Border>
+				</DataTemplate>
+			</ItemsControl.DataTemplates>
+		</ItemsControl>
+
+		<Grid ColumnDefinitions="*,Auto" Grid.Row="2" Margin="12">
+			<TextBox Text="{Binding PromptText}" AcceptsReturn="True" Height="60" />
+			<Button Content="Send" Command="{Binding SendUtteranceCommand}" 
+			        Grid.Column="1" Margin="12,0,0,0"
+			        VerticalAlignment="Top"/>
+		</Grid>
+
+		<Border Grid.Row="3" Margin="12">
+			<StackPanel>
+				<TextBlock Text="Orpius Server URL" />
+				<TextBox Text="{Binding ServerUrl}" />
+			</StackPanel>
+		</Border>
+
+	</Grid>
+</Window>

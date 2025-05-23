@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orpius.Platform.ClientSdk.P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientSdk.Protobuf", "ClientSdk.Protobuf", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleProtobufNet", "Samples\SampleProtobufNet\SampleProtobufNet.csproj", "{BF2A5ECB-EC61-4AFE-856B-1DA96D727D34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{F6DC1A8E-CC34-4A23-A38B-4FC732E1E765}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6DC1A8E-CC34-4A23-A38B-4FC732E1E765}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6DC1A8E-CC34-4A23-A38B-4FC732E1E765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF2A5ECB-EC61-4AFE-856B-1DA96D727D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF2A5ECB-EC61-4AFE-856B-1DA96D727D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF2A5ECB-EC61-4AFE-856B-1DA96D727D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF2A5ECB-EC61-4AFE-856B-1DA96D727D34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F6DC1A8E-CC34-4A23-A38B-4FC732E1E765} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{BF2A5ECB-EC61-4AFE-856B-1DA96D727D34} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31B56899-3819-40BD-B4C6-9DB8EB77FE1A}
