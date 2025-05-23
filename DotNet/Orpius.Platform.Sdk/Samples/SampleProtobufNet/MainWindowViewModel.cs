@@ -46,7 +46,7 @@ namespace SampleProtobufNet
 
 		public ICommand SendUtteranceCommand => sendUtteranceCommand ??= new(SendUtterance);
 
-		void SendUtterance(object arg)
+		void SendUtterance(object? arg)
 		{
 			_ = SendUtteranceAsync();
 		}
