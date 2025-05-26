@@ -1,0 +1,72 @@
+﻿@page "/"
+
+@using Sample_AspNetCore_ProtobufNet
+
+<PageTitle>Home</PageTitle>
+
+<h1>Orpius Sample for ASP.NET Core and Protobuf.NET</h1>
+
+<p>Set the URL for the Orpius server instance.</p>
+
+<div class="mb-3">
+	<label>URL</label>
+	<input @bind="urlInput" placeholder="Enter URL" class="form-control"/>
+	<div class="text-muted mt-1">Current: @ApplicationState.ServerUrl</div>
+</div>
+
+<div class="mb-3">
+	<label>External ID</label>
+	<input @bind="externalIdInput" placeholder="Enter External ID" class="form-control"/>
+	@if (!string.IsNullOrEmpty(externalIdError))
+	{
+		<div class="text-danger">@externalIdError</div>
+	}
+	<div class="text-muted mt-1">Current: @ApplicationState.ExternalId</div>
+</div>
+
+<div class="mb-3">
+	<label>Access Key</label>
+	<input @bind="accessKeyInput" placeholder="Enter Access Key" class="form-control"/>
+	@if (!string.IsNullOrEmpty(accessKeyError))
+	{
+		<div class="text-danger">@accessKeyError</div>
+	}
+	<div class="text-muted mt-1">Current: @ApplicationState.AccessKey</div>
+</div>
+
+<button @onclick="ApplySettings" class="btn btn-primary">Apply</button>
+
+@code {
+	string? urlInput;
+	string? externalIdInput;
+	string? accessKeyInput;
+
+	string? externalIdError;
+	string? accessKeyError;
+
+	void ApplySettings()
+	{
+		ApplicationState.ServerUrl = urlInput ?? string.Empty;
+
+		externalIdError = null;
+		accessKeyError  = null;
+
+		if (Guid.TryParse(externalIdInput, out Guid parsedExternalId))
+		{
+			ApplicationState.ExternalId = parsedExternalId;
+		}
+		else
+		{
+			externalIdError = "Invalid GUID format for External ID.";
+		}
+
+		if (Guid.TryParse(accessKeyInput, out Guid parsedAccessKey))
+		{
+			ApplicationState.AccessKey = parsedAccessKey;
+		}
+		else
+		{
+			accessKeyError = "Invalid GUID format for Access Key.";
+		}
+	}
+}

@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\OperationsModel\RpcOperationsService\ConverseRequest.cs" Link="OperationsModel\RpcOperationsService\ConverseRequest.cs" />
+    <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\Inferencing\RpcMessages\ConversationMessages.cs" Link="Inferencing\ConversationMessages.cs" />
+    <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\OperationsModel\RpcOperationsService\ChatRequest.cs" Link="OperationsModel\RpcOperationsService\ChatRequest.cs" />
     <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform\OperationsModel\RpcOperationsService\IOperationsService.cs" Link="RpcServices\IOperationsService.cs" />
   </ItemGroup>
 
@@ -17,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Inferencing\" />
     <Folder Include="OperationsModel\RpcOperationsService\" />
     <Folder Include="RpcServices\" />
   </ItemGroup>

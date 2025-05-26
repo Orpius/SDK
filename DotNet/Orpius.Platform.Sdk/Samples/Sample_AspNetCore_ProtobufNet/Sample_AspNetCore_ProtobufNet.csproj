@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<CompressionEnabled>false</CompressionEnabled>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
+		<PackageReference Include="protobuf-net" Version="3.2.52" />
+		<PackageReference Include="protobuf-net.Grpc" Version="1.2.2" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.2.2" />
+		<PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Orpius.Platform.ClientSdk.ProtobufNet\Orpius.Platform.ClientSdk.ProtobufNet.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
+</Project>
