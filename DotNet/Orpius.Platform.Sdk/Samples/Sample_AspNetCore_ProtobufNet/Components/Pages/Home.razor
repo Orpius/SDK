@@ -1,6 +1,5 @@
 ﻿@page "/"
-
-@using Sample_AspNetCore_ProtobufNet
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
@@ -46,25 +45,30 @@
 
 	void ApplySettings()
 	{
-		ApplicationState.ServerUrl = urlInput ?? string.Empty;
+		if (!string.IsNullOrWhiteSpace(urlInput))
+		{
+			ApplicationState.ServerUrl = urlInput;
+		}
 
 		externalIdError = null;
 		accessKeyError  = null;
 
-		if (Guid.TryParse(externalIdInput, out Guid parsedExternalId))
+		if (Guid.TryParse(externalIdInput, out Guid parsedExternalId) 
+			&& parsedExternalId != Guid.Empty)
 		{
 			ApplicationState.ExternalId = parsedExternalId;
 		}
-		else
+		else if (!string.IsNullOrWhiteSpace(externalIdInput))
 		{
 			externalIdError = "Invalid GUID format for External ID.";
 		}
 
-		if (Guid.TryParse(accessKeyInput, out Guid parsedAccessKey))
+		if (Guid.TryParse(accessKeyInput, out Guid parsedAccessKey) 
+			&& parsedAccessKey != Guid.Empty)
 		{
 			ApplicationState.AccessKey = parsedAccessKey;
 		}
-		else
+		else if (!string.IsNullOrWhiteSpace(accessKeyInput))
 		{
 			accessKeyError = "Invalid GUID format for Access Key.";
 		}

@@ -22,8 +22,8 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 				OperationCredentials
 					= new OperationCredentials
 					{
-						ExternalId = Guid.Parse("f3842aba-4757-17d9-9a37-d9b918e33579"),
-						AccessKey = Guid.Parse("6bce02a0-eeb2-64f0-c17a-df23dcce0379")
+						ExternalId = ApplicationState.ExternalId,
+						AccessKey = ApplicationState.AccessKey
 					}
 			};
 
