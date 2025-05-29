@@ -24,7 +24,11 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 					{
 						ExternalId = ApplicationState.ExternalId,
 						AccessKey = ApplicationState.AccessKey
-					}
+					},
+				Tools = new List<Tool>()
+				{
+					new() {ToolName = "Weather"}
+				}
 			};
 
 			await foreach (ChatResponse response in operationsClient.Chat(chatRequest))

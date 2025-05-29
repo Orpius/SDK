@@ -10,6 +10,8 @@
     <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\Inferencing\RpcMessages\ConversationMessages.cs" Link="Inferencing\ConversationMessages.cs" />
     <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\OperationsModel\RpcOperationsService\ChatRequest.cs" Link="OperationsModel\RpcOperationsService\ChatRequest.cs" />
     <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform\OperationsModel\RpcOperationsService\IOperationsService.cs" Link="RpcServices\IOperationsService.cs" />
+    <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform\ToolsModel\RpcToolProviderService\IToolProviderService.cs" Link="RpcServices\IToolProviderService.cs" />
+    <Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform\ToolsModel\RpcToolsRegistrationService\IToolsRegistrationService.cs" Link="RpcServices\IToolsRegistrationService.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,7 +8,7 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Sample_AspNetCore_ProtobufNet\Services\IMyMobileAppService.cs" Link="RpcServices\IMyMobileAppService.cs" />
+    <Compile Include="..\Sample_AspNetCore_ProtobufNet\Services\MyMobileAppService\IMyMobileAppService.cs" Link="RpcServices\IMyMobileAppService.cs" />
   </ItemGroup>
 
   <ItemGroup>
