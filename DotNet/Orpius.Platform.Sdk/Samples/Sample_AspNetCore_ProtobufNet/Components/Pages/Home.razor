@@ -1,5 +1,7 @@
 ﻿@page "/"
+@using Sample_AspNetCore_ProtobufNet.ToolRegistration
 @rendermode InteractiveServer
+@inject RegistrationUtility RegistrationUtility
 
 <PageTitle>Home</PageTitle>
 
@@ -13,6 +15,8 @@
 	<div class="text-muted mt-1">Current: @ApplicationState.ServerUrl</div>
 </div>
 
+<h2>Operation Settings</h2>
+
 <div class="mb-3">
 	<label>External ID</label>
 	<input @bind="externalIdInput" placeholder="Enter External ID" class="form-control"/>
@@ -20,7 +24,7 @@
 	{
 		<div class="text-danger">@externalIdError</div>
 	}
-	<div class="text-muted mt-1">Current: @ApplicationState.ExternalId</div>
+	<div class="text-muted mt-1">Current: @ApplicationState.OperationsSettings.ExternalId</div>
 </div>
 
 <div class="mb-3">
@@ -30,10 +34,43 @@
 	{
 		<div class="text-danger">@accessKeyError</div>
 	}
-	<div class="text-muted mt-1">Current: @ApplicationState.AccessKey</div>
+	<div class="text-muted mt-1">Current: @ApplicationState.OperationsSettings.AccessKey</div>
 </div>
 
-<button @onclick="ApplySettings" class="btn btn-primary">Apply</button>
+<button @onclick="ApplyOperationSettings" class="btn btn-primary">Apply Operation Settings</button>
+
+<h2>Tools Registration Settings</h2>
+
+<div class="mb-3">
+	<label>External ID</label>
+	<input @bind="toolsExternalIdInput" placeholder="Enter External ID" class="form-control" />
+	@if (!string.IsNullOrEmpty(toolsExternalIdError))
+	{
+		<div class="text-danger">@toolsExternalIdError</div>
+	}
+	<div class="text-muted mt-1">Current: @ApplicationState.ToolsRegistrationSettings.ExternalId</div>
+</div>
+
+<div class="mb-3">
+	<label>Access Key</label>
+	<input @bind="toolsAccessKeyInput" placeholder="Enter Access Key" class="form-control" />
+	@if (!string.IsNullOrEmpty(toolsAccessKeyError))
+	{
+		<div class="text-danger">@toolsAccessKeyError</div>
+	}
+	<div class="text-muted mt-1">Current: @ApplicationState.ToolsRegistrationSettings.AccessKey</div>
+</div>
+
+<button @onclick="ApplyToolsSettings" class="btn btn-primary" disabled="@registering">
+	@(registering ? "Registering…" : "Apply Tools Registration Settings")
+</button>
+
+@if (!string.IsNullOrEmpty(registrationMessage))
+{
+	<div class="mt-2 @(registrationSucceeded ? "text-success" : "text-danger")">
+		@registrationMessage
+	</div>
+}
 
 @code {
 	string? urlInput;
@@ -43,7 +80,7 @@
 	string? externalIdError;
 	string? accessKeyError;
 
-	void ApplySettings()
+	void ApplyOperationSettings()
 	{
 		if (!string.IsNullOrWhiteSpace(urlInput))
 		{
@@ -56,7 +93,7 @@
 		if (Guid.TryParse(externalIdInput, out Guid parsedExternalId) 
 			&& parsedExternalId != Guid.Empty)
 		{
-			ApplicationState.ExternalId = parsedExternalId;
+			ApplicationState.OperationsSettings.ExternalId = parsedExternalId;
 		}
 		else if (!string.IsNullOrWhiteSpace(externalIdInput))
 		{
@@ -66,11 +103,72 @@
 		if (Guid.TryParse(accessKeyInput, out Guid parsedAccessKey) 
 			&& parsedAccessKey != Guid.Empty)
 		{
-			ApplicationState.AccessKey = parsedAccessKey;
+			ApplicationState.OperationsSettings.AccessKey = parsedAccessKey;
 		}
 		else if (!string.IsNullOrWhiteSpace(accessKeyInput))
 		{
 			accessKeyError = "Invalid GUID format for Access Key.";
+		}
+	}
+
+	string? toolsExternalIdInput;
+	string? toolsAccessKeyInput;
+
+	string? toolsExternalIdError;
+	string? toolsAccessKeyError;
+
+	bool registering;
+	bool registrationSucceeded;
+	string? registrationMessage;
+
+	async Task ApplyToolsSettings()
+	{
+		if (!string.IsNullOrWhiteSpace(urlInput))
+		{
+			ApplicationState.ServerUrl = urlInput;
+		}
+
+		toolsExternalIdError = null;
+		toolsAccessKeyError  = null;
+
+		if (Guid.TryParse(toolsExternalIdInput, out Guid parsedExternalId) 
+			&& parsedExternalId != Guid.Empty)
+		{
+			ApplicationState.ToolsRegistrationSettings.ExternalId = parsedExternalId;
+		}
+		else if (!string.IsNullOrWhiteSpace(toolsExternalIdInput))
+		{
+			toolsExternalIdError = "Invalid GUID format for External ID.";
+		}
+
+		if (Guid.TryParse(toolsAccessKeyInput, out Guid parsedAccessKey) 
+			&& parsedAccessKey != Guid.Empty)
+		{
+			ApplicationState.ToolsRegistrationSettings.AccessKey = parsedAccessKey;
+		}
+		else if (!string.IsNullOrWhiteSpace(toolsAccessKeyError))
+		{
+			toolsAccessKeyError = "Invalid GUID format for Access Key.";
+		}
+
+		registering         = true;
+		registrationMessage = null;
+
+		try
+		{
+			await RegistrationUtility.RegisterAsProviderAsync();
+
+			registrationSucceeded = true;
+			registrationMessage   = "Tools were registered successfully.";
+		}
+		catch (Exception ex)
+		{
+			registrationSucceeded = false;
+			registrationMessage   = $"Registration failed: {ex.Message}";
+		}
+		finally
+		{
+			registering = false;
 		}
 	}
 }

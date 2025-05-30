@@ -1,3 +1,5 @@
+using Grpc.Core;
+
 using Orpius.Platform.RpcServices;
 
 using ProtoBuf.Grpc.ClientFactory;
@@ -5,7 +7,9 @@ using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Server;
 
 using Sample_AspNetCore_ProtobufNet.Components;
+using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 using Sample_AspNetCore_ProtobufNet.Services;
+using Sample_AspNetCore_ProtobufNet.ToolRegistration;
 
 namespace Sample_AspNetCore_ProtobufNet
 {
@@ -21,14 +25,30 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			services.AddGrpc();
 			services.AddCodeFirstGrpc();
+
+			//services.AddTransient<OperationInterceptor>();
+
 			services.AddCodeFirstGrpcClient<IOperationsService>(
 						options => { options.Address = new Uri(ApplicationState.ServerUrl); })
+					.AddInterceptor(() => new OperationInterceptor())
 					.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 					{
 						/* For use with self-signed certificate. Not for production. */
 						ServerCertificateCustomValidationCallback
 							= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
 					});
+
+			services.AddCodeFirstGrpcClient<IToolsRegistrationService>(
+						options => { options.Address = new Uri(ApplicationState.ServerUrl); })
+					.AddInterceptor(() => new ToolsRegistrationInterceptor())
+					.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+					{
+						/* For use with self-signed certificate. Not for production. */
+						ServerCertificateCustomValidationCallback
+							= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+					});
+
+			builder.Services.AddScoped<RegistrationUtility>();
 
 			services.AddSingleton<MyMobileAppService>();
 			services.AddSingleton<IMyMobileAppService>(

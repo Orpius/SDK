@@ -19,13 +19,7 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 			ChatRequest chatRequest = new()
 			{
 				UserMessage = request.UserMessage,
-				OperationCredentials
-					= new OperationCredentials
-					{
-						ExternalId = ApplicationState.ExternalId,
-						AccessKey = ApplicationState.AccessKey
-					},
-				Tools = new List<Tool>()
+				Tools = new List<Tool>
 				{
 					new() {ToolName = "Weather"}
 				}
