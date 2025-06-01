@@ -10,7 +10,9 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 		{
 			ToolMessage tool = new()
 			{
-				Name = nameof(FlightStatusChecker),
+				ToolName = nameof(FlightStatusChecker),
+				TypeName = typeof(FlightStatusChecker).FullName,
+				//Version = GetTimeBasedInt(),
 				Methods = new List<ToolMethodMessage>()
 				{
 					new ToolMethodMessage
@@ -27,9 +29,9 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 					new ToolContractMessage
 					{
 						Name = typeof(GetStatusRequest).FullName,
-						Properties = new List<ToolPropertyMessage>()
+						Properties = new List<ContractPropertyMessage>()
 						{
-							new ToolPropertyMessage()
+							new ContractPropertyMessage()
 							{
 								Name     = nameof(GetStatusRequest.FlightNumber),
 								TypeName = typeof(int).FullName,
@@ -40,15 +42,15 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 					new ToolContractMessage
 					{
 						Name = typeof(GetStatusResponse).FullName,
-						Properties = new List<ToolPropertyMessage>()
+						Properties = new List<ContractPropertyMessage>()
 						{
-							new ToolPropertyMessage
+							new ContractPropertyMessage
 							{
 								Name     = nameof(GetStatusResponse.DepartureTime),
 								TypeName = typeof(DateTime).FullName,
 								Required = false,
 							},
-							new ToolPropertyMessage
+							new ContractPropertyMessage
 							{
 								Name     = nameof(GetStatusResponse.FlightStatus),
 								TypeName = typeof(FlightStatus).FullName,
@@ -59,6 +61,12 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 				};
 
 			return new ToolsAndContracts([tool], contracts);
+		}
+
+		int GetTimeBasedInt()
+		{
+			var unixTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+			return (int)(unixTimeMilliseconds & int.MaxValue); // mask to keep within positive int range
 		}
 	}
 }
