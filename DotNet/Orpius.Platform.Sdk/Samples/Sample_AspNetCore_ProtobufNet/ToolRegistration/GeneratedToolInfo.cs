@@ -8,65 +8,49 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 	{
 		internal ToolsAndContracts GetToolsAndContracts()
 		{
-			ToolMessage tool = new()
+			ToolMessage tool = new(nameof(FlightStatusChecker), typeof(FlightStatusChecker).FullName!)
 			{
-				ToolName = nameof(FlightStatusChecker),
-				TypeName = typeof(FlightStatusChecker).FullName,
-				//Version = GetTimeBasedInt(),
-				Methods = new List<ToolMethodMessage>()
+				Methods = new List<ToolMethodMessage>
 				{
-					new ToolMethodMessage
-					{
-						Name             = nameof(FlightStatusChecker.GetStatus),
-						ContractTypeName = typeof(GetStatusRequest).FullName
-					}
+					new(methodName: nameof(FlightStatusChecker.GetStatus),
+						parameterContractTypeName: typeof(GetStatusRequest).FullName!,
+						returnsContractTypeName: typeof(GetStatusResponse).FullName!)
 				}
 			};
 
 			List<ToolContractMessage> contracts
 				= new()
 				{
-					new ToolContractMessage
+					new ToolContractMessage(typeName: typeof(GetStatusRequest).FullName!)
 					{
-						Name = typeof(GetStatusRequest).FullName,
-						Properties = new List<ContractPropertyMessage>()
+						Properties = new List<ContractPropertyMessage>
 						{
-							new ContractPropertyMessage()
+							new(propertyName: nameof(GetStatusRequest.FlightNumber),
+								typeName: typeof(int).FullName!)
 							{
-								Name     = nameof(GetStatusRequest.FlightNumber),
-								TypeName = typeof(int).FullName,
 								Required = true
 							}
 						}
 					},
-					new ToolContractMessage
+					new ToolContractMessage(typeName: typeof(GetStatusResponse).FullName!)
 					{
-						Name = typeof(GetStatusResponse).FullName,
-						Properties = new List<ContractPropertyMessage>()
+						Properties = new List<ContractPropertyMessage>
 						{
-							new ContractPropertyMessage
+							new(propertyName: nameof(GetStatusResponse.DepartureTime),
+								typeName: typeof(DateTime).FullName!)
 							{
-								Name     = nameof(GetStatusResponse.DepartureTime),
-								TypeName = typeof(DateTime).FullName,
-								Required = false,
+								Required = false
 							},
-							new ContractPropertyMessage
+							new(propertyName: nameof(GetStatusResponse.FlightStatus),
+								typeName: typeof(FlightStatus).FullName!)
 							{
-								Name     = nameof(GetStatusResponse.FlightStatus),
-								TypeName = typeof(FlightStatus).FullName,
-								Required = false,
+								Required = false
 							}
 						}
-					},
+					}
 				};
 
 			return new ToolsAndContracts([tool], contracts);
-		}
-
-		int GetTimeBasedInt()
-		{
-			var unixTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-			return (int)(unixTimeMilliseconds & int.MaxValue); // mask to keep within positive int range
 		}
 	}
 }

@@ -14,10 +14,10 @@
 
 		public static class ToolsRegistrationSettings
 		{
-			// Credentials are located on the Operation page
+			// Credentials for tool registrations are located in the Agent Tools tab
 			// inside the Orpius client application.
 			public static Guid ExternalId { get; set; } = Guid.Parse("ee2b90ff-a4c6-44bf-93a7-a25b7e3271b0");
-			public static Guid AccessKey  { get; set; } = Guid.Parse("65bd58d1-97d5-63c0-cd02-1dc50e83f1f9");
+			public static Guid AccessKey  { get; set; } = Guid.Parse("72e1b1f1-414b-46d9-bcb1-1a736d7e6027");
 		}
 	}
 }

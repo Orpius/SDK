@@ -1,7 +1,4 @@
-﻿using Grpc.Net.Client;
-
-using Orpius.Platform.RpcServices;
-using Orpius.Platform.ToolsModel;
+﻿using Orpius.Platform.RpcServices;
 using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
 
 namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
@@ -24,7 +21,8 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 				= new()
 				{
 					Tools     = toolsAndContracts.Tools,
-					Contracts = toolsAndContracts.Contracts
+					Contracts = toolsAndContracts.Contracts,
+					ProviderUrl = ApplicationState.ServerUrl
 				};
 
 			await registrationService.RegisterAsProvider(request);
