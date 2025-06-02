@@ -14,7 +14,8 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 				{
 					new(methodName: nameof(FlightStatusChecker.GetStatus),
 						parameterContractTypeName: typeof(GetStatusRequest).FullName!,
-						returnsContractTypeName: typeof(GetStatusResponse).FullName!)
+						returnsContractTypeName: typeof(GetStatusResponse).FullName!,
+						description:"Returns the flight status for the specified flight.")
 				}
 			};
 

@@ -12,7 +12,7 @@
 <div class="mb-5">
 	<label>URL</label>
 	<input @bind="urlInput" placeholder="Enter URL" class="form-control"/>
-	<div class="text-muted mt-1">Current: @ApplicationState.ServerUrl</div>
+	<div class="text-muted mt-1">Current: @ApplicationState.OrpiusServerUrl</div>
 </div>
 
 <h2>Tools Registration Settings</h2>
@@ -99,7 +99,7 @@
 	{
 		if (!string.IsNullOrWhiteSpace(urlInput))
 		{
-			ApplicationState.ServerUrl = urlInput;
+			ApplicationState.OrpiusServerUrl = urlInput;
 		}
 
 		externalIdError = null;
@@ -140,7 +140,7 @@
 	{
 		if (!string.IsNullOrWhiteSpace(urlInput))
 		{
-			ApplicationState.ServerUrl = urlInput;
+			ApplicationState.OrpiusServerUrl = urlInput;
 		}
 
 		toolsExternalIdError = null;

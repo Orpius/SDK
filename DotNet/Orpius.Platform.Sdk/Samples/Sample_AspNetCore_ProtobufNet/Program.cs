@@ -29,7 +29,7 @@ namespace Sample_AspNetCore_ProtobufNet
 			//services.AddTransient<OperationInterceptor>();
 
 			services.AddCodeFirstGrpcClient<IOperationsService>(
-						options => { options.Address = new Uri(ApplicationState.ServerUrl); })
+						options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
 					.AddInterceptor(() => new OperationInterceptor())
 					.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 					{
@@ -39,7 +39,7 @@ namespace Sample_AspNetCore_ProtobufNet
 					});
 
 			services.AddCodeFirstGrpcClient<IToolsRegistrationService>(
-						options => { options.Address = new Uri(ApplicationState.ServerUrl); })
+						options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
 					.AddInterceptor(() => new ToolsRegistrationInterceptor())
 					.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 					{

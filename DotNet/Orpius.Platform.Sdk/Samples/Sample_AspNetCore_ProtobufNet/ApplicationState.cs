@@ -2,7 +2,7 @@
 {
 	public class ApplicationState
 	{
-		public static string ServerUrl { get; set; } = "https://localhost:32774";
+		public static string OrpiusServerUrl { get; set; } = "https://localhost:32774";
 
 		public static class OperationsSettings
 		{
@@ -19,5 +19,7 @@
 			public static Guid ExternalId { get; set; } = Guid.Parse("ee2b90ff-a4c6-44bf-93a7-a25b7e3271b0");
 			public static Guid AccessKey  { get; set; } = Guid.Parse("72e1b1f1-414b-46d9-bcb1-1a736d7e6027");
 		}
+
+		//public static string LocalUrl { get; set; }
 	}
 }
