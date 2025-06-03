@@ -16,13 +16,15 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 					return new GetStatusResponse
 					{
 						DepartureTime = DateTime.UtcNow + TimeSpan.FromHours(1),
-						FlightStatus = FlightStatus.Delayed
+						FlightStatus = FlightStatus.Delayed,
+						ExtraInformation = "Undergoing mechanical repairs."
 					};
 				case 456:
 					return new GetStatusResponse
 					{
 						DepartureTime = DateTime.UtcNow + TimeSpan.FromHours(3),
-						FlightStatus  = FlightStatus.OnTime
+						FlightStatus  = FlightStatus.OnTime,
+						ExtraInformation = string.Empty//"Refuelling in progress"
 					};
 				default:
 					throw new RpcException(new Status(StatusCode.NotFound, 
@@ -46,6 +48,9 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 
 		[ToolProperty]
 		public required FlightStatus FlightStatus { get; set; }
+
+		[ToolProperty(Description = "A field for the extra information.")]
+		public required string ExtraInformation { get; set; }
 	}
 
 	public enum FlightStatus

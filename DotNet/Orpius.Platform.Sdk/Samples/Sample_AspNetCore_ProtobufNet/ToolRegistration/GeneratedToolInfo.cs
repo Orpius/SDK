@@ -46,7 +46,12 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 								typeName: typeof(FlightStatus).FullName!)
 							{
 								Required = false
-							}
+							}/*,
+							new(propertyName: nameof(GetStatusResponse.ExtraInformation),
+								typeName: typeof(FlightStatus).FullName!)
+							{
+								Required = false
+							}*/
 						}
 					}
 				};
