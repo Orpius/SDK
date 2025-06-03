@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.56">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- include everything except the csproj file. -->
+		<Content Include="**\*.*" Exclude="$(MSBuildThisFileFullPath)" />
+	</ItemGroup>
+</Project>
