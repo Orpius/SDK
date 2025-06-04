@@ -19,44 +19,76 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 				}
 			};
 
-			List<ToolContractMessage> contracts
+			List<ContractMessage> contracts
 				= new()
 				{
-					new ToolContractMessage(typeName: typeof(GetStatusRequest).FullName!)
+					new ContractMessage
 					{
-						Properties = new List<ContractPropertyMessage>
-						{
-							new(propertyName: nameof(GetStatusRequest.FlightNumber),
-								typeName: typeof(int).FullName!)
-							{
-								Required = true
-							}
-						}
+						SimpleContract = new SimpleContractMessage(typeof(int).FullName!)
 					},
-					new ToolContractMessage(typeName: typeof(GetStatusResponse).FullName!)
+					new ContractMessage
 					{
-						Properties = new List<ContractPropertyMessage>
+						SimpleContract = new SimpleContractMessage(typeof(DateTime).FullName!)
+					},
+					new ContractMessage
+					{
+						EnumContract = new EnumContractMessage(typeof(FlightStatus).FullName!, GetEnumDictionary<FlightStatus>())
+					},
+					new ContractMessage
+					{
+						ComplexContract = new ComplexContractMessage(typeName: typeof(GetStatusRequest).FullName!)
 						{
-							new(propertyName: nameof(GetStatusResponse.DepartureTime),
-								typeName: typeof(DateTime).FullName!)
+							Properties = new List<ContractPropertyMessage>
 							{
-								Required = false
-							},
-							new(propertyName: nameof(GetStatusResponse.FlightStatus),
-								typeName: typeof(FlightStatus).FullName!)
+								new(propertyName: nameof(GetStatusRequest.FlightNumber),
+									typeName: typeof(int).FullName!)
+								{
+									Required = true
+								}
+							}
+						},
+					},
+					new ContractMessage
+					{
+						ComplexContract = new ComplexContractMessage(typeName: typeof(GetStatusResponse).FullName!)
+						{
+							Properties = new List<ContractPropertyMessage>
 							{
-								Required = false
-							}/*,
-							new(propertyName: nameof(GetStatusResponse.ExtraInformation),
-								typeName: typeof(FlightStatus).FullName!)
-							{
-								Required = false
-							}*/
+								new(propertyName: nameof(GetStatusResponse.DepartureTime),
+									typeName: typeof(DateTime).FullName!)
+								{
+									Required = false
+								},
+								new(propertyName: nameof(GetStatusResponse.FlightStatus),
+									typeName: typeof(FlightStatus).FullName!)
+								{
+									Required = false
+								} /*,
+								new(propertyName: nameof(GetStatusResponse.ExtraInformation),
+									typeName: typeof(FlightStatus).FullName!)
+								{
+									Required = false
+								}*/
+							}
 						}
 					}
 				};
+					
+				
 
 			return new ToolsAndContracts([tool], contracts);
+		}
+
+		static Dictionary<string, int> GetEnumDictionary<T>() where T : struct, Enum
+		{
+			var result = new Dictionary<string, int>();
+
+			foreach (var value in Enum.GetValues<T>())
+			{
+				result[value.ToString()] = Convert.ToInt32(value);
+			}
+
+			return result;
 		}
 	}
 }
