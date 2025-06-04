@@ -25,11 +25,10 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 			var localUrl = new ApplicationUrlResolver().GetApplicationUrl(serviceProvider);
 
 			RegisterAsProviderRequest request
-				= new()
+				= new(providerUrl: localUrl, ProgrammingLanguageId.CSharp)
 				{
 					Tools     = toolsAndContracts.Tools,
-					Contracts = toolsAndContracts.Contracts,
-					ProviderUrl = localUrl
+					Contracts = toolsAndContracts.Contracts
 				};
 
 			await registrationService.RegisterAsProvider(request);

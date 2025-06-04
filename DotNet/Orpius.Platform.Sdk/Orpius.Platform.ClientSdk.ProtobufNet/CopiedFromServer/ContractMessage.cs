@@ -40,6 +40,15 @@ namespace Orpius.Platform.ToolsModel.RpcToolsRegistrationService
 
 		public bool ShouldSerializeEnumContract() => payload.Is(3);
 		public void ResetEnumContract() => DiscriminatedUnionObject.Reset(ref payload, 3);
+		[ProtoMember(4)]
+		public ListContractMessage? ListContract
+		{
+			get => payload.Is(4) ? (ListContractMessage?)payload.Object : null;
+			set => payload = new DiscriminatedUnionObject(4, value);
+		}
+
+		public bool ShouldSerializeListContract() => payload.Is(4);
+		public void ResetListContract() => DiscriminatedUnionObject.Reset(ref payload, 4);
 
 		/* Convenience members, ignored by the serializer. */
 
@@ -67,6 +76,9 @@ namespace Orpius.Platform.ToolsModel.RpcToolsRegistrationService
 					case EnumContractMessage tempEnumContractMessage:
 						EnumContract = tempEnumContractMessage;
 						break;
+					case ListContractMessage tempListContractMessage:
+						ListContract = tempListContractMessage;
+						break;
 					default:
 					{
 						throw new ArgumentException(
@@ -84,6 +96,7 @@ namespace Orpius.Platform.ToolsModel.RpcToolsRegistrationService
 			ComplexContract = 1, 
 			SimpleContract = 2, 
 			EnumContract = 3, 
+			ListContract = 4, 
 		}
 	}
 }
