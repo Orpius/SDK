@@ -2,6 +2,7 @@
 using Orpius.Platform.RpcServices;
 
 using ProtoBuf.Grpc;
+using Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius;
 
 namespace Sample_AspNetCore_ProtobufNet.Services
 {
@@ -21,8 +22,9 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 				UserMessage = request.UserMessage,
 				Tools = new List<Tool>
 				{
-					new(name: "Weather") {ToolPresence = ToolPresence.NotRequired}
-				}
+					new(name: nameof(FlightStatusChecker)) {ToolPresence = ToolPresence.NotRequired}
+				},
+				ConversationId = request.ConversationId
 			};
 
 			await foreach (ChatResponse response in operationsClient.Chat(chatRequest))

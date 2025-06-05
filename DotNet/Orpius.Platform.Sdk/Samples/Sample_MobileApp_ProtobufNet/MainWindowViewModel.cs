@@ -33,6 +33,7 @@ namespace SampleProtobufNet
 		readonly object channelCreationLock = new();
 		GrpcChannel? grpcChannel;
 		IMyMobileAppService? grpcClient;
+		Guid? conversationId;
 
 		public ObservableCollection<IChatMessage> Messages { get; } = new();
 
@@ -107,13 +108,19 @@ namespace SampleProtobufNet
 			// relevant to your application.
 			// You will probably place authentication information,
 			// such as an access token, in the headers of the request.
-			MobileAppChatRequest chatRequest = new() { UserMessage = userMessage };
+			MobileAppChatRequest chatRequest = new()
+			{
+				UserMessage    = userMessage,
+				ConversationId = conversationId
+			};
 
 			// Your server relays the messages back from the Orpius server.
 			// The messages may contain zero or more API calls for tools,
 			// and 1 or more messages from the assistant.
 			await foreach (ChatResponse response in client.Chat(chatRequest))
 			{
+				conversationId = response.ConversationId;
+
 				SystemMessage? systemMessage = response.SystemMessage;
 
 				if (systemMessage is not null)
@@ -181,6 +188,17 @@ namespace SampleProtobufNet
 		{
 			GrpcChannel? ch = Interlocked.Exchange(ref grpcChannel, null);
 			ch?.Dispose();
+		}
+
+		ActionCommand? startNewConversationCommand;
+
+		public ICommand StartNewConversationCommand 
+			=> startNewConversationCommand ??= new(StartNewConversation);
+
+		void StartNewConversation(object? arg)
+		{
+			conversationId = null;
+			Messages.Clear();
 		}
 	}
 }

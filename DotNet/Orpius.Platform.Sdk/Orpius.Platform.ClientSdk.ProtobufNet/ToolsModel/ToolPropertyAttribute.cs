@@ -10,25 +10,16 @@ namespace Orpius.Platform.ToolsModel
 		/// which is the class or interface name.
 		/// </summary>
 		public string? Name    { get; set; }
-		public int     Version { get; }
-
-		/// <param name="version">Changing the version
-		/// causes Orpius to repopulate all method
-		/// and property information for this tool.</param>
-		public ToolAttribute(int version)
-		{
-			Version = version;
-		}
 	}	
 	
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = false)]
 	public sealed class ToolContract : Attribute
 	{
-		/// <summary>
-		/// If specified, this value overrides the default value,
-		/// which is the class or interface name.
-		/// </summary>
-		public string? Name    { get; set; }
+		///// <summary>
+		///// If specified, this value overrides the default value,
+		///// which is the class or interface name.
+		///// </summary>
+		//public string? Name    { get; set; }
 	}
 
 	[AttributeUsage(AttributeTargets.Property)]

@@ -4,7 +4,7 @@ using Orpius.Platform.ToolsModel;
 
 namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 {
-	[Tool(1)]
+	[Tool]
 	public class FlightStatusChecker
 	{
 		[ToolMethod]

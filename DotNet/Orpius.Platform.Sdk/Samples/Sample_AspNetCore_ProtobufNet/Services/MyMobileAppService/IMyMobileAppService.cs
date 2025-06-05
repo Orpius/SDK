@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Orpius.Platform.Inferencing;
 using Orpius.Platform.OperationsModel.RpcOperationsService;
@@ -21,12 +22,14 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public required UserMessage UserMessage { get; set; }
+
+		[ProtoMember(2, IsRequired = false)]
+		public required Guid? ConversationId { get; set; }
 	}
 
-	[ProtoContract]
-	public class MobileAppChatResponse
-	{
-		[ProtoMember(1, IsRequired = true)]
-		public required UserMessage UserMessage { get; set; }
-	}
+	/* For simplicity, the ChatResponse is returned directly. */
+	//[ProtoContract]
+	//public class MobileAppChatResponse
+	//{
+	//}
 }

@@ -6,7 +6,7 @@
 		xmlns:inferencing="clr-namespace:Orpius.Platform.Inferencing;assembly=Orpius.Platform.ClientSdk.ProtobufNet"
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		x:Class="SampleProtobufNet.MainWindow"
-		Title="Sample for ProtobufNet"
+		Title="Sample using ProtobufNet"
 		x:DataType="s:MainWindowViewModel">
 	<Grid RowDefinitions="Auto,*,Auto,Auto" Margin="12">
 
@@ -26,7 +26,9 @@
 					        HorizontalAlignment="Right"
 					        MaxWidth="400"
 					        Margin="8">
-						<TextBlock Text="{Binding Text}" Foreground="White" TextWrapping="Wrap" />
+						<TextBlock Text="{Binding Text}" 
+						           Foreground="White" 
+						           TextWrapping="Wrap" />
 					</Border>
 				</DataTemplate>
 				<DataTemplate DataType="inferencing:AssistantMessage">
@@ -36,7 +38,9 @@
 					        HorizontalAlignment="Left"
 					        MaxWidth="400"
 					        Margin="8">
-						<TextBlock Text="{Binding Text}" Foreground="White" TextWrapping="Wrap" />
+						<TextBlock Text="{Binding Text}" 
+						           Foreground="White" 
+						           TextWrapping="Wrap" />
 					</Border>
 				</DataTemplate>
 				<DataTemplate DataType="inferencing:SystemMessage">
@@ -46,21 +50,30 @@
 					        HorizontalAlignment="Left"
 					        MaxWidth="400"
 					        Margin="8">
-						<TextBlock Text="{Binding Text}" FontSize="11" Foreground="Black" TextWrapping="Wrap" />
+						<TextBlock Text="{Binding Text}" 
+						           FontSize="11" 
+						           Foreground="Black" 
+						           TextWrapping="Wrap" />
 					</Border>
 				</DataTemplate>
 			</ItemsControl.DataTemplates>
 		</ItemsControl>
 
 		<Grid ColumnDefinitions="*,Auto" Grid.Row="2" Margin="12">
-			<TextBox Text="{Binding PromptText}" AcceptsReturn="True" Height="60" />
+			<TextBox Text="{Binding PromptText}" 
+			         AcceptsReturn="True" Height="60" />
+
 			<Button Content="Send" Command="{Binding SendMessageCommand}" 
-			        Grid.Column="1" Margin="12,0,0,0"
+			        Grid.Column="1" 
+			        Margin="12,0,0,0"
 			        VerticalAlignment="Top"/>
 		</Grid>
 
 		<Border Grid.Row="3" Margin="12">
 			<StackPanel>
+				<Button Content="New Conversation" 
+				        Command="{Binding StartNewConversationCommand}" />
+
 				<TextBlock Text="Sample_AspNetCore_ProtobufNet server URL" />
 				<TextBox Text="{Binding ServerUrl}" />
 			</StackPanel>
