@@ -21,7 +21,7 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 				UserMessage = request.UserMessage,
 				Tools = new List<Tool>
 				{
-					new() {ToolName = "Weather"}
+					new(name: "Weather") {ToolPresence = ToolPresence.NotRequired}
 				}
 			};
 
