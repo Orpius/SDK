@@ -9,7 +9,11 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 	{
 		public async Task<UseToolResponse> UseTool(UseToolRequest request, CallContext context = default)
 		{
-			return null;
+			/*
+				ToolProviderService will be implemented in the SDK.
+				First we 
+			 */
+			return new UseToolResponse();
 		}
 	}
 }

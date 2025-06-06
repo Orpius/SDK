@@ -34,8 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Folder Include="CopiedFrom\Platform.Server\" />
+	<Folder Include="CopiedFrom\Platform\" />
 	<Folder Include="Inferencing\" />
-	<Folder Include="CopiedFromServer\" />
 	<Folder Include="OperationsModel\RpcOperationsService\" />
 	<Folder Include="RpcServices\" />
   </ItemGroup>
