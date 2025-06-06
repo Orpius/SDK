@@ -50,6 +50,12 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			builder.Services.AddScoped<RegistrationUtility>();
 
+			/* For Orpius calling back to use tools. */
+			services.AddSingleton<ToolProviderService>();
+			services.AddSingleton<IToolProviderService>(
+				sp => sp.GetRequiredService<ToolProviderService>());
+
+			/* For the 'mobile' app. */
 			services.AddSingleton<MyMobileAppService>();
 			services.AddSingleton<IMyMobileAppService>(
 				sp => sp.GetRequiredService<MyMobileAppService>());
@@ -67,6 +73,10 @@ namespace Sample_AspNetCore_ProtobufNet
 			app.UseHttpsRedirection();
 			app.UseAntiforgery();
 
+			/* For Orpius calling back to use tools. */
+			app.MapGrpcService<IToolProviderService>();
+
+			/* For the 'mobile' app. */
 			app.MapGrpcService<IMyMobileAppService>();
 
 			app.MapStaticAssets();
