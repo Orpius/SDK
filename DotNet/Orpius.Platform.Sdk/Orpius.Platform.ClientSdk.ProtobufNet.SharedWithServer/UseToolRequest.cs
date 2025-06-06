@@ -13,12 +13,12 @@ namespace Orpius.Platform.ToolsModel.RpcToolProviderService
 		public UseToolRequest(Dictionary<string, string> context,
 							  string toolName,
 							  string toolMember,
-							  string? requestBody)
+							  string parameterAsJson)
 		{
 			Context     = AssertArg.IsNotNull(context, nameof(context));
 			ToolName    = AssertArg.IsNotNullOrWhiteSpace(toolName,   nameof(toolName));
 			ToolMember  = AssertArg.IsNotNullOrWhiteSpace(toolMember, nameof(toolMember));
-			RequestBody = requestBody;
+			ParameterAsJson = parameterAsJson;
 		}
 #endif
 
@@ -46,16 +46,29 @@ namespace Orpius.Platform.ToolsModel.RpcToolProviderService
 
 		[ProtoMember(4, IsRequired = true)]
 #if NET7_0_OR_GREATER
-		public required string? RequestBody { get; set; }
+		public required string ParameterAsJson { get; set; }
 #else
-		public string? RequestBody { get; set; }
+		public string ParameterAsJson { get; set; }
 #endif
 	}
 
 	partial class UseToolResponse
 	{
+#if !NET7_0_OR_GREATER
+		public UseToolResponse(string resultAsJson)
+		{
+			ResultAsJson = AssertArg.IsNotNullOrWhiteSpace(resultAsJson, nameof(resultAsJson));
+		}
+#endif
+		//[ProtoMember(1, IsRequired = true)]
+		//public ToolResult? ToolResult { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
-		public ToolResult? ToolResult { get; set; }
+#if NET7_0_OR_GREATER
+		public required string ResultAsJson { get; set; }
+#else
+		public string ResultAsJson { get; set; }
+#endif
 
 		/// <summary>
 		/// Setting this property will see the replacement of the context dictionary

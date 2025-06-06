@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
 
+using Orpius.Platform.Tooling;
 using Orpius.Platform.ToolsModel;
 
 namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
@@ -8,7 +9,7 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 	public class FlightStatusChecker
 	{
 		[ToolMethod]
-		public async Task<GetStatusResponse> GetStatus(GetStatusRequest request, ToolContext context)
+		public async Task<GetStatusResponse> GetStatus(GetStatusRequest request, ICombinedContext context)
 		{
 			switch (request.FlightNumber)
 			{
