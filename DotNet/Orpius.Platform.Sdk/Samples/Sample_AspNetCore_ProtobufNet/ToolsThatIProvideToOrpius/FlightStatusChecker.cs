@@ -34,14 +34,12 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 		}
 	}
 
-	[ToolContract]
 	public class GetStatusRequest
 	{
 		[ToolProperty(Required = true)]
 		public required int FlightNumber { get; set; }
 	}
 
-	[ToolContract]
 	public class GetStatusResponse
 	{
 		[ToolProperty]

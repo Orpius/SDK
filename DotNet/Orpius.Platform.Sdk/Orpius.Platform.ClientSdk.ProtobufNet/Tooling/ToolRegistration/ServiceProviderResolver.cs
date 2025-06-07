@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Orpius.Platform.Tooling.ToolRegistration;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Sample_AspNetCore_ProtobufNet.Tooling
+namespace Orpius.Platform.Tooling.ToolRegistration
 {
 	public class ServiceProviderAdapter : IToolResolver
 	{
@@ -16,9 +16,9 @@ namespace Sample_AspNetCore_ProtobufNet.Tooling
 		public bool TryGetTool<T>([NotNullWhen(true)] out T? tool)
 			where T : class
 		{
-			tool = serviceProvider.GetService<T>();
+			tool = (T)serviceProvider.GetService(typeof(T));
 
-			return tool is not null;
+			return tool != null;
 		}
 	}
 }

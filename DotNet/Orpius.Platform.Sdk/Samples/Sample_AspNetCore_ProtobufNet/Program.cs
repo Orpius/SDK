@@ -1,5 +1,3 @@
-using Grpc.Core;
-
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling.ToolRegistration;
 
@@ -10,7 +8,6 @@ using ProtoBuf.Grpc.Server;
 using Sample_AspNetCore_ProtobufNet.Components;
 using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 using Sample_AspNetCore_ProtobufNet.Services;
-using Sample_AspNetCore_ProtobufNet.Tooling;
 using Sample_AspNetCore_ProtobufNet.ToolRegistration;
 
 namespace Sample_AspNetCore_ProtobufNet
@@ -53,18 +50,15 @@ namespace Sample_AspNetCore_ProtobufNet
 			builder.Services.AddScoped<RegistrationUtility>();
 
 			/* For Orpius calling back to use tools. */
-			services.AddSingleton<ToolProviderService>();
-			services.AddSingleton<IToolProviderService>(
-				sp => sp.GetRequiredService<ToolProviderService>());
+			services.AddAssociatedSingletons<IToolProviderService, ToolProviderService>();
 
 			/* For the 'mobile' app. */
-			services.AddSingleton<MyMobileAppService>();
-			services.AddSingleton<IMyMobileAppService>(
-				sp => sp.GetRequiredService<MyMobileAppService>());
+			services.AddAssociatedSingletons<IMyMobileAppService, MyMobileAppService>();
 
 			services.AddSingleton(BinderConfiguration.Create(
 				binder: new BinderFromServices(builder.Services)));
 
+			/* This allows tools to be resolved using the IServiceProvider. */
 			services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
 
 			WebApplication app = builder.Build();
@@ -87,6 +81,17 @@ namespace Sample_AspNetCore_ProtobufNet
 			app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 			app.Run();
+		}
+	}
+
+	static class ServiceCollectionExtensions
+	{
+		internal static void AddAssociatedSingletons<TInterface, TImplementation>(this IServiceCollection services)
+			where TInterface : class
+			where TImplementation : class, TInterface
+		{
+			services.AddSingleton<TImplementation>();
+			services.AddSingleton<TInterface>(sp => sp.GetRequiredService<TImplementation>());
 		}
 	}
 }
