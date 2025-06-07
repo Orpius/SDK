@@ -25,8 +25,8 @@ namespace Sample_AspNetCore_ProtobufNet
 			services.AddGrpc();
 			services.AddCodeFirstGrpc();
 
-			//services.AddTransient<OperationInterceptor>();
-
+			/* Here we add two GRPC client interceptors,
+			   allowing us to push the authentication headers. */
 			services.AddCodeFirstGrpcClient<IOperationsService>(
 						options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
 					.AddInterceptor(() => new OperationInterceptor())
@@ -50,16 +50,28 @@ namespace Sample_AspNetCore_ProtobufNet
 			builder.Services.AddScoped<RegistrationUtility>();
 
 			/* For Orpius calling back to use tools. */
+
+			/* This allows tools to be resolved using the IServiceProvider. */
+			services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
+			services.AddAssociatedSingletons<IToolRegistry, ToolRegistry>();
+
+			/* ToolProviderService requires IToolCaller.
+			   ToolRegistry also serves as the IToolCaller.
+			   ToolProviderService is the GRPC service that receives 
+			   requests from Orpius to use tools. */
+			services.AddSingleton<IToolCaller>(sp => sp.GetRequiredService<ToolRegistry>());
 			services.AddAssociatedSingletons<IToolProviderService, ToolProviderService>();
 
-			/* For the 'mobile' app. */
+			/* The generated class in your project pulls in the IToolRegistry and registers itself. */
+			services.AddSingleton<LocalToolDescriptors>();
+
+
+			/* For the sample 'mobile' app. */
 			services.AddAssociatedSingletons<IMyMobileAppService, MyMobileAppService>();
 
 			services.AddSingleton(BinderConfiguration.Create(
 				binder: new BinderFromServices(builder.Services)));
-
-			/* This allows tools to be resolved using the IServiceProvider. */
-			services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
+			
 
 			WebApplication app = builder.Build();
 

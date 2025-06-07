@@ -8,7 +8,17 @@ using Orpius.Platform.ToolsModel.RpcToolProviderService;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {
-	public class ToolRegistry
+	public interface IToolRegistry
+	{
+		void RegisterToolInvoker(IToolInvoker toolInvoker);
+	}
+
+	public interface IToolCaller
+	{
+		Task<UseToolResponse> UseToolAsync(UseToolRequest request, object? nativeContext);
+	}
+
+	public class ToolRegistry : IToolRegistry, IToolCaller
 	{
 		public IJsonSerializer JsonSerializer { get; set; } = new JsonSerializer();
 

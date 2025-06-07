@@ -12,16 +12,6 @@ namespace Orpius.Platform.ToolsModel
 		public string? Name    { get; set; }
 	}	
 	
-	//[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = false)]
-	//public sealed class ToolContractAttribute : Attribute
-	//{
-	//	///// <summary>
-	//	///// If specified, this value overrides the default value,
-	//	///// which is the class or interface name.
-	//	///// </summary>
-	//	//public string? Name    { get; set; }
-	//}
-
 	[AttributeUsage(AttributeTargets.Property)]
 	public class ToolPropertyAttribute : Attribute
 	{
@@ -30,6 +20,7 @@ namespace Orpius.Platform.ToolsModel
 		/// which is the method name.
 		/// </summary>
 		public string? Name { get;        set; }
+
 		public bool    Required    { get; set; } = false;
 
 		/// <summary>

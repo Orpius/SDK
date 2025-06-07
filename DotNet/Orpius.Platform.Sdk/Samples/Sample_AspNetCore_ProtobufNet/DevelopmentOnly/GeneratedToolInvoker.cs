@@ -8,7 +8,7 @@ using Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius;
 
 namespace Sample_AspNetCore_ProtobufNet.DevelopmentOnly
 {
-	partial class ToolInvoker : IToolInvoker
+	partial class GeneratedToolInvoker : IToolInvoker
 	{
 		readonly HashSet<string> toolNames = new HashSet<string>() { nameof(FlightStatusChecker) };
 
