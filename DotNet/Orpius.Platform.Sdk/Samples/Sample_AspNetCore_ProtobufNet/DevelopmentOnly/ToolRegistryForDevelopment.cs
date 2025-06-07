@@ -10,7 +10,8 @@ namespace Sample_AspNetCore_ProtobufNet.DevelopmentOnly
 	{
 		class LocalResolver : IToolResolver
 		{
-			public bool TryGetTool<T>([NotNullWhen(true)] out T tool)
+			public bool TryGetTool<T>([NotNullWhen(true)] out T? tool)
+				where T : class
 			{
 				if (typeof(T) == typeof(FlightStatusChecker))
 				{
@@ -22,6 +23,7 @@ namespace Sample_AspNetCore_ProtobufNet.DevelopmentOnly
 				return false;
 			}
 		}
+
 		public ToolRegistry GetRegistry()
 		{
 			var result = new ToolRegistry(new LocalResolver());

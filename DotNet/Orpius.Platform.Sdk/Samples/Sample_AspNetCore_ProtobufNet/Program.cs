@@ -1,6 +1,7 @@
 using Grpc.Core;
 
 using Orpius.Platform.RpcServices;
+using Orpius.Platform.Tooling.ToolRegistration;
 
 using ProtoBuf.Grpc.ClientFactory;
 using ProtoBuf.Grpc.Configuration;
@@ -9,6 +10,7 @@ using ProtoBuf.Grpc.Server;
 using Sample_AspNetCore_ProtobufNet.Components;
 using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 using Sample_AspNetCore_ProtobufNet.Services;
+using Sample_AspNetCore_ProtobufNet.Tooling;
 using Sample_AspNetCore_ProtobufNet.ToolRegistration;
 
 namespace Sample_AspNetCore_ProtobufNet
@@ -62,6 +64,8 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			services.AddSingleton(BinderConfiguration.Create(
 				binder: new BinderFromServices(builder.Services)));
+
+			services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
 
 			WebApplication app = builder.Build();
 

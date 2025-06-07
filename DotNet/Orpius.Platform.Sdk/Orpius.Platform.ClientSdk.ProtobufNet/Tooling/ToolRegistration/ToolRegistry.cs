@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 using Orpius.Platform.Collections;
@@ -10,12 +9,6 @@ using Orpius.Platform.ToolsModel.RpcToolProviderService;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {
-	public interface IToolResolver
-	{
-		//bool TryGetTool<T>(string toolName, [NotNullWhen(true)]out T tool);
-		bool TryGetTool<T>([NotNullWhen(true)] out T tool);
-	}
-
 	public class ToolRegistry
 	{
 		public IJsonSerializer JsonSerializer { get; set; } = new JsonSerializer();

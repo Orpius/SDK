@@ -1,8 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System.Collections.Generic;
 
-using Orpius.Platform.Inferencing.ToolsModel;
-
 using ProtoBuf;
 
 namespace Orpius.Platform.ToolsModel.RpcToolProviderService
