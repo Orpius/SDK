@@ -17,7 +17,9 @@ namespace Orpius.Platform.ToolsModel
 	{
 		/// <summary>
 		/// If specified, this value overrides the default value,
-		/// which is the method name.
+		/// which is the property name.
+		/// The name of this property is presented to the agent;
+		/// assisting the agent in understanding its purpose.
 		/// </summary>
 		public string? Name { get;        set; }
 
@@ -43,8 +45,18 @@ namespace Orpius.Platform.ToolsModel
 	[AttributeUsage(AttributeTargets.Method)]
 	public sealed class ToolMethodAttribute : Attribute
 	{
+		/// <summary>
+		/// If specified, this value overrides the default value,
+		/// which is the method name.
+		/// The name of this method is presented to the agent;
+		/// assisting the agent in understanding its purpose.
+		/// </summary>
 		public string? Name { get; set; }
 
+		/// <summary>
+		/// Provide a description to assist the agent
+		/// in understanding the purpose of the method and when to use it.
+		/// </summary>
 		public string? Description { get; set; }
 	}
 }
