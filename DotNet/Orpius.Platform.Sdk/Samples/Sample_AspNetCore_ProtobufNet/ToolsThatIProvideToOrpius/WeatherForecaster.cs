@@ -5,7 +5,7 @@ using Orpius.Platform.ToolsModel;
 
 namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 {
-	[Tool]
+	[Tool(Name = "WeatherForecast")]
 	public class WeatherForecaster
 	{
 		[ToolMethod(Name = "GetForecast", Description = "Retrieve the forecast for the specified ")]

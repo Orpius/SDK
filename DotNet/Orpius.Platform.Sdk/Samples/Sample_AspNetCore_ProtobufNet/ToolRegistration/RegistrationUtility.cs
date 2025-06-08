@@ -20,7 +20,7 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 
 		internal async Task RegisterAsProviderAsync()
 		{
-			var toolsAndContracts = GeneratedToolInfo.GetToolsAndContracts();
+			var toolsAndContracts = new GeneratedToolInfo().ToolsMetadata;
 
 			var localUrl = new ApplicationUrlResolver().GetApplicationUrl(serviceProvider);
 
