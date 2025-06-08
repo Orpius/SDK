@@ -1,12 +1,12 @@
-﻿using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
-
+﻿using Orpius.Platform.Tooling.ToolRegistration;
+using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
 using Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius;
 
-namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
+namespace Sample_AspNetCore_ProtobufNet.DevelopmentOnly
 {
 	public class GeneratedToolInfo
 	{
-		internal ToolsAndContracts GetToolsAndContracts()
+		internal static ToolsMetadata GetToolsAndContracts()
 		{
 			ToolMessage tool = new(nameof(FlightStatusChecker), typeof(FlightStatusChecker).FullName!)
 			{
@@ -76,7 +76,7 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 					
 				
 
-			return new ToolsAndContracts([tool], contracts);
+			return new ToolsMetadata([tool], contracts);
 		}
 
 		static Dictionary<string, int> GetEnumDictionary<T>() where T : struct, Enum

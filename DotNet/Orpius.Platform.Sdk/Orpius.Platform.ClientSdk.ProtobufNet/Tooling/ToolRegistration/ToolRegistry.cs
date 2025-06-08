@@ -1,29 +1,38 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Orpius.Platform.Collections;
 using Orpius.Platform.Text.Json;
 using Orpius.Platform.ToolsModel.RpcToolProviderService;
+using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {
 	public interface IToolRegistry
 	{
-		void RegisterToolInvoker(IToolInvoker toolInvoker);
+		void AddItem(IToolRegistryItem item);
 	}
 
 	public interface IToolCaller
 	{
 		Task<UseToolResponse> UseToolAsync(UseToolRequest request, object? nativeContext);
+
+		Task<RegisterAsProviderResponse> RegisterWithServer(
+			string localUrl,
+			IRegistrationMediator mediator);
 	}
 
 	public class ToolRegistry : IToolRegistry, IToolCaller
 	{
 		public IJsonSerializer JsonSerializer { get; set; } = new JsonSerializer();
 
-		readonly ConcurrentDictionary<string, IToolInvoker> invokerDictionary
-			= new ConcurrentDictionary<string, IToolInvoker>(StringComparer.OrdinalIgnoreCase);
+		readonly ConcurrentBag<IToolRegistryItem> itemBag
+			= new ConcurrentBag<IToolRegistryItem>();
+
+		readonly ConcurrentDictionary<string, IToolRegistryItem> registryItems
+			= new ConcurrentDictionary<string, IToolRegistryItem>(StringComparer.OrdinalIgnoreCase);
 
 		public IToolResolver ToolResolver { get; set; }
 
@@ -32,14 +41,43 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			ToolResolver = toolResolver ?? throw new ArgumentNullException(nameof(toolResolver));
 		}
 
-		public void RegisterToolInvoker(IToolInvoker toolInvoker)
+		public void AddItem(IToolRegistryItem item)
 		{
-			AssertArg.IsNotNull(toolInvoker, nameof(toolInvoker));
+			AssertArg.IsNotNull(item, nameof(item));
 
-			foreach (string toolName in toolInvoker.ToolNames)
+			foreach (string toolName in item.ToolInvoker.ToolNames)
 			{
-				invokerDictionary[toolName] = toolInvoker;
+				registryItems[toolName] = item;
 			}
+		}
+
+		public async Task<RegisterAsProviderResponse> RegisterWithServer(
+			string localUrl,
+			IRegistrationMediator mediator)
+		{
+			var contracts = new Dictionary<string, ContractMessage>();
+			var tools = new Dictionary<string, ToolMessage>();
+
+			/* Flatten items. */
+			foreach (IToolRegistryItem item in registryItems.Values)
+			{
+				foreach (ContractMessage? contractMessage in item.ToolsMetadata.Contracts)
+				{
+					var contract = contractMessage.Contract;
+					contracts[contract.TypeName] = contractMessage;
+				}
+
+				foreach (ToolMessage toolMessage in item.ToolsMetadata.Tools)
+				{
+					/* A type could be reused as a different tool,
+					   therefore we use the ToolName rather than the TypeName. */
+					tools[toolMessage.ToolName] = toolMessage;
+				}
+			}
+
+			ToolsMetadata toolsMetadata = new ToolsMetadata(tools.Values, contracts.Values);
+
+			return await mediator.RegisterAsProviderAsync(localUrl, toolsMetadata);
 		}
 
 		public async Task<UseToolResponse> UseToolAsync(UseToolRequest request,
@@ -47,22 +85,29 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		{
 			string toolName = request.ToolName;
 
-			if (!invokerDictionary.TryGetValue(toolName, out IToolInvoker? invoker))
+			if (!registryItems.TryGetValue(toolName, out IToolRegistryItem? registryItem))
 			{
-				throw new ArgumentOutOfRangeException($"Tool with name '{toolName}' was not found.");
+				throw new ArgumentOutOfRangeException(
+					$"Tool with name '{toolName}' was not found.");
 			}
 
 			const string requestBodyParam = nameof(UseToolRequest) + "." + nameof(UseToolRequest.ParameterAsJson);
 
 			if (string.IsNullOrWhiteSpace(request.ParameterAsJson))
 			{
-				throw new ArgumentException($"{requestBodyParam} must not be null or whitespace.", requestBodyParam);
+				throw new ArgumentException(
+					$"{requestBodyParam} must not be null or whitespace.", 
+					requestBodyParam);
 			}
 
 			var trackedDictionary = new TrackedDictionary(request.Context);
 			var combinedContext = new CombinedContext(trackedDictionary, nativeContext);
 
-			return await invoker.InvokeToolAsync(request, combinedContext, JsonSerializer, ToolResolver);
+			return await registryItem.ToolInvoker.InvokeToolAsync(
+					   request,
+					   combinedContext, 
+					   JsonSerializer, 
+					   ToolResolver);
 		}
 	}
 }

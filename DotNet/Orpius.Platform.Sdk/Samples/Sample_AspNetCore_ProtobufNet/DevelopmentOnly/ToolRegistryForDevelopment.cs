@@ -27,7 +27,7 @@
 //		public ToolRegistry GetRegistry()
 //		{
 //			var result = new ToolRegistry(new LocalResolver());
-//			result.RegisterToolInvoker(new GeneratedToolInvoker());
+//			result.AddItem(new GeneratedToolInvoker());
 //			return result;
 //		}
 //	}

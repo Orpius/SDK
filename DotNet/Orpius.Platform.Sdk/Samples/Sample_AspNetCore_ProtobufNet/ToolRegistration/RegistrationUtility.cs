@@ -1,6 +1,6 @@
 ﻿using Orpius.Platform.RpcServices;
 using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
-
+using Sample_AspNetCore_ProtobufNet.DevelopmentOnly;
 using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 
 namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
@@ -20,15 +20,15 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 
 		internal async Task RegisterAsProviderAsync()
 		{
-			var toolsAndContracts = new GeneratedToolInfo().GetToolsAndContracts();
+			var toolsAndContracts = GeneratedToolInfo.GetToolsAndContracts();
 
 			var localUrl = new ApplicationUrlResolver().GetApplicationUrl(serviceProvider);
 
 			RegisterAsProviderRequest request
 				= new(providerUrl: localUrl, ProgrammingLanguageId.CSharp)
 				{
-					Tools     = toolsAndContracts.Tools,
-					Contracts = toolsAndContracts.Contracts
+					Tools     = toolsAndContracts.Tools.ToList(),
+					Contracts = toolsAndContracts.Contracts.ToList()
 				};
 
 			await registrationService.RegisterAsProvider(request);

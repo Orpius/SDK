@@ -8,7 +8,7 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 	[Tool]
 	public class FlightStatusChecker
 	{
-		[ToolMethod]
+		[ToolMethod(Description = "Returns the flight status for the specified flight.")]
 		public async Task<GetStatusResponse> GetStatus(GetStatusRequest request, ICombinedContext context)
 		{
 			switch (request.FlightNumber)

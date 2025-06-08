@@ -63,7 +63,7 @@ namespace Sample_AspNetCore_ProtobufNet
 			services.AddAssociatedSingletons<IToolProviderService, ToolProviderService>();
 
 			/* The generated class in your project pulls in the IToolRegistry and registers itself. */
-			services.AddSingleton<LocalToolDescriptors>();
+			services.AddSingleton<SampleTools>();
 
 
 			/* For the sample 'mobile' app. */
