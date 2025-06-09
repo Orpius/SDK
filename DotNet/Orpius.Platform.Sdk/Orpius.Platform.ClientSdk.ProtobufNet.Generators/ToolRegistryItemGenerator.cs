@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -10,7 +11,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Orpius.Platform.Generators;
 
 /// <summary>
-/// Produces a concrete <c>IToolRegistryItem</c> for every assembly that contains
+/// Produces a concrete <c>IToolRegistryItem</c> for assemblies with
 /// <c>[assembly: GenerateToolRegistryItemAttribute("Namespace.ClassName")]</c>.
 /// </summary>
 [Generator(LanguageNames.CSharp)]
@@ -19,56 +20,94 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		/* Detect [GenerateToolRegistryItem] */
-		IncrementalValueProvider<AssemblyInfo> assemblyInfo =
-			context.CompilationProvider.Select(static (compilation, _) =>
-			{
-				INamedTypeSymbol? attribute 
-					= compilation.GetTypeByMetadataName(
-						"Orpius.Platform.Tooling.GenerateToolRegistryItemAttribute");
+		static AssemblyInfo SelectAssemblies(Compilation compilation, CancellationToken _)
+		{
+			INamedTypeSymbol? attribute = compilation.GetTypeByMetadataName(
+				"Orpius.Platform.Tooling.GenerateToolRegistryItemAttribute");
 
-				if (attribute is null)
+			if (attribute is null)
+			{
+				return AssemblyInfo.None;
+			}
+
+			foreach (AttributeData ad in compilation.Assembly.GetAttributes())
+			{
+				if (!SymbolEqualityComparer.Default.Equals(ad.AttributeClass, attribute))
 				{
-					return AssemblyInfo.None;
+					continue;
 				}
 
-				foreach (AttributeData a in compilation.Assembly.GetAttributes())
+				if (ad.ConstructorArguments.Length != 1 ||
+					ad.ConstructorArguments[0].Value is not string fullClassName)
 				{
-					if (SymbolEqualityComparer.Default.Equals(a.AttributeClass, attribute) 
-						&& a.ConstructorArguments.Length == 1 
-						&& a.ConstructorArguments[0].Value is string full)
+					continue; // malformed usage
+				}
+
+				ImmutableHashSet<IAssemblySymbol>.Builder keep 
+					= ImmutableHashSet.CreateBuilder<IAssemblySymbol>(SymbolEqualityComparer.Default);
+
+				/* Include the current assembly by default.
+				   We eject this if ScanAssembliesContaining is set. */
+				keep.Add(compilation.Assembly);
+
+				// See if the named argument ScanAssembliesContaining was supplied.
+				KeyValuePair<string, TypedConstant> pair 
+					= ad.NamedArguments.FirstOrDefault(kv => kv.Key == "ScanAssembliesContaining");
+
+				if (!string.IsNullOrEmpty(pair.Key))
+				{
+					TypedConstant typedConstant = pair.Value;
+
+					if (typedConstant.Kind == TypedConstantKind.Array && typedConstant.Values.Length > 0)
 					{
-						return new AssemblyInfo(true, full);
+						/* The user explicitly named assemblies,
+						   therefore do not keep the default one. */
+						keep.Clear();
+
+						foreach (TypedConstant tc in typedConstant.Values)
+						{
+							if (tc.Value is INamedTypeSymbol marker)
+							{
+								keep.Add(marker.ContainingAssembly);
+							}
+						}
 					}
 				}
 
-				return AssemblyInfo.None;
-			});
+				return new AssemblyInfo(true, fullClassName, keep.ToImmutable());
+			}
+
+			return AssemblyInfo.None;
+		}
+
+		IncrementalValueProvider<AssemblyInfo> assemblyInfo 
+			= context.CompilationProvider.Select(SelectAssemblies);
 
 		/* Collect every [Tool] type */
-		IncrementalValueProvider<ImmutableArray<INamedTypeSymbol>> toolTypes =
-			context.SyntaxProvider
-				   .ForAttributeWithMetadataName(
-					   "Orpius.Platform.Tooling.ToolAttribute",
-					   static (_, _) => true,
-					   static (ctx, _) => (INamedTypeSymbol)ctx.TargetSymbol)
-				   .Collect();
+		IncrementalValueProvider<ImmutableArray<INamedTypeSymbol>> toolTypes
+			= context.SyntaxProvider
+					 .ForAttributeWithMetadataName(
+						 "Orpius.Platform.Tooling.ToolAttribute",
+						 static (_, _) => true,
+						 static (context, _) => (INamedTypeSymbol)context.TargetSymbol)
+					 .Collect();
 
 		/* Combine and generate */
 		context.RegisterSourceOutput(
 			assemblyInfo.Combine(toolTypes),
 			static (spc, pair) =>
 			{
-				AssemblyInfo asm = pair.Left;
+				AssemblyInfo assemblyInfo = pair.Left;
 				ImmutableArray<INamedTypeSymbol> tools = pair.Right;
 
-				if (!asm.Enabled)
+				if (!assemblyInfo.Enabled)
 				{
 					return; // nothing to generate
 				}
 
 				try
 				{
-					GeneratorModel model = GeneratorModel.Create(asm.FullClassName!, tools);
+					GeneratorModel model = GeneratorModel.Create(assemblyInfo.FullClassName!, tools);
 					string source = SourceBuilder.Build(model);
 
 					spc.AddSource($"{model.ClassName}.g.cs",
@@ -90,12 +129,13 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 			});
 	}
 
-	#region Assembly-level info
-	sealed record AssemblyInfo(bool Enabled, string? FullClassName)
+	sealed record AssemblyInfo(bool Enabled, 
+							   string? FullClassName, 
+							   ImmutableHashSet<IAssemblySymbol> AllowedAssemblies)
 	{
-		public static readonly AssemblyInfo None = new(false, null);
+		public static readonly AssemblyInfo None 
+			= new(false, null, ImmutableHashSet<IAssemblySymbol>.Empty);
 	}
-	#endregion
 
 	#region Tool / Method model
 	sealed record ToolMethodModel(

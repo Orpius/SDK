@@ -11,7 +11,7 @@ using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 using Sample_AspNetCore_ProtobufNet.Services;
 using Sample_AspNetCore_ProtobufNet.ToolRegistration;
 
-[assembly: GenerateToolRegistryItem("Sample_AspNetCore_ProtobufNet.ToolRegistration.SampleTools2")]
+[assembly: GenerateToolRegistryItem("Sample_AspNetCore_ProtobufNet.ToolRegistration.SampleTools")]
 
 namespace Sample_AspNetCore_ProtobufNet
 {
@@ -66,7 +66,7 @@ namespace Sample_AspNetCore_ProtobufNet
 			services.AddAssociatedSingletons<IToolProviderService, ToolProviderService>();
 
 			/* The generated class in your project pulls in the IToolRegistry and registers itself. */
-			services.AddSingleton<SampleTools2>();
+			services.AddSingleton<SampleTools>();
 
 
 			/* For the sample 'mobile' app. */
