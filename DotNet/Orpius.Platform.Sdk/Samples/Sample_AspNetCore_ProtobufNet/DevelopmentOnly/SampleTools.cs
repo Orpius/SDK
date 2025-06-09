@@ -1,5 +1,4 @@
-﻿using Orpius.Platform.Generators;
-using Orpius.Platform.Text.Json;
+﻿using Orpius.Platform.Text.Json;
 using Orpius.Platform.Tooling;
 using Orpius.Platform.Tooling.ToolRegistration;
 using Orpius.Platform.Tooling.Utilities;
@@ -12,20 +11,6 @@ using Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius;
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
 [assembly: GenerateToolRegistryItem("Sample_AspNetCore_ProtobufNet.ToolRegistration.SampleTools")]
-
-namespace Orpius.Platform.Generators
-{
-	[AttributeUsage(AttributeTargets.Assembly)]
-	public class GenerateToolRegistryItemAttribute : Attribute
-	{
-		public GenerateToolRegistryItemAttribute(string fullClassName)
-		{
-			FullClassName = fullClassName;
-		}
-
-		public string FullClassName { get; set; }
-	}
-}
 
 namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 {
