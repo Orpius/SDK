@@ -21,7 +21,6 @@
 	<Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\Inferencing\RpcMessages\ConversationMessages.cs" Link="Inferencing\ConversationMessages.cs" />
 	<Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\OperationsModel\RpcOperationsService\ChatRequest.cs" Link="OperationsModel\RpcOperationsService\ChatRequest.cs" />
 	<Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\OperationsModel\RpcOperationsService\OperationHeaders.cs" Link="RpcServices\OperationHeaders.cs" />
-	<Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\ToolsModel\RpcToolsRegistrationService\RegisterAsProviderRequest.cs" Link="RpcServices\RegisterAsProviderRequest.cs" />
 	<Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform.Shared\ToolsModel\RpcToolsRegistrationService\ToolsRegistrationHeaders.cs" Link="RpcServices\ToolsRegistrationHeaders.cs" />
 	<Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform\OperationsModel\RpcOperationsService\IOperationsService.cs" Link="RpcServices\IOperationsService.cs" />
 	<Compile Include="..\..\..\..\Platform\PlatformRepo\Source\Orpius.Platform\ToolsModel\RpcToolProviderService\IToolProviderService.cs" Link="RpcServices\IToolProviderService.cs" />
