@@ -31,11 +31,14 @@ namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
 {
 	partial class SampleTools : IToolRegistryItem
 	{
-		public SampleTools(IToolRegistry toolRegistry)
+		public SampleTools()
 		{
 			toolsMetadata = new Lazy<IToolsMetadata>(GetMetadata);
-			toolInvoker = new Lazy<GeneratedToolInvoker>(() => new GeneratedToolInvoker());
+			toolInvoker   = new Lazy<GeneratedToolInvoker>(() => new GeneratedToolInvoker());
+		}
 
+		public SampleTools(IToolRegistry toolRegistry) : this()
+		{
 			toolRegistry.AddItem(this);
 		}
 
