@@ -1,4 +1,4 @@
-﻿namespace Orpius.Platform.ToolsModel.RpcToolsRegistrationService
+﻿namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 {
 	public interface IContractMessage
 	{

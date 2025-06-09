@@ -1,5 +1,5 @@
 ﻿using Orpius.Platform.RpcServices;
-using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
+using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 using Sample_AspNetCore_ProtobufNet.DevelopmentOnly;
 using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 

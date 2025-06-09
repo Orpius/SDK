@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Orpius.Platform.ToolsModel
+namespace Orpius.Platform.Tooling
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = false)]
 	public sealed class ToolAttribute : Attribute
@@ -32,7 +32,7 @@ namespace Orpius.Platform.ToolsModel
 		/// </summary>
 		public string? Description { get; set; }
 
-		public string? Format      { get; set; }
+		public string? OpenApiFormat      { get; set; }
 		public Type?   RepresentAs { get; set; }
 	}
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
+using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {

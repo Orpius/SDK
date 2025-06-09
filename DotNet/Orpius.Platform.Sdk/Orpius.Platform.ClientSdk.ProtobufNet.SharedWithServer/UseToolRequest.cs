@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using ProtoBuf;
 
-namespace Orpius.Platform.ToolsModel.RpcToolProviderService
+namespace Orpius.Platform.Tooling.RpcToolProviderService
 {
 	partial class UseToolRequest
 	{

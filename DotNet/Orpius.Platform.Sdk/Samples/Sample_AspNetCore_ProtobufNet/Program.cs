@@ -1,4 +1,5 @@
 using Orpius.Platform.RpcServices;
+using Orpius.Platform.Tooling;
 using Orpius.Platform.Tooling.ToolRegistration;
 
 using ProtoBuf.Grpc.ClientFactory;
@@ -9,6 +10,8 @@ using Sample_AspNetCore_ProtobufNet.Components;
 using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 using Sample_AspNetCore_ProtobufNet.Services;
 using Sample_AspNetCore_ProtobufNet.ToolRegistration;
+
+[assembly: GenerateToolRegistryItem("Sample_AspNetCore_ProtobufNet.ToolRegistration.SampleTools2")]
 
 namespace Sample_AspNetCore_ProtobufNet
 {
@@ -63,7 +66,7 @@ namespace Sample_AspNetCore_ProtobufNet
 			services.AddAssociatedSingletons<IToolProviderService, ToolProviderService>();
 
 			/* The generated class in your project pulls in the IToolRegistry and registers itself. */
-			services.AddSingleton<SampleTools>();
+			services.AddSingleton<SampleTools2>();
 
 
 			/* For the sample 'mobile' app. */

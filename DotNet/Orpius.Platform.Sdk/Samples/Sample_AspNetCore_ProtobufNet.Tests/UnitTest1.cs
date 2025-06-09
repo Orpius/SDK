@@ -4,7 +4,7 @@ using Grpc.Net.Client;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Orpius.Platform.RpcServices;
-using Orpius.Platform.ToolsModel.RpcToolProviderService;
+using Orpius.Platform.Tooling.RpcToolProviderService;
 
 using ProtoBuf.Grpc.Client;
 using ProtoBuf.Serializers;

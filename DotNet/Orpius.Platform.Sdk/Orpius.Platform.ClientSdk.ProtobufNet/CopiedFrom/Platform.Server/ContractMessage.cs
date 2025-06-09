@@ -4,7 +4,7 @@ using System;
 
 using ProtoBuf;
 
-namespace Orpius.Platform.ToolsModel.RpcToolsRegistrationService
+namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 {
 	[ProtoContract]
 	public partial class ContractMessage

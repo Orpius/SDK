@@ -2,7 +2,7 @@
 using Grpc.Core.Interceptors;
 
 using Orpius.Platform.OperationsModel.RpcOperationsService;
-using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
+using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 
 namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 {

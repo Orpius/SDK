@@ -1,7 +1,7 @@
 ﻿//using Orpius.Platform.Text.Json;
 //using Orpius.Platform.Tooling;
 //using Orpius.Platform.Tooling.ToolRegistration;
-//using Orpius.Platform.ToolsModel.RpcToolProviderService;
+//using Orpius.Platform.Tooling.RpcToolProviderService;
 
 //using Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius;
 //// ReSharper disable RedundantTypeArgumentsOfMethod

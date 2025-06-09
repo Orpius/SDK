@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using Orpius.Platform.RpcServices;
-using Orpius.Platform.ToolsModel.RpcToolProviderService;
+using Orpius.Platform.Tooling.RpcToolProviderService;
 
 using ProtoBuf.Grpc;
 

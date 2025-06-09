@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Orpius.Platform.RpcServices;
-using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
+using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {

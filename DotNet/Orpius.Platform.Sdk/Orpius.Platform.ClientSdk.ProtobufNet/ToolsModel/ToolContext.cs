@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace Orpius.Platform.ToolsModel
+namespace Orpius.Platform.Tooling
 {
 	[ProtoContract]
 	public class ToolContext

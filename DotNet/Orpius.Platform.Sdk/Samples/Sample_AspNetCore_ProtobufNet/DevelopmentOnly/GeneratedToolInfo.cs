@@ -1,6 +1,6 @@
 ﻿using Orpius.Platform.Tooling.ToolRegistration;
 using Orpius.Platform.Tooling.Utilities;
-using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
+using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 using Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius;
 
 namespace Sample_AspNetCore_ProtobufNet.DevelopmentOnly

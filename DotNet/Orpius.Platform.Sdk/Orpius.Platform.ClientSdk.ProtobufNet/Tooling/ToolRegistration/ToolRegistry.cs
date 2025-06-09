@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 using Orpius.Platform.Collections;
 using Orpius.Platform.Text.Json;
-using Orpius.Platform.ToolsModel.RpcToolProviderService;
-using Orpius.Platform.ToolsModel.RpcToolsRegistrationService;
+using Orpius.Platform.Tooling.RpcToolProviderService;
+using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {

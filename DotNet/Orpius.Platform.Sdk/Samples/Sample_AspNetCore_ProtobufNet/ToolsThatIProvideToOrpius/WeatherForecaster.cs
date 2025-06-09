@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
 using Orpius.Platform.Tooling;
-using Orpius.Platform.ToolsModel;
 
 namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 {
@@ -77,7 +76,7 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 	public class GetForecastRequest
 	{
 		[ToolStringProperty(RepresentAs = typeof(string),
-			Format = "date-time",
+			OpenApiFormat = "date-time",
 			Description = "The date and time for which the weather forecast is requested.",
 			Required = true)]
 		public DateTime ForecastDate { get; set; }
@@ -110,7 +109,7 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 	public class GetClothingRecommendationRequest
 	{
 		[ToolStringProperty(RepresentAs = typeof(string),
-			Format = "date-time",
+			OpenApiFormat = "date-time",
 			Description = "The date and time for which the clothing recommendation is requested.",
 			Required = true)]
 		public DateTime DateTime { get; set; }

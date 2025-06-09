@@ -5,7 +5,7 @@ namespace Orpius.Platform.Tooling
 {
 	public interface ICombinedContext
 	{
-		public object NativeContext { get; set; }
+		public object? NativeContext { get; set; }
 
 		IDictionary<string, string> SharedContext { get; set; }
 	}

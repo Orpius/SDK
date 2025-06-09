@@ -1,7 +1,6 @@
 ﻿using Grpc.Core;
 
 using Orpius.Platform.Tooling;
-using Orpius.Platform.ToolsModel;
 
 namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 {

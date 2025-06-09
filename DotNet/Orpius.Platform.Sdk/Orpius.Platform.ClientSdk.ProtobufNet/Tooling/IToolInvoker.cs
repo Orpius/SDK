@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Orpius.Platform.Text.Json;
 using Orpius.Platform.Tooling.ToolRegistration;
-using Orpius.Platform.ToolsModel.RpcToolProviderService;
+using Orpius.Platform.Tooling.RpcToolProviderService;
 
 namespace Orpius.Platform.Tooling
 {
