@@ -1,7 +1,12 @@
-﻿using Orpius.Platform.Tooling.RpcToolsRegistrationService;
+﻿using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 using Orpius.Platform.Tooling.ToolRegistration;
 
-namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
+namespace Orpius.Platform.RpcServiceModel
 {
 	public class RegistrationHeaderHandler : DelegatingHandler
 	{

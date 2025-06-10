@@ -1,3 +1,4 @@
+using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling;
 using Orpius.Platform.Tooling.ToolRegistration;
@@ -41,55 +42,31 @@ namespace Sample_AspNetCore_ProtobufNet
 					);
 				});
 
-			services.AddSingleton<RegistrationHeaderHandler>();
+			services.AddToolRegistration().WithAutomaticProviderRegistration();
 
 			/* We add two GRPC interceptors,
-			   allowing us to push the authentication headers. */
-			
+			   allowing us to include the authentication headers. */
+
+			/* Tools - They allow your AI Agent to call your server to carry out tasks. */
 			services.AddCodeFirstGrpcClient<IToolsRegistrationService>(
 						options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
 					.AddHttpMessageHandler<RegistrationHeaderHandler>()
-					.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-					{
-						/* For use with self-signed certificate. Not for production. */
-						ServerCertificateCustomValidationCallback
-							= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-					});
+					.ConfigurePrimaryHttpMessageHandler(CreateHandler);
 
+			/* Operations - They allow your application to communicate with an AI Agent. */
 			services.AddCodeFirstGrpcClient<IOperationsService>(
 						options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
 					.AddInterceptor(() => new OperationInterceptor())
-					.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-					{
-						/* For use with self-signed certificate. Not for production. */
-						ServerCertificateCustomValidationCallback
-							= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-					});
+					.ConfigurePrimaryHttpMessageHandler(CreateHandler);
 
-			services.AddHostedService<RegistrationHostedService>();
-
-			/* This allows tools to be resolved using the IServiceProvider. */
-			services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
-			services.AddAssociatedSingletons<IToolRegistry, ToolRegistry>();
-
-			/* ToolProviderService requires IToolCaller.
-			   ToolRegistry also serves as the IToolCaller.
-			   ToolProviderService is the GRPC service that receives 
-			   requests from Orpius to use tools. */
-			services.AddSingleton<IToolCaller>(sp => sp.GetRequiredService<ToolRegistry>());
-			services.AddAssociatedSingletons<IToolProviderService, ToolProviderService>();
-
-			/* The IRegistrationMediator abstracts the use of the actual IToolRegistrationService. */
-			services.AddSingleton<IRegistrationMediator, RegistrationMediator>();
-
-			/* The generated class in your project pulls
-			   in the IToolRegistry and registers itself.
-			   The tools are generated via the GenerateToolRegistryItemAttribute 
-			   (at the top of this file).*/
+			/* The generated class in your project pulls in the `IToolRegistry`
+			   and registers itself. The tools are generated 
+			   via the `GenerateToolRegistryItemAttribute` (at the top of this file). */
 			services.AddSingleton<SampleTools>();
 
-			/* Add the tool implementations. The IToolRegistry uses the IToolResolver,
-			   to locate the services when a UseToolRequest arrives. */
+			/* Add your tool implementations.
+			   The IToolRegistry uses the IToolResolver, to locate the services 
+			   when a `UseToolRequest` arrives. */
 			services.AddSingleton<FlightStatusChecker>();
 			services.AddSingleton<WeatherForecaster>();
 
@@ -113,10 +90,14 @@ namespace Sample_AspNetCore_ProtobufNet
 			app.UseHttpsRedirection();
 			app.UseAntiforgery();
 
-			/* For Orpius calling back to use tools. */
+			/* This allows Orpius to call your server to use tools.
+			   You may want to add authentication to this service.
+			   You can use the `RegisterAsProviderRequest.Headers` property 
+			   to provide headers that are stored securely on the Orpius server, 
+			   and provided back to your server during an `IToolProviderService.UseTool` call. */
 			app.MapGrpcService<IToolProviderService>();
 
-			/* For the 'mobile' app. */
+			/* For the sample 'mobile' app. */
 			app.MapGrpcService<IMyMobileAppService>();
 
 			app.MapStaticAssets();
@@ -124,6 +105,13 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			app.Run();
 		}
+
+		static HttpMessageHandler CreateHandler() => new HttpClientHandler
+		{
+			/* For use with self-signed certificate. Not for production. */
+			ServerCertificateCustomValidationCallback 
+				= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+		};
 	}
 
 	static class ServiceCollectionExtensions

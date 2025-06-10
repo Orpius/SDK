@@ -1,4 +1,11 @@
-﻿using Orpius.Platform.Tooling.ToolRegistration;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
+using Orpius.Platform.Tooling.ToolRegistration;
 
 namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 {
