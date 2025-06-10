@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 
+using Orpius.Platform.OperationsModel.RpcOperationsService;
+
 using ProtoBuf;
 
 namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
@@ -10,6 +12,8 @@ namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 	{
 #if !NET7_0_OR_GREATER
 		public RegisterAsProviderRequest(string providerUrl, 
+										 IList<ToolMessage> tools,
+										 IList<ContractMessage> contracts,
 										 ProgrammingLanguageId programmingLanguageId)
 		{
 			if (!Uri.TryCreate(providerUrl, UriKind.Absolute, out _))
@@ -19,6 +23,12 @@ namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 
 			ProviderUrl           = providerUrl;
 			ProgrammingLanguageId = programmingLanguageId;
+
+			AssertArg.IsNotNullOrEmpty(tools, nameof(tools));
+			Tools = tools;
+
+			AssertArg.IsNotNullOrEmpty(contracts, nameof(contracts));
+			Contracts = contracts;
 		}
 #endif
 

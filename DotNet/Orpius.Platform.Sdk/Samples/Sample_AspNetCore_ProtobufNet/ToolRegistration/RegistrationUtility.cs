@@ -1,37 +1,19 @@
-﻿using Orpius.Platform.RpcServices;
-using Orpius.Platform.Tooling.RpcToolsRegistrationService;
-using Sample_AspNetCore_ProtobufNet.DevelopmentOnly;
-using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
+﻿//using Orpius.Platform.Tooling.ToolRegistration;
 
-namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
-{
-	class RegistrationUtility
-	{
-		readonly IToolsRegistrationService registrationService;
-		readonly IServiceProvider serviceProvider;
+//namespace Sample_AspNetCore_ProtobufNet.ToolRegistration
+//{
+//	class RegistrationUtility
+//	{
+//		readonly IToolRegistry toolRegistry;
 
-		public RegistrationUtility(IToolsRegistrationService registrationService, 
-								   IServiceProvider serviceProvider)
-		{
-			this.registrationService = registrationService 
-									   ?? throw new ArgumentNullException(nameof(registrationService));
-			this.serviceProvider = serviceProvider;
-		}
+//		public RegistrationUtility(IToolRegistry toolRegistry)
+//		{
+//			this.toolRegistry    = toolRegistry ?? throw new ArgumentNullException(nameof(toolRegistry));
+//		}
 
-		internal async Task RegisterAsProviderAsync()
-		{
-			var toolsAndContracts = new GeneratedToolInfo().ToolsMetadata;
-
-			var localUrl = new ApplicationUrlResolver().GetApplicationUrl(serviceProvider);
-
-			RegisterAsProviderRequest request
-				= new(providerUrl: localUrl, ProgrammingLanguageId.CSharp)
-				{
-					Tools     = toolsAndContracts.Tools.ToList(),
-					Contracts = toolsAndContracts.Contracts.ToList()
-				};
-
-			await registrationService.RegisterAsProvider(request);
-		}
-	}
-}
+//		internal async Task RegisterAsProviderAsync(CancellationToken token = default)
+//		{
+//			await toolRegistry.RegisterWithServerAsync(token);
+//		}
+//	}
+//}

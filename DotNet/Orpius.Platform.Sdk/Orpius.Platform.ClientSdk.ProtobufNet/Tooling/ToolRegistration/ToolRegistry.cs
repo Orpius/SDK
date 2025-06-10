@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Orpius.Platform.Collections;
@@ -13,32 +15,38 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 	public interface IToolRegistry
 	{
 		void AddItem(IToolRegistryItem item);
+
+		Task<RegisterAsProviderResponse> RegisterWithServerAsync(
+			CancellationToken token = default);
+
+		Task<DeregisterAsProviderResponse> DeregisterWithServerAsync(
+			CancellationToken token = default);
 	}
 
 	public interface IToolCaller
 	{
 		Task<UseToolResponse> UseToolAsync(UseToolRequest request, object? nativeContext);
-
-		Task<RegisterAsProviderResponse> RegisterWithServer(
-			string localUrl,
-			IRegistrationMediator mediator);
 	}
 
 	public class ToolRegistry : IToolRegistry, IToolCaller
 	{
+		readonly IRegistrationMediator mediator;
+		readonly IToolRegistrationParameters registrationParameters;
 		public IJsonSerializer JsonSerializer { get; set; } = new JsonSerializer();
-
-		readonly ConcurrentBag<IToolRegistryItem> itemBag
-			= new ConcurrentBag<IToolRegistryItem>();
 
 		readonly ConcurrentDictionary<string, IToolRegistryItem> registryItems
 			= new ConcurrentDictionary<string, IToolRegistryItem>(StringComparer.OrdinalIgnoreCase);
 
 		public IToolResolver ToolResolver { get; set; }
 
-		public ToolRegistry(IToolResolver toolResolver)
+		public ToolRegistry(IToolResolver toolResolver,
+							IRegistrationMediator mediator,
+							IToolRegistrationParameters registrationParameters)
 		{
-			ToolResolver = toolResolver ?? throw new ArgumentNullException(nameof(toolResolver));
+			ToolResolver  = toolResolver ?? throw new ArgumentNullException(nameof(toolResolver));
+			this.mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
+			this.registrationParameters = registrationParameters
+										  ?? throw new ArgumentNullException(nameof(registrationParameters));
 		}
 
 		public void AddItem(IToolRegistryItem item)
@@ -51,9 +59,8 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			}
 		}
 
-		public async Task<RegisterAsProviderResponse> RegisterWithServer(
-			string localUrl,
-			IRegistrationMediator mediator)
+		public async Task<RegisterAsProviderResponse> RegisterWithServerAsync(
+			CancellationToken token)
 		{
 			var contracts = new Dictionary<string, ContractMessage>();
 			var tools = new Dictionary<string, ToolMessage>();
@@ -75,9 +82,26 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 				}
 			}
 
-			ToolsMetadata toolsMetadata = new ToolsMetadata(tools.Values, contracts.Values);
+			RegisterAsProviderRequest request
+				= new RegisterAsProviderRequest(
+					providerUrl: registrationParameters.LocalUrl.ToString(),
+					tools.Values.ToList(),
+					contracts.Values.ToList(),
+					ProgrammingLanguageId.CSharp);
 
-			return await mediator.RegisterAsProviderAsync(localUrl, toolsMetadata);
+			//ToolsMetadata toolsMetadata = new ToolsMetadata(tools.Values, contracts.Values);
+
+			return await mediator.RegisterAsProviderAsync(request, token);
+		}
+
+		public async Task<DeregisterAsProviderResponse> DeregisterWithServerAsync(
+			CancellationToken token)
+		{
+			DeregisterAsProviderRequest request
+				= new DeregisterAsProviderRequest(
+					providerUrl: registrationParameters.LocalUrl.ToString());
+
+			return await mediator.DeregisterAsProviderAsync(request, token);
 		}
 
 		public async Task<UseToolResponse> UseToolAsync(UseToolRequest request,

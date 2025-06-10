@@ -22,7 +22,8 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 				UserMessage = request.UserMessage,
 				Tools = new List<Tool>
 				{
-					new(name: nameof(FlightStatusChecker)) {ToolPresence = ToolPresence.NotRequired}
+					new(name: nameof(FlightStatusChecker)) {ToolPresence = ToolPresence.Required},
+					new(name: "WeatherForecast") {ToolPresence = ToolPresence.Required}
 				},
 				ConversationId = request.ConversationId
 			};

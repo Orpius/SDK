@@ -61,7 +61,8 @@
 
 		<Grid ColumnDefinitions="*,Auto" Grid.Row="2" Margin="12">
 			<TextBox Text="{Binding PromptText}" 
-			         AcceptsReturn="True" Height="60" />
+			         Height="60"
+			         KeyDown="PromptBox_OnKeyDown"/>
 
 			<Button Content="Send" Command="{Binding SendMessageCommand}" 
 			        Grid.Column="1" 

@@ -102,7 +102,7 @@ namespace SampleProtobufNet
 			{
 				Text = promptText
 			};
-
+			
 			// Your server's request message.
 			// This is defined by you, and contains information
 			// relevant to your application.
@@ -114,11 +114,20 @@ namespace SampleProtobufNet
 				ConversationId = conversationId
 			};
 
+			bool userMessageAdded = false;
+
 			// Your server relays the messages back from the Orpius server.
 			// The messages may contain zero or more API calls for tools,
 			// and 1 or more messages from the assistant.
 			await foreach (ChatResponse response in client.Chat(chatRequest))
 			{
+				if (!userMessageAdded)
+				{
+					Messages.Add(userMessage);
+					PromptText       = string.Empty;
+					userMessageAdded = true;
+				}
+
 				conversationId = response.ConversationId;
 
 				SystemMessage? systemMessage = response.SystemMessage;
@@ -135,9 +144,6 @@ namespace SampleProtobufNet
 					Messages.Add(assistantMessage);
 				}
 			}
-
-			// We clear the prompt text after sending it,
-			PromptText = string.Empty;
 		}
 
 		GrpcChannelOptions GetChannelOptions()

@@ -2,7 +2,6 @@
 using Grpc.Core.Interceptors;
 
 using Orpius.Platform.OperationsModel.RpcOperationsService;
-using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 
 namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 {
@@ -46,16 +45,40 @@ namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 		}
 	}
 
-	public sealed class ToolsRegistrationInterceptor : InterceptorForHeadersBase
-	{
-		protected override CallOptions AddHeaders(CallOptions options)
-		{
-			Metadata meta = options.Headers ?? new Metadata();
-			meta.Add(ToolsRegistrationHeaders.ExternalId,
-				ApplicationState.ToolsRegistrationSettings.ExternalId.ToString());
-			meta.Add(ToolsRegistrationHeaders.AccessKey,
-				ApplicationState.ToolsRegistrationSettings.AccessKey.ToString());
-			return options.WithHeaders(meta);
-		}
-	}
+	//public sealed class ToolsRegistrationInterceptor : InterceptorForHeadersBase
+	//{
+	//	protected override CallOptions AddHeaders(CallOptions options)
+	//	{
+	//		Metadata meta = options.Headers ?? new Metadata();
+	//		meta.Add(ToolsRegistrationHeaders.ExternalId,
+	//			ApplicationState.ToolsRegistrationSettings.ExternalId.ToString());
+	//		meta.Add(ToolsRegistrationHeaders.AccessKey,
+	//			ApplicationState.ToolsRegistrationSettings.AccessKey.ToString());
+	//		return options.WithHeaders(meta);
+	//	}
+	//}
+
+	//public sealed class ToolsRegistrationInterceptor : InterceptorForHeadersBase
+	//{
+	//	readonly IToolRegistrationParameters registrationHeaders;
+
+	//	public ToolsRegistrationInterceptor(IToolRegistrationParameters registrationParameters)
+	//	{
+	//		this.registrationHeaders = registrationParameters 
+	//								   ?? throw new ArgumentNullException(nameof(registrationParameters));
+	//	}
+
+	//	protected override CallOptions AddHeaders(CallOptions options)
+	//	{
+	//		Metadata meta = options.Headers ?? new Metadata();
+	//		using var token = registrationHeaders.GetAccessTokenAsync().GetAwaiter().GetResult();
+	//		var headerValue = Convert.ToBase64String(token.GetRawBytes());
+
+	//		meta.Add(ToolsRegistrationHeaders.AccessKey, headerValue);
+	//		meta.Add(ToolsRegistrationHeaders.ExternalId,
+	//			registrationHeaders.ExternalId.ToString());
+
+	//		return options.WithHeaders(meta);
+	//	}
+	//}
 }

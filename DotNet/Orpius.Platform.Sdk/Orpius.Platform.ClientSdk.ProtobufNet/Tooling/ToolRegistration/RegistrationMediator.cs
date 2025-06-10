@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Orpius.Platform.RpcServices;
@@ -10,8 +10,12 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 	public interface IRegistrationMediator
 	{
 		Task<RegisterAsProviderResponse> RegisterAsProviderAsync(
-			string localUrl,
-			IToolsMetadata toolsMetadata);
+			RegisterAsProviderRequest request,
+			CancellationToken token = default);
+
+		Task<DeregisterAsProviderResponse> DeregisterAsProviderAsync(
+			DeregisterAsProviderRequest request,
+			CancellationToken token = default);
 	}
 
 	public class RegistrationMediator : IRegistrationMediator
@@ -24,19 +28,17 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		}
 
 		public async Task<RegisterAsProviderResponse> RegisterAsProviderAsync(
-			string localUrl, 
-			IToolsMetadata toolsMetadata)
+			RegisterAsProviderRequest request,
+			CancellationToken token = default)
 		{
-			var toolsAndContracts = toolsMetadata;
-			
-			RegisterAsProviderRequest request
-				= new RegisterAsProviderRequest(providerUrl: localUrl, ProgrammingLanguageId.CSharp)
-				{
-					Tools     = toolsAndContracts.Tools.ToList(),
-					Contracts = toolsAndContracts.Contracts.ToList()
-				};
-
 			return await registrationService.RegisterAsProvider(request);
+		}
+
+		public async Task<DeregisterAsProviderResponse> DeregisterAsProviderAsync(
+			DeregisterAsProviderRequest request,
+			CancellationToken token = default)
+		{
+			return await registrationService.DeregisterAsProvider(request);
 		}
 	}
 }

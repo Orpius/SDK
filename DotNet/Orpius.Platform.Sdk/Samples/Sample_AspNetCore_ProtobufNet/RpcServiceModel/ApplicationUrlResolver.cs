@@ -9,11 +9,11 @@ namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 {
 	class ApplicationUrlResolver
 	{
-		bool orpiusHostedInDocker = true;
+		readonly bool orpiusHostedInDocker = true;
 
 		public string GetApplicationUrl(IServiceProvider services)
 		{
-			// 1) Pull the raw address that Kestrel/ASP.NET Core is bound to:
+			// Retrieve the raw address that Kestrel/ASP.NET Core is bound to:
 			//    e.g. "https://[::]:7194" or "http://localhost:5000"
 			string serverAddress = GetServerAddress(services)
 								   ?? throw new InvalidOperationException(
@@ -29,7 +29,7 @@ namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 				return $"https://host.docker.internal:{parsed.Port}";
 			}
 
-			// 2) On Windows (including WSL2 host), ALWAYS use "localhost" as the host.
+			// On Windows (including WSL2 host), ALWAYS use "localhost" as the host.
 			//    On plain Linux, we try DNS for a real IPv4; but under WSL2, DNS gives you a WSL IP (10.x.x.x),
 			//    which Windows cannot connect to. Instead, WSL forwards that port to Windows' localhost.
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || IsRunningUnderWsl())
@@ -42,7 +42,7 @@ namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 				return builder.Uri.ToString().TrimEnd('/');
 			}
 
-			// 3) Otherwise (pure Linux), try to resolve an IPv4 address via DNS:
+			// Otherwise (pure Linux), try to resolve an IPv4 address via DNS:
 			string? dnsIp = GetIPUsingDns();
 			if (!string.IsNullOrWhiteSpace(dnsIp))
 			{
@@ -54,7 +54,8 @@ namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 				return builder.Uri.ToString().TrimEnd('/');
 			}
 
-			// 4) Fallback: return whatever Kestrel reported (e.g. "https://0.0.0.0:7194" or "https://localhost:7194")
+			// Fallback: return whatever Kestrel reported
+			// (e.g. "https://0.0.0.0:7194" or "https://localhost:7194")
 			return parsed.ToString().TrimEnd('/');
 		}
 
@@ -63,8 +64,10 @@ namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 			try
 			{
 				IPHostEntry hostEntry = Dns.GetHostEntry(Dns.GetHostName());
-				IPAddress? ipv4
-					= hostEntry.AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+
+				IPAddress? ipv4 = hostEntry.AddressList.FirstOrDefault(
+					ip => ip.AddressFamily == AddressFamily.InterNetwork);
+
 				return ipv4?.ToString();
 			}
 			catch
