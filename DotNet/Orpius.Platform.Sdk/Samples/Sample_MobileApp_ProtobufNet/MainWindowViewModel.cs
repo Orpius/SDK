@@ -9,11 +9,10 @@ using System.Windows.Input;
 using Avalonia.Controls;
 
 using Grpc.Net.Client;
+using ProtoBuf.Grpc.Client;
 
 using Orpius.Platform.Inferencing;
 using Orpius.Platform.OperationsModel.RpcOperationsService;
-
-using ProtoBuf.Grpc.Client;
 
 using Sample_AspNetCore_ProtobufNet.Services;
 
@@ -54,9 +53,9 @@ namespace SampleProtobufNet
 			}
 		}
 
-		string? promptText;
+		string promptText = string.Empty;
 
-		public string? PromptText
+		public string PromptText
 		{
 			get => promptText;
 			set => Set(ref promptText, value);
@@ -97,7 +96,8 @@ namespace SampleProtobufNet
 
 			IMyMobileAppService client = GetClient();
 
-			// Orpius's user message. This is sent on to the Orpius server
+			// Orpius's user message.
+			// This is sent on to the Orpius server via your server.
 			UserMessage userMessage = new()
 			{
 				Text = promptText
@@ -106,7 +106,7 @@ namespace SampleProtobufNet
 			// Your server's request message.
 			// This is defined by you, and contains information
 			// relevant to your application.
-			// You will probably place authentication information,
+			// You will probably want to place authentication information,
 			// such as an access token, in the headers of the request.
 			MobileAppChatRequest chatRequest = new()
 			{
@@ -118,7 +118,7 @@ namespace SampleProtobufNet
 
 			// Your server relays the messages back from the Orpius server.
 			// The messages may contain zero or more API calls for tools,
-			// and 1 or more messages from the assistant.
+			// and one or more messages from the assistant.
 			await foreach (ChatResponse response in client.Chat(chatRequest))
 			{
 				if (!userMessageAdded)

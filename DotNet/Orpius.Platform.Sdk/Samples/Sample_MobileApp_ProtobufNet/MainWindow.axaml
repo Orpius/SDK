@@ -13,6 +13,9 @@
 		<TextBlock Text="Sample Operation Usage" />
 
 		<ItemsControl ItemsSource="{Binding Messages}" Grid.Row="1">
+				<ItemsControl.Resources>
+					<s:BoolToSuccessConverter x:Key="BoolToSuccessConverter" />
+				</ItemsControl.Resources>
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Orientation="Vertical" />
@@ -50,19 +53,32 @@
 					        HorizontalAlignment="Left"
 					        MaxWidth="400"
 					        Margin="8">
-						<TextBlock Text="{Binding Text}" 
-						           FontSize="11" 
-						           Foreground="Black" 
-						           TextWrapping="Wrap" />
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="{Binding Text}" 
+							           FontSize="11" 
+							           Foreground="Black" 
+							           TextWrapping="Wrap" Padding="4" />
+							<TextBlock Text="{Binding ApiCallInfo.PluginName, FallbackValue=''}"
+							           FontSize="11" Padding="4"
+							           Foreground="Black"
+							           TextWrapping="Wrap" />
+							<TextBlock Text="{Binding ApiCallInfo.Success, Converter={StaticResource BoolToSuccessConverter}, FallbackValue=''}"
+							           FontSize="11" Padding="4"
+							           Foreground="Black"
+							           TextWrapping="Wrap" />
+						</StackPanel>
 					</Border>
 				</DataTemplate>
 			</ItemsControl.DataTemplates>
 		</ItemsControl>
 
 		<Grid ColumnDefinitions="*,Auto" Grid.Row="2" Margin="12">
-			<TextBox Text="{Binding PromptText}" 
-			         Height="60"
-			         KeyDown="PromptBox_OnKeyDown"/>
+			<s:PromptBox Text="{Binding PromptText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			           Height="80"
+			           TextWrapping="Wrap"
+			           AcceptsReturn="True"
+			           Theme="{StaticResource {x:Type TextBox}}"
+			           EnterPressed="PromptBox_OnEnterPressed" />
 
 			<Button Content="Send" Command="{Binding SendMessageCommand}" 
 			        Grid.Column="1" 
