@@ -53,8 +53,12 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 						}
 					}
 				}
-			
-				if (!hasErrors)
+
+				if (hasErrors)
+				{
+					logger.LogWarning("Some toolsets could not be registered with Orpius server.");
+				}
+				else
 				{
 					logger.LogInformation("Successfully registered tools with Orpius server.");
 				}
@@ -76,7 +80,33 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 
 			try
 			{
-				await toolRegistry.DeregisterWithServerAsync(cancellationToken).ConfigureAwait(false);
+				var results = await toolRegistry.DeregisterWithServerAsync(cancellationToken).ConfigureAwait(false);
+
+				bool hasErrors = false;
+				
+				if (results != null)
+				{
+					foreach (var result in results)
+					{
+						if (result.Error != null)
+						{
+							hasErrors = true;
+
+							logger.LogWarning(result.Error, 
+								"Unable to deregister toolset with Orpius server. ExternalId: {ExternalId}", 
+								result.ExternalId);
+						}
+					}
+				}
+
+				if (hasErrors)
+				{
+					logger.LogWarning("Some toolsets could not be deregistered from Orpius server.");
+				}
+				else
+				{
+					logger.LogInformation("Successfully deregistered tools with Orpius server.");
+				}
 
 				connected = false;
 			}
