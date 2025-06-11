@@ -684,6 +684,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 			if (m.Namespace.Length > 0)
 			{
 				sb.Append("""
+				
 				}
 				""");
 			}

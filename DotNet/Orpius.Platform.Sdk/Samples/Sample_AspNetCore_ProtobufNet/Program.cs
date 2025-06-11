@@ -13,6 +13,10 @@ using Sample_AspNetCore_ProtobufNet.Services;
 using Sample_AspNetCore_ProtobufNet.ToolRegistration;
 using Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius;
 
+/* This attribute causes all classes decorated with [Tool] to be included
+   in the tooling provided to your AI Agent. 
+   Use the `GenerateToolRegistryItemAttribute.ScanAssembliesContaining` property 
+   to selectively bring in tools from other projects. */
 [assembly: GenerateToolRegistryItem("Sample_AspNetCore_ProtobufNet.ToolRegistration.SampleTools")]
 
 namespace Sample_AspNetCore_ProtobufNet
