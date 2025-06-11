@@ -40,7 +40,7 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			/* ApplicationUrlResolver resolves the URI of *this* server,
 			   allowing Orpius to know where to call back to for tool use. 
-			   Please adapt it for your needs. */
+			   Please adapt it to your needs. */
 			services.AddSingleton<ApplicationUrlResolver>();
 
 			/* We provide one or more IToolRegistrationParameters instances,
@@ -93,16 +93,8 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			/* We must resolve the generated IToolsRegistryItem
 			   so that it adds itself to the IToolRegistry. */
-			var sampleTools = app.Services.GetRequiredService<SampleTools>();
-
-			if (!app.Environment.IsDevelopment())
-			{
-				app.UseExceptionHandler("/Error");
-			}
-
-			app.UseHttpsRedirection();
-			app.UseAntiforgery();
-
+			_ = app.Services.GetRequiredService<SampleTools>();
+			
 			/* This allows Orpius to call your server to use tools.
 			   You may want to add authentication to this service.
 			   You can use the `IToolRegistrationParameters.Headers` property, 
@@ -113,6 +105,14 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			/* For the sample 'mobile' app. */
 			app.MapGrpcService<IMyMobileAppService>();
+
+			if (!app.Environment.IsDevelopment())
+			{
+				app.UseExceptionHandler("/Error");
+			}
+
+			app.UseHttpsRedirection();
+			app.UseAntiforgery();
 
 			app.MapStaticAssets();
 			app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
