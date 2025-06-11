@@ -1,11 +1,9 @@
 using Orpius.Platform.OperationsModel;
 using Orpius.Platform.OperationsModel.ServiceCollectionExtensions;
-using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling;
 using Orpius.Platform.Tooling.ToolRegistration;
 
-using ProtoBuf.Grpc.ClientFactory;
 using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Server;
 
@@ -31,25 +29,35 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			services.AddGrpc();
 			services.AddCodeFirstGrpc();
+			services.AddSingleton(BinderConfiguration.Create(
+				binder: new BinderFromServices(builder.Services)));
 
+			/* ------ Tooling (enabling your AI Agent to call your server to carry out task) ------ */
+
+			/* ApplicationUrlResolver resolves the URI of *this* server,
+			   allowing Orpius to know where to call back to for tool use. 
+			   Please adapt it for your needs. */
 			services.AddSingleton<ApplicationUrlResolver>();
 
-			/* NOTE: You can add multiple IToolRegistrationParameters instances.
+			/* We provide one or more IToolRegistrationParameters instances,
+			   which are used to register tools with the Orpius server.
+			   NOTE: You can add multiple IToolRegistrationParameters instances.
 			         All are registered. */
 			services.AddSingleton<IToolRegistrationParameters>(
 				sp =>
 				{
-					Uri? uri = null;
-
 					return new FuncRegistrationParameters(
-						getLocalUrl:() => uri ??= new Uri(sp.GetRequiredService<ApplicationUrlResolver>().GetApplicationUrl()),
+						getLocalUrl:() => GetApplicationUri(sp),
 						getExternalId:() => ApplicationState.ToolsRegistrationSettings.ExternalId,
 						getApiKey:() => ApplicationState.ToolsRegistrationSettings.ApiKey
 					);
 				});
 
-			services.AddOrpiusToolRegistration().WithAutomaticProviderRegistration();
+			services.AddOrpiusToolRegistration(GetOrpiusServerUri, 
+						dangerousAcceptAnyCertificate: true)
+					.WithAutomaticProviderRegistration();
 
+			/* ------ Operations (chatting with your AI Agent) ------ */
 
 			FuncOperationsParameters funcOperationsParameters = new(
 				() => ApplicationState.OperationsSettings.ExternalId,
@@ -58,16 +66,7 @@ namespace Sample_AspNetCore_ProtobufNet
 			/* NOTE: You can add multiple IOperationsServiceParameters instances. */
 			services.AddSingleton<IOperationsServiceParameters>(funcOperationsParameters);
 
-			Uri GetOrpiusServerUri() => new(ApplicationState.OrpiusServerUrl);
-
-			/* Tools - They allow your AI Agent to call your server to carry out tasks. */
-			services.AddToolsRegistrationGrpcClient(GetOrpiusServerUri,
-				dangerousAcceptAnyCertificate: true);
-
-			/* Operations - They allow your application to communicate with an AI Agent. */
-			services.AddOrpiusOperations();
-
-			services.AddOperationsGrpcClient(GetOrpiusServerUri,
+			services.AddOrpiusOperations(GetOrpiusServerUri,
 				dangerousAcceptAnyCertificate: true);
 
 			/* The generated class in your project pulls in the `IToolRegistry`
@@ -77,7 +76,6 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			/* Add your tool implementations.
 			   This allows them to be resolved when requested by an AI agent.
-			   
 			   NOTE: For tools to be available during a chat session, 
 			         they must be specified in the ChatRequest. 
 			         See `MyMobileAppService` for an example. */
@@ -86,9 +84,6 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			/* For the sample 'mobile' app. */
 			services.AddAssociatedSingletons<IMyMobileAppService, MyMobileAppService>();
-
-			services.AddSingleton(BinderConfiguration.Create(
-				binder: new BinderFromServices(builder.Services)));
 
 			WebApplication app = builder.Build();
 
@@ -106,9 +101,10 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			/* This allows Orpius to call your server to use tools.
 			   You may want to add authentication to this service.
-			   You can use the `RegisterAsProviderRequest.Headers` property 
-			   to provide headers that are stored securely on the Orpius server, 
-			   and provided back to your server during an `IToolProviderService.UseTool` call. */
+			   You can use the `IToolRegistrationParameters.Headers` property, 
+			   or the `RegisterAsProviderRequest.Headers` property directly,
+			   to provide headers that are stored securely on the Orpius server. 
+			   These are provided back to your server during an `IToolProviderService.UseTool` call. */
 			app.MapGrpcService<IToolProviderService>();
 
 			/* For the sample 'mobile' app. */
@@ -118,6 +114,28 @@ namespace Sample_AspNetCore_ProtobufNet
 			app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 			app.Run();
+		}
+
+		/// <summary>
+		/// ApplicationState is a demonstration-only static class
+		/// that is populated using the Components/Pages/Home.razor page.
+		/// </summary>
+		/// <returns></returns>
+		static Uri GetOrpiusServerUri() => new(ApplicationState.OrpiusServerUrl);
+
+		static Uri? applicationUri;
+
+		static Uri GetApplicationUri(IServiceProvider serviceProvider)
+		{
+			if (applicationUri == null)
+			{
+				/* NOTE: We must wait until the web server is initialized
+				         before retrieving the application URL.*/
+				var resolver = serviceProvider.GetRequiredService<ApplicationUrlResolver>();
+				applicationUri = new Uri(resolver.GetApplicationUrl());
+			}
+
+			return applicationUri;
 		}
 	}
 }

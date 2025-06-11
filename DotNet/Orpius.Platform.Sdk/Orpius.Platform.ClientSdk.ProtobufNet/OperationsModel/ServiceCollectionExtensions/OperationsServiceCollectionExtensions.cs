@@ -11,14 +11,17 @@ namespace Orpius.Platform.OperationsModel.ServiceCollectionExtensions
 {
 	public static class OperationsServiceCollectionExtensions
 	{
-		public static IServiceCollection AddOrpiusOperations(this IServiceCollection services)
+		public static IServiceCollection AddOrpiusOperations(
+			this IServiceCollection services,
+			Func<Uri> getOrpiusServerAddress, bool dangerousAcceptAnyCertificate)
 		{
+			services.AddOperationsGrpcClient(getOrpiusServerAddress, dangerousAcceptAnyCertificate);
 			services.AddSingleton<OperationsInterceptor>();
 
 			return services;
 		}
 
-		public static IServiceCollection AddOperationsGrpcClient(
+		static IServiceCollection AddOperationsGrpcClient(
 			this IServiceCollection services,
 			Func<Uri> getOrpiusServerAddress, bool dangerousAcceptAnyCertificate)
 		{

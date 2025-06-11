@@ -13,8 +13,12 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 	public static class ServiceCollectionExtensions
 	{
 		public static IServiceCollection AddOrpiusToolRegistration(
-			this IServiceCollection services)
+			this IServiceCollection services,
+			Func<Uri> getOrpiusServerAddress,
+			bool dangerousAcceptAnyCertificate)
 		{
+			services.AddToolsRegistrationGrpcClient(getOrpiusServerAddress, dangerousAcceptAnyCertificate);
+
 			/* We send the API Key and External ID to Orpius in the headers of the request.
 			   This class relies on IToolRegistrationParameters.*/
 			//services.AddSingleton<ToolsRegistrationHeaderHandler>();
@@ -46,7 +50,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			return services;
 		}
 
-		public static IServiceCollection AddToolsRegistrationGrpcClient(
+		static IServiceCollection AddToolsRegistrationGrpcClient(
 			this IServiceCollection services,
 			Func<Uri> getOrpiusServerAddress,
 			bool dangerousAcceptAnyCertificate)
