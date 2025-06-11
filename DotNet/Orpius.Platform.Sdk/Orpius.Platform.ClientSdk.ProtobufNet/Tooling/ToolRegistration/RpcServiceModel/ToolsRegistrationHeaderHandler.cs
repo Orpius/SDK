@@ -24,10 +24,14 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		{
 			Guid apiKey = await parameters.GetApiKeyAsync();
 
-			request.Headers.Add(ToolsRegistrationHeaders.ExternalId, parameters.ExternalId.ToString());
-			request.Headers.Authorization 
-				= new AuthenticationHeaderValue(ToolsRegistrationHeaders.ApiKey, apiKey.ToString());
+			request.Headers.Add(
+				ToolsRegistrationHeaders.ExternalId,
+				parameters.ExternalId.ToString());
 
+			request.Headers.Authorization 
+				= new AuthenticationHeaderValue(
+					ToolsRegistrationHeaders.ApiKey, 
+					apiKey.ToString());
 			try
 			{
 				return await base.SendAsync(request, cancellationToken);
