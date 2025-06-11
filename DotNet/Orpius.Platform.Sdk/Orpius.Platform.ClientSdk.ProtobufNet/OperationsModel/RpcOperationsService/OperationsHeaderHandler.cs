@@ -24,7 +24,7 @@
 //			HttpRequestMessage request,
 //			CancellationToken cancellationToken)
 //		{
-//			Guid apiKey = await parameters.GetApiKeyAsync();
+//			Guid apiKey = await parameters.GetApiKeyAsync().ConfigureAwait(false);
 
 //			request.Headers.Add(
 //				OperationHeaders.ExternalId,
@@ -36,7 +36,7 @@
 
 //			try
 //			{
-//				return await base.SendAsync(request, cancellationToken);
+//				return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 //			}
 //			finally
 //			{

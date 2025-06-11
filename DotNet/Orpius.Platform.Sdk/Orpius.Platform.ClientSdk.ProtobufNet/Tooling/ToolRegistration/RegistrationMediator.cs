@@ -33,14 +33,14 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			RegisterAsProviderRequest request,
 			CancellationToken token = default)
 		{
-			return await registrationService.RegisterAsProvider(request);
+			return await registrationService.RegisterAsProvider(request).ConfigureAwait(false);
 		}
 
 		public async Task<DeregisterAsProviderResponse> DeregisterAsProviderAsync(
 			DeregisterAsProviderRequest request,
 			CancellationToken token = default)
 		{
-			return await registrationService.DeregisterAsProvider(request);
+			return await registrationService.DeregisterAsProvider(request).ConfigureAwait(false);
 		}
 	}
 }

@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using Orpius.Platform.Collections;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {
@@ -33,9 +37,27 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		{
 			try
 			{
-				await toolRegistry.RegisterWithServerAsync();
+				IEnumerable<RegistrationResult>? results = await toolRegistry.RegisterWithServerAsync().ConfigureAwait(false);
+				bool hasErrors = false;
 
-				logger.LogInformation("Successfully registered tools with Orpius server.");
+				if (results != null)
+				{
+					foreach (RegistrationResult registrationResult in results)
+					{
+						if (registrationResult.Error != null)
+						{
+							logger.LogWarning(registrationResult.Error, 
+								"Unable to register toolset with Orpius server. ExternalId: {ExternalId}", 
+								registrationResult.ExternalId);
+							hasErrors = true;
+						}
+					}
+				}
+			
+				if (!hasErrors)
+				{
+					logger.LogInformation("Successfully registered tools with Orpius server.");
+				}
 
 				connected = true;
 			}
@@ -54,7 +76,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 
 			try
 			{
-				await toolRegistry.DeregisterWithServerAsync(cancellationToken);
+				await toolRegistry.DeregisterWithServerAsync(cancellationToken).ConfigureAwait(false);
 
 				connected = false;
 			}

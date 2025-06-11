@@ -111,7 +111,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 						ProgrammingLanguageId.CSharp);
 				try
 				{
-					var response = await mediator.RegisterAsProviderAsync(request, token);
+					var response = await mediator.RegisterAsProviderAsync(request, token).ConfigureAwait(false);
 					results.Add(new RegistrationResult { ExternalId = externalId, Response = response });
 				}
 				catch (Exception ex)
@@ -137,7 +137,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 
 				try
 				{
-					var response = await mediator.DeregisterAsProviderAsync(request, token);
+					var response = await mediator.DeregisterAsProviderAsync(request, token).ConfigureAwait(false);
 					results.Add(new DeregistrationResult { ExternalId = externalId, Response = response });
 				}
 				catch (Exception ex)
@@ -176,7 +176,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 					   request,
 					   combinedContext, 
 					   JsonSerializer, 
-					   ToolResolver);
+					   ToolResolver).ConfigureAwait(false);
 		}
 	}
 }
