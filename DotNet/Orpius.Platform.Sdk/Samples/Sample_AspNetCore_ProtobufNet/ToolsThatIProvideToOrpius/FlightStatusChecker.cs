@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+using Grpc.Core;
 
 using Orpius.Platform.Tooling;
 
