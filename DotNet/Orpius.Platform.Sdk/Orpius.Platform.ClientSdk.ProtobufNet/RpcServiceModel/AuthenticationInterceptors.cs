@@ -7,7 +7,7 @@ namespace Orpius.Platform.RpcServiceModel
 {
 	public abstract class InterceptorForHeadersBase : Interceptor
 	{
-		protected abstract CallOptions AddHeaders(CallOptions options);
+		protected abstract CallOptions AddHeaders(CallOptions options, object request);
 
 		public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(
 			TRequest request,
@@ -16,7 +16,7 @@ namespace Orpius.Platform.RpcServiceModel
 		{
 			return continuation(request,
 				new ClientInterceptorContext<TRequest, TResponse>(
-					context.Method, context.Host, AddHeaders(context.Options)));
+					context.Method, context.Host, AddHeaders(context.Options, request)));
 		}
 
 		public override AsyncServerStreamingCall<TResponse>
@@ -28,7 +28,7 @@ namespace Orpius.Platform.RpcServiceModel
 			return continuation(
 				request,
 				new ClientInterceptorContext<TRequest, TResponse>(
-					context.Method, context.Host, AddHeaders(context.Options)));
+					context.Method, context.Host, AddHeaders(context.Options, request)));
 		}
 	}
 

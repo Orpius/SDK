@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 

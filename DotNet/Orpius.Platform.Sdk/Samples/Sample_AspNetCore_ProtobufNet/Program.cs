@@ -31,15 +31,32 @@ namespace Sample_AspNetCore_ProtobufNet
 			services.AddGrpc();
 			services.AddCodeFirstGrpc();
 
+			services.AddSingleton<ApplicationUrlResolver>();
+
+			//FuncRegistrationParameters CreateToolParameters()
+			//{
+			//	Uri? uri = null;
+
+			//	FuncRegistrationParameters result = new(
+			//		() => uri ??= new Uri( new ApplicationUrlResolver().GetApplicationUrl(sp)),
+			//		() => ApplicationState.ToolsRegistrationSettings.ExternalId,
+			//		() => ApplicationState.ToolsRegistrationSettings.AccessKey
+			//	);
+
+			//	return result;
+			//}
+
+
+
 			services.AddSingleton<IToolRegistrationParameters>(
 				sp =>
 				{
 					Uri? uri = null;
 
 					return new FuncRegistrationParameters(
-						() => uri ??= new Uri(new ApplicationUrlResolver().GetApplicationUrl(sp)),
+						() => uri ??= new Uri(sp.GetRequiredService<ApplicationUrlResolver>().GetApplicationUrl()),
 						() => ApplicationState.ToolsRegistrationSettings.ExternalId,
-						() => Task.FromResult(ApplicationState.ToolsRegistrationSettings.AccessKey)
+						() => ApplicationState.ToolsRegistrationSettings.AccessKey
 					);
 				});
 
@@ -47,7 +64,7 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			FuncOperationsParameters funcOperationsParameters = new(
 				() => ApplicationState.OperationsSettings.ExternalId,
-				() => Task.FromResult(ApplicationState.OperationsSettings.AccessKey));
+				() => ApplicationState.OperationsSettings.AccessKey);
 
 			services.AddSingleton<IOperationsServiceParameters>(funcOperationsParameters);
 

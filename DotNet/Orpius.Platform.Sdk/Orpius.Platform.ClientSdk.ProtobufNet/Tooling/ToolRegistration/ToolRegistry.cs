@@ -16,11 +16,25 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 	{
 		void AddItem(IToolRegistryItem item);
 
-		Task<RegisterAsProviderResponse> RegisterWithServerAsync(
+		Task<IEnumerable<RegistrationResult>> RegisterWithServerAsync(
 			CancellationToken token = default);
 
-		Task<DeregisterAsProviderResponse> DeregisterWithServerAsync(
+		Task<IEnumerable<DeregistrationResult>> DeregisterWithServerAsync(
 			CancellationToken token = default);
+	}
+
+	public class RegistrationResult
+	{
+		public Guid                      ExternalId { get; set; }
+		public RegisterAsProviderResponse? Response   { get; set; }
+		public Exception?                  Error      { get; set; }
+	}
+
+	public class DeregistrationResult
+	{
+		public Guid                        ExternalId { get; set; }
+		public DeregisterAsProviderResponse? Response   { get; set; }
+		public Exception?                  Error      { get; set; }
 	}
 
 	public interface IToolCaller
@@ -31,7 +45,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 	public class ToolRegistry : IToolRegistry, IToolCaller
 	{
 		readonly IRegistrationMediator mediator;
-		readonly IToolRegistrationParameters registrationParameters;
+		readonly IEnumerable<IToolRegistrationParameters> registrationParameters;
 		public IJsonSerializer JsonSerializer { get; set; } = new JsonSerializer();
 
 		readonly ConcurrentDictionary<string, IToolRegistryItem> registryItems
@@ -41,7 +55,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 
 		public ToolRegistry(IToolResolver toolResolver,
 							IRegistrationMediator mediator,
-							IToolRegistrationParameters registrationParameters)
+							IEnumerable<IToolRegistrationParameters> registrationParameters)
 		{
 			ToolResolver  = toolResolver ?? throw new ArgumentNullException(nameof(toolResolver));
 			this.mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
@@ -59,7 +73,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			}
 		}
 
-		public async Task<RegisterAsProviderResponse> RegisterWithServerAsync(
+		public async Task<IEnumerable<RegistrationResult>> RegisterWithServerAsync(
 			CancellationToken token)
 		{
 			var contracts = new Dictionary<string, ContractMessage>();
@@ -82,26 +96,57 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 				}
 			}
 
-			RegisterAsProviderRequest request
-				= new RegisterAsProviderRequest(
-					providerUrl: registrationParameters.LocalUrl.ToString(),
-					tools.Values.ToList(),
-					contracts.Values.ToList(),
-					ProgrammingLanguageId.CSharp);
+			List<RegistrationResult> results = new List<RegistrationResult>();
+			
+			foreach (IToolRegistrationParameters parameters in registrationParameters)
+			{
+				var externalId = parameters.ToolsetExternalId;
 
-			//ToolsMetadata toolsMetadata = new ToolsMetadata(tools.Values, contracts.Values);
+				RegisterAsProviderRequest request
+					= new RegisterAsProviderRequest(
+						toolsetExternalId: externalId,
+						providerUrl: parameters.LocalUrl.ToString(),
+						tools.Values.ToList(),
+						contracts.Values.ToList(),
+						ProgrammingLanguageId.CSharp);
+				try
+				{
+					var response = await mediator.RegisterAsProviderAsync(request, token);
+					results.Add(new RegistrationResult { ExternalId = externalId, Response = response });
+				}
+				catch (Exception ex)
+				{
+					results.Add(new RegistrationResult { ExternalId = externalId, Error = ex });
+				}
+			}
 
-			return await mediator.RegisterAsProviderAsync(request, token);
+			return results;
 		}
 
-		public async Task<DeregisterAsProviderResponse> DeregisterWithServerAsync(
+		public async Task<IEnumerable<DeregistrationResult>> DeregisterWithServerAsync(
 			CancellationToken token)
 		{
-			DeregisterAsProviderRequest request
-				= new DeregisterAsProviderRequest(
-					providerUrl: registrationParameters.LocalUrl.ToString());
+			List<DeregistrationResult> results = new List<DeregistrationResult>();
 
-			return await mediator.DeregisterAsProviderAsync(request, token);
+			foreach (IToolRegistrationParameters parameters in registrationParameters)
+			{
+				var externalId = parameters.ToolsetExternalId;
+				DeregisterAsProviderRequest request
+					= new DeregisterAsProviderRequest(
+						providerUrl: parameters.LocalUrl.ToString());
+
+				try
+				{
+					var response = await mediator.DeregisterAsProviderAsync(request, token);
+					results.Add(new DeregistrationResult { ExternalId = externalId, Response = response });
+				}
+				catch (Exception ex)
+				{
+					results.Add(new DeregistrationResult { ExternalId = externalId, Error = ex });
+				}
+			}
+
+			return results;
 		}
 
 		public async Task<UseToolResponse> UseToolAsync(UseToolRequest request,

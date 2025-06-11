@@ -9,13 +9,19 @@ namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 {
 	class ApplicationUrlResolver
 	{
+		readonly IServiceProvider serviceProvider;
 		readonly bool orpiusHostedInDocker = true;
 
-		public string GetApplicationUrl(IServiceProvider services)
+		public ApplicationUrlResolver(IServiceProvider serviceProvider)
+		{
+			this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+		}
+
+		public string GetApplicationUrl()
 		{
 			// Retrieve the raw address that Kestrel/ASP.NET Core is bound to:
 			//    e.g. "https://[::]:7194" or "http://localhost:5000"
-			string serverAddress = GetServerAddress(services)
+			string serverAddress = GetServerAddress(serviceProvider)
 								   ?? throw new InvalidOperationException(
 									   "Unable to determine application URL: no addresses were reported.");
 

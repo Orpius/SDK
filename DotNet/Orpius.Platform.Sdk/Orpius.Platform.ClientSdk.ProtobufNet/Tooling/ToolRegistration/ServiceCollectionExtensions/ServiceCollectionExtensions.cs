@@ -3,11 +3,11 @@ using System.Net.Http;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Orpius.Platform.RpcServiceModel;
+using Orpius.Platform.OperationsModel.RpcOperationsService;
 using Orpius.Platform.RpcServices;
-using ProtoBuf.Grpc.ClientFactory;
+using Orpius.Platform.Tooling.ToolRegistration.RpcServiceModel;
 
-using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
+using ProtoBuf.Grpc.ClientFactory;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {
@@ -18,7 +18,8 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		{
 			/* We send the API Key and External ID to Orpius in the headers of the request.
 			   This class relies on IToolRegistrationParameters.*/
-			services.AddSingleton<ToolsRegistrationHeaderHandler>();
+			//services.AddSingleton<ToolsRegistrationHeaderHandler>();
+			services.AddSingleton<ToolRegistrationInterceptor>();
 
 			/* This allows tools to be resolved using the IServiceProvider. */
 			services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
@@ -31,7 +32,8 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			services.AddSingleton<IToolCaller>(sp => sp.GetRequiredService<ToolRegistry>());
 			services.AddAssociatedSingletons<IToolProviderService, ToolProviderService>();
 
-			/* The IRegistrationMediator abstracts the use of the actual IToolRegistrationService. */
+			/* The IRegistrationMediator abstracts the use
+			   of the actual IToolRegistrationService. */
 			services.AddSingleton<IRegistrationMediator, RegistrationMediator>();
 			
 			return services;
@@ -46,15 +48,16 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		}
 
 		public static IServiceCollection AddToolsRegistrationGrpcClient(
-			this IServiceCollection services, 
-			Func<Uri> getOrpiusServerAddress, bool dangerousAcceptAnyCertificate)
+			this IServiceCollection services,
+			Func<Uri> getOrpiusServerAddress,
+			bool dangerousAcceptAnyCertificate)
 		{
 			var builder = services.AddCodeFirstGrpcClient<IToolsRegistrationService>(
-									  options => 
+									  options =>
 									  {
 										  options.Address = getOrpiusServerAddress();
 									  })
-								  .AddHttpMessageHandler<ToolsRegistrationHeaderHandler>();
+								  .AddInterceptor<ToolRegistrationInterceptor>();
 
 			if (dangerousAcceptAnyCertificate)
 			{
@@ -77,7 +80,8 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 									  {
 										  options.Address = getOrpiusServerAddress();
 									  })
-								  .AddHttpMessageHandler<OperationsHeaderHandler>();
+								  .AddInterceptor<OperationsInterceptor>();
+								  //.AddHttpMessageHandler<OperationsHeaderHandler>();
 
 			if (dangerousAcceptAnyCertificate)
 			{

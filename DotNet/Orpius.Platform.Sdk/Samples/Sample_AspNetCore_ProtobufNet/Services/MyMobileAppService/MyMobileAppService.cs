@@ -15,15 +15,17 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 			this.operationsClient = operationsClient ?? throw new ArgumentNullException(nameof(operationsClient));
 		}
 
-		public async IAsyncEnumerable<ChatResponse> Chat(MobileAppChatRequest request, CallContext context = default)
+		public async IAsyncEnumerable<ChatResponse> Chat(MobileAppChatRequest request, 
+														 CallContext context = default)
 		{
-			ChatRequest chatRequest = new()
+			ChatRequest chatRequest = new(
+				operationExternalId: ApplicationState.OperationsSettings.ExternalId,
+				userMessage: request.UserMessage)
 			{
-				UserMessage = request.UserMessage,
 				Tools = new List<Tool>
 				{
-					new(name: nameof(FlightStatusChecker)) {ToolPresence = ToolPresence.Required},
-					new(name: "WeatherForecast") {ToolPresence = ToolPresence.Required}
+					new(name: nameof(FlightStatusChecker)) { ToolPresence = ToolPresence.Required },
+					new(name: "WeatherForecast") { ToolPresence           = ToolPresence.Required }
 				},
 				ConversationId = request.ConversationId
 			};

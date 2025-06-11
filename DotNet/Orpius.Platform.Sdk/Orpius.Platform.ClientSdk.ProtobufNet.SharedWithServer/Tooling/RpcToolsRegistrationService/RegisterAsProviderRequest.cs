@@ -3,24 +3,36 @@ using System;
 using System.Collections.Generic;
 
 using Orpius.Platform.OperationsModel.RpcOperationsService;
+using Orpius.Platform.RpcServiceModel;
 
 using ProtoBuf;
 
 namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 {
-	partial class RegisterAsProviderRequest
+	public interface IToolsetExternalIdProvider
+	{
+		/// <summary>
+		/// The external ID of the toolset.
+		/// </summary>
+		Guid ToolsetExternalId { get; }
+	}
+
+	partial class RegisterAsProviderRequest : IToolsetExternalIdProvider
 	{
 #if !NET7_0_OR_GREATER
-		public RegisterAsProviderRequest(string providerUrl, 
+		public RegisterAsProviderRequest(Guid toolsetExternalId,
+										 string providerUrl, 
 										 IList<ToolMessage> tools,
 										 IList<ContractMessage> contracts,
 										 ProgrammingLanguageId programmingLanguageId)
 		{
+			ToolsetExternalId = AssertArg.IsNotEmpty(toolsetExternalId, nameof(toolsetExternalId));
+
 			if (!Uri.TryCreate(providerUrl, UriKind.Absolute, out _))
 			{
 				throw new ArgumentException("Invalid URL." + providerUrl, nameof(providerUrl));
 			}
-
+			
 			ProviderUrl           = providerUrl;
 			ProgrammingLanguageId = programmingLanguageId;
 
@@ -31,29 +43,35 @@ namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 			Contracts = contracts;
 		}
 #endif
-
 		[ProtoMember(1, IsRequired = true)]
+#if NET7_0_OR_GREATER
+		public required Guid ToolsetExternalId { get; set; }
+#else
+		public Guid ToolsetExternalId { get; set; }
+#endif
+
+		[ProtoMember(2, IsRequired = true)]
 #if NET7_0_OR_GREATER
 		public required string ProviderUrl { get; set; }
 #else
 		public string ProviderUrl { get; set; }
 #endif
 
-		[ProtoMember(2, IsRequired = true)]
+		[ProtoMember(3, IsRequired = true)]
 #if NET7_0_OR_GREATER
 		public required IList<ToolMessage> Tools { get; set; } = new List<ToolMessage>();
 #else
 		public IList<ToolMessage> Tools { get; set; } = new List<ToolMessage>();
 #endif
 
-		[ProtoMember(3, IsRequired = true)]
+		[ProtoMember(4, IsRequired = true)]
 #if NET7_0_OR_GREATER
 		public required IList<ContractMessage> Contracts { get; set; } = new List<ContractMessage>();
 #else
 		public IList<ContractMessage> Contracts { get; set; } = new List<ContractMessage>();
 #endif
 
-		[ProtoMember(4, IsRequired = true)]
+		[ProtoMember(5, IsRequired = true)]
 #if NET7_0_OR_GREATER
 		public required ProgrammingLanguageId ProgrammingLanguageId { get; set; }
 #else
@@ -65,7 +83,7 @@ namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 		/// the use of a tool. They are stored as encrypted items
 		/// and may contain authentication information.
 		/// </summary>
-		[ProtoMember(5, IsRequired = false)]
+		[ProtoMember(6, IsRequired = false)]
 #if NET7_0_OR_GREATER
 		public IList<HeaderMessage> Headers { get; set; } = new List<HeaderMessage>();
 #else

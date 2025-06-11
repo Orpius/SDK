@@ -8,38 +8,39 @@ using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
 {
-	public class ToolsRegistrationHeaderHandler : DelegatingHandler
-	{
-		readonly IToolRegistrationParameters parameters;
+	//public class ToolsRegistrationHeaderHandler : DelegatingHandler
+	//{
+	//	readonly IToolRegistrationParameters parameters;
 
-		public ToolsRegistrationHeaderHandler(IToolRegistrationParameters parameters)
-		{
-			this.parameters = parameters
-							  ?? throw new ArgumentNullException(nameof(parameters));
-		}
+	//	public ToolsRegistrationHeaderHandler(IToolRegistrationParameters parameters)
+	//	{
+	//		this.parameters = parameters
+	//						  ?? throw new ArgumentNullException(nameof(parameters));
+	//	}
 
-		protected override async Task<HttpResponseMessage> SendAsync(
-			HttpRequestMessage request,
-			CancellationToken cancellationToken)
-		{
-			Guid apiKey = await parameters.GetApiKeyAsync();
+	//	protected override async Task<HttpResponseMessage> SendAsync(
+	//		HttpRequestMessage request,
+	//		CancellationToken cancellationToken)
+	//	{
+	//		Guid apiKey = parameters.ApiKey;
 
-			request.Headers.Add(
-				ToolsRegistrationHeaders.ExternalId,
-				parameters.ExternalId.ToString());
+	//		request.Headers.Add(
+	//			ToolsRegistrationHeaders.ExternalId,
+	//			parameters.ExternalId.ToString());
 
-			request.Headers.Authorization 
-				= new AuthenticationHeaderValue(
-					ToolsRegistrationHeaders.ApiKey, 
-					apiKey.ToString());
-			try
-			{
-				return await base.SendAsync(request, cancellationToken);
-			}
-			finally
-			{
-				request.Headers.Clear();
-			}
-		}
-	}
+	//		request.Headers.Authorization 
+	//			= new AuthenticationHeaderValue(
+	//				ToolsRegistrationHeaders.ApiKey, 
+	//				apiKey.ToString());
+	//		try
+	//		{
+	//			return await base.SendAsync(request, cancellationToken);
+	//		}
+	//		finally
+	//		{
+	//			request.Headers.Clear();
+	//		}
+	//	}
+	//}
+
 }
