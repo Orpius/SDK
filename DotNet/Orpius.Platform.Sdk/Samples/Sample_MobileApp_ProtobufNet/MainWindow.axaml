@@ -12,65 +12,67 @@
 
 		<TextBlock Text="Sample Operation Usage" />
 
-		<ItemsControl ItemsSource="{Binding Messages}" Grid.Row="1">
-				<ItemsControl.Resources>
-					<s:BoolToSuccessConverter x:Key="BoolToSuccessConverter" />
-				</ItemsControl.Resources>
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Vertical" />
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.DataTemplates>
-				<DataTemplate DataType="inferencing:UserMessage">
-					<Border Padding="12"
-					        CornerRadius="8"
-					        Background="#FF0A84FF"
-					        HorizontalAlignment="Right"
-					        MaxWidth="400"
-					        Margin="8">
-						<TextBlock Text="{Binding Text}" 
-						           Foreground="White" 
-						           TextWrapping="Wrap" />
-					</Border>
-				</DataTemplate>
-				<DataTemplate DataType="inferencing:AssistantMessage">
-					<Border Padding="12"
-					        CornerRadius="8"
-					        Background="#FF2F2F2F"
-					        HorizontalAlignment="Left"
-					        MaxWidth="400"
-					        Margin="8">
-						<TextBlock Text="{Binding Text}" 
-						           Foreground="White" 
-						           TextWrapping="Wrap" />
-					</Border>
-				</DataTemplate>
-				<DataTemplate DataType="inferencing:SystemMessage">
-					<Border Padding="12"
-					        CornerRadius="8"
-					        Background="DarkGray"
-					        HorizontalAlignment="Left"
-					        MaxWidth="400"
-					        Margin="8">
-						<StackPanel Orientation="Horizontal">
+		<ScrollViewer Grid.Row="1">
+			<ItemsControl ItemsSource="{Binding Messages}">
+					<ItemsControl.Resources>
+						<s:BoolToSuccessConverter x:Key="BoolToSuccessConverter" />
+					</ItemsControl.Resources>
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Vertical" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.DataTemplates>
+					<DataTemplate DataType="inferencing:UserMessage">
+						<Border Padding="12"
+						        CornerRadius="8"
+						        Background="#FF0A84FF"
+						        HorizontalAlignment="Right"
+						        MaxWidth="400"
+						        Margin="8">
 							<TextBlock Text="{Binding Text}" 
-							           FontSize="11" 
-							           Foreground="Black" 
-							           TextWrapping="Wrap" Padding="4" />
-							<TextBlock Text="{Binding ApiCallInfo.PluginName, FallbackValue=''}"
-							           FontSize="11" Padding="4"
-							           Foreground="Black"
+							           Foreground="White" 
 							           TextWrapping="Wrap" />
-							<TextBlock Text="{Binding ApiCallInfo.Success, Converter={StaticResource BoolToSuccessConverter}, FallbackValue=''}"
-							           FontSize="11" Padding="4"
-							           Foreground="Black"
+						</Border>
+					</DataTemplate>
+					<DataTemplate DataType="inferencing:AssistantMessage">
+						<Border Padding="12"
+						        CornerRadius="8"
+						        Background="#FF2F2F2F"
+						        HorizontalAlignment="Left"
+						        MaxWidth="400"
+						        Margin="8">
+							<TextBlock Text="{Binding Text}" 
+							           Foreground="White" 
 							           TextWrapping="Wrap" />
-						</StackPanel>
-					</Border>
-				</DataTemplate>
-			</ItemsControl.DataTemplates>
-		</ItemsControl>
+						</Border>
+					</DataTemplate>
+					<DataTemplate DataType="inferencing:SystemMessage">
+						<Border Padding="12"
+						        CornerRadius="8"
+						        Background="DarkGray"
+						        HorizontalAlignment="Left"
+						        MaxWidth="400"
+						        Margin="8">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Text}" 
+								           FontSize="11" 
+								           Foreground="Black" 
+								           TextWrapping="Wrap" Padding="4" />
+								<TextBlock Text="{Binding ApiCallInfo.PluginName, FallbackValue=''}"
+								           FontSize="11" Padding="4"
+								           Foreground="Black"
+								           TextWrapping="Wrap" />
+								<TextBlock Text="{Binding ApiCallInfo.Success, Converter={StaticResource BoolToSuccessConverter}, FallbackValue=''}"
+								           FontSize="11" Padding="4"
+								           Foreground="Black"
+								           TextWrapping="Wrap" />
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.DataTemplates>
+			</ItemsControl>
+		</ScrollViewer>
 
 		<Grid ColumnDefinitions="*,Auto" Grid.Row="2" Margin="12">
 			<s:PromptBox Text="{Binding PromptText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

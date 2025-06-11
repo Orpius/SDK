@@ -1,4 +1,5 @@
 using Orpius.Platform.OperationsModel;
+using Orpius.Platform.OperationsModel.ServiceCollectionExtensions;
 using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling;
@@ -60,7 +61,7 @@ namespace Sample_AspNetCore_ProtobufNet
 					);
 				});
 
-			services.AddToolRegistration().WithAutomaticProviderRegistration();
+			services.AddOrpiusToolRegistration().WithAutomaticProviderRegistration();
 
 			FuncOperationsParameters funcOperationsParameters = new(
 				() => ApplicationState.OperationsSettings.ExternalId,
@@ -75,6 +76,8 @@ namespace Sample_AspNetCore_ProtobufNet
 				dangerousAcceptAnyCertificate: true);
 
 			/* Operations - They allow your application to communicate with an AI Agent. */
+			services.AddOrpiusOperations();
+
 			services.AddOperationsGrpcClient(GetOrpiusServerUri,
 				dangerousAcceptAnyCertificate: true);
 

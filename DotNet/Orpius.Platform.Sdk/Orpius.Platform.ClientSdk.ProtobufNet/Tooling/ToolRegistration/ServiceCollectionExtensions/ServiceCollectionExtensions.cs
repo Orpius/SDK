@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Orpius.Platform.OperationsModel.RpcOperationsService;
+using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling.ToolRegistration.RpcServiceModel;
 
@@ -13,7 +12,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddToolRegistration(
+		public static IServiceCollection AddOrpiusToolRegistration(
 			this IServiceCollection services)
 		{
 			/* We send the API Key and External ID to Orpius in the headers of the request.
@@ -38,7 +37,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			
 			return services;
 		}
-
+		
 		public static IServiceCollection WithAutomaticProviderRegistration(
 			this IServiceCollection services)
 		{
@@ -61,49 +60,11 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 
 			if (dangerousAcceptAnyCertificate)
 			{
-				builder.ConfigurePrimaryHttpMessageHandler(CreateHandler);
+				builder.ConfigurePrimaryHttpMessageHandler(
+					DevelopmentHandlerFactory.CreateHandler);
 			}
 
 			return services;
-		}
-
-		public static IServiceCollection AddOperationsGrpcClient(
-			this IServiceCollection services,
-			Func<Uri> getOrpiusServerAddress, bool dangerousAcceptAnyCertificate)
-		{
-			//var builder = services.AddCodeFirstGrpcClient<IOperationsService>(
-			//						  options => { options.Address = getOrpiusServerAddress(); })
-			//					  .AddInterceptor(() => new OperationInterceptor())
-			//					  .ConfigurePrimaryHttpMessageHandler(CreateHandler);
-			var builder = services.AddCodeFirstGrpcClient<IOperationsService>(
-									  options =>
-									  {
-										  options.Address = getOrpiusServerAddress();
-									  })
-								  .AddInterceptor<OperationsInterceptor>();
-								  //.AddHttpMessageHandler<OperationsHeaderHandler>();
-
-			if (dangerousAcceptAnyCertificate)
-			{
-				builder.ConfigurePrimaryHttpMessageHandler(CreateHandler);
-			}
-
-			return services;
-		}
-
-		static HttpMessageHandler CreateHandler() => new HttpClientHandler
-		{
-			/* For use with self-signed certificate. Not for production. */
-			ServerCertificateCustomValidationCallback
-				= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-		};
-
-		internal static void AddAssociatedSingletons<TInterface, TImplementation>(this IServiceCollection services)
-			where TInterface : class
-			where TImplementation : class, TInterface
-		{
-			services.AddSingleton<TImplementation>();
-			services.AddSingleton<TInterface>(sp => sp.GetRequiredService<TImplementation>());
 		}
 	}
 }
