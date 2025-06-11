@@ -7,15 +7,14 @@ using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling.RpcToolProviderService;
 
 using ProtoBuf.Grpc.Client;
-using ProtoBuf.Serializers;
 
 namespace Sample_AspNetCore_ProtobufNet.Tests
 {
-	public class ExcerciseToolTest : IClassFixture<WebApplicationFactory<Sample_AspNetCore_ProtobufNet.Program>>
+	public class ExerciseToolTest : IClassFixture<WebApplicationFactory<Sample_AspNetCore_ProtobufNet.Program>>
 	{
 		readonly WebApplicationFactory<Sample_AspNetCore_ProtobufNet.Program> applicationFactory;
 
-		public ExcerciseToolTest(WebApplicationFactory<Sample_AspNetCore_ProtobufNet.Program> applicationFactory)
+		public ExerciseToolTest(WebApplicationFactory<Sample_AspNetCore_ProtobufNet.Program> applicationFactory)
 		{
 			this.applicationFactory = applicationFactory;
 		}

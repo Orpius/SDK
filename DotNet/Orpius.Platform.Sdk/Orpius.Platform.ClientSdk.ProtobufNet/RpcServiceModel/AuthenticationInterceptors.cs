@@ -31,17 +31,4 @@ namespace Orpius.Platform.RpcServiceModel
 					context.Method, context.Host, AddHeaders(context.Options, request)));
 		}
 	}
-
-	//public sealed class OperationInterceptor : InterceptorForHeadersBase
-	//{
-	//	protected override CallOptions AddHeaders(CallOptions options)
-	//	{
-	//		Metadata meta = options.Headers ?? new Metadata();
-	//		meta.Add(OperationHeaders.ExternalId,
-	//			ApplicationState.OperationsSettings.ExternalId.ToString());
-	//		meta.Add(OperationHeaders.AccessKey,
-	//			ApplicationState.OperationsSettings.AccessKey.ToString());
-	//		return options.WithHeaders(meta);
-	//	}
-	//}
 }

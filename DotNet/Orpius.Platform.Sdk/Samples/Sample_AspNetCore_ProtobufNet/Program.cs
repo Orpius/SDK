@@ -34,39 +34,28 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			services.AddSingleton<ApplicationUrlResolver>();
 
-			//FuncRegistrationParameters CreateToolParameters()
-			//{
-			//	Uri? uri = null;
-
-			//	FuncRegistrationParameters result = new(
-			//		() => uri ??= new Uri( new ApplicationUrlResolver().GetApplicationUrl(sp)),
-			//		() => ApplicationState.ToolsRegistrationSettings.ExternalId,
-			//		() => ApplicationState.ToolsRegistrationSettings.AccessKey
-			//	);
-
-			//	return result;
-			//}
-
-
-
+			/* NOTE: You can add multiple IToolRegistrationParameters instances.
+			         All are registered. */
 			services.AddSingleton<IToolRegistrationParameters>(
 				sp =>
 				{
 					Uri? uri = null;
 
 					return new FuncRegistrationParameters(
-						() => uri ??= new Uri(sp.GetRequiredService<ApplicationUrlResolver>().GetApplicationUrl()),
-						() => ApplicationState.ToolsRegistrationSettings.ExternalId,
-						() => ApplicationState.ToolsRegistrationSettings.AccessKey
+						getLocalUrl:() => uri ??= new Uri(sp.GetRequiredService<ApplicationUrlResolver>().GetApplicationUrl()),
+						getExternalId:() => ApplicationState.ToolsRegistrationSettings.ExternalId,
+						getApiKey:() => ApplicationState.ToolsRegistrationSettings.ApiKey
 					);
 				});
 
 			services.AddOrpiusToolRegistration().WithAutomaticProviderRegistration();
 
+
 			FuncOperationsParameters funcOperationsParameters = new(
 				() => ApplicationState.OperationsSettings.ExternalId,
-				() => ApplicationState.OperationsSettings.AccessKey);
+				() => ApplicationState.OperationsSettings.ApiKey);
 
+			/* NOTE: You can add multiple IOperationsServiceParameters instances. */
 			services.AddSingleton<IOperationsServiceParameters>(funcOperationsParameters);
 
 			Uri GetOrpiusServerUri() => new(ApplicationState.OrpiusServerUrl);
@@ -81,17 +70,17 @@ namespace Sample_AspNetCore_ProtobufNet
 			services.AddOperationsGrpcClient(GetOrpiusServerUri,
 				dangerousAcceptAnyCertificate: true);
 
-			//services.AddCodeFirstGrpcClient<IOperationsService>(
-			//			options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
-			//		.AddInterceptor(() => new OperationInterceptor())
-			//		.ConfigurePrimaryHttpMessageHandler(CreateHandler);
-
 			/* The generated class in your project pulls in the `IToolRegistry`
 			   and registers itself. The tools are generated 
 			   via the `GenerateToolRegistryItemAttribute` (at the top of this file). */
 			services.AddSingleton<SampleTools>();
 
-			/* Add your tool implementations. */
+			/* Add your tool implementations.
+			   This allows them to be resolved when requested by an AI agent.
+			   
+			   NOTE: For tools to be available during a chat session, 
+			         they must be specified in the ChatRequest. 
+			         See `MyMobileAppService` for an example. */
 			services.AddSingleton<FlightStatusChecker>();
 			services.AddSingleton<WeatherForecaster>();
 
@@ -130,12 +119,5 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			app.Run();
 		}
-
-		static HttpMessageHandler CreateHandler() => new HttpClientHandler
-		{
-			/* For use with self-signed certificate. Not for production. */
-			ServerCertificateCustomValidationCallback 
-				= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-		};
 	}
 }

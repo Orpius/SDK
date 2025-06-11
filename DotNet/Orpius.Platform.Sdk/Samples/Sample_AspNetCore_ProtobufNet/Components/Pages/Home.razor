@@ -38,12 +38,12 @@
 
 <div class="mb-3">
 	<label>Access Key</label>
-	<input @bind="toolsAccessKeyInput" placeholder="Enter Access Key" class="form-control" />
-	@if (!string.IsNullOrEmpty(toolsAccessKeyError))
+	<input @bind="toolsApiKeyInput" placeholder="Enter Access Key" class="form-control" />
+	@if (!string.IsNullOrEmpty(toolsApiKeyError))
 	{
-		<div class="text-danger">@toolsAccessKeyError</div>
+		<div class="text-danger">@toolsApiKeyError</div>
 	}
-	<div class="text-muted mt-1">Current: @ApplicationState.ToolsRegistrationSettings.AccessKey</div>
+	<div class="text-muted mt-1">Current: @ApplicationState.ToolsRegistrationSettings.ApiKey</div>
 </div>
 
 <div class="mb-5">
@@ -72,13 +72,13 @@
 </div>
 
 <div class="mb-3">
-	<label>Access Key</label>
-	<input @bind="accessKeyInput" placeholder="Enter Access Key" class="form-control"/>
-	@if (!string.IsNullOrEmpty(accessKeyError))
+	<label>API Key</label>
+	<input @bind="apiKeyInput" placeholder="Enter API Key" class="form-control"/>
+	@if (!string.IsNullOrEmpty(apiKeyError))
 	{
-		<div class="text-danger">@accessKeyError</div>
+		<div class="text-danger">@apiKeyError</div>
 	}
-	<div class="text-muted mt-1">Current: @ApplicationState.OperationsSettings.AccessKey</div>
+	<div class="text-muted mt-1">Current: @ApplicationState.OperationsSettings.ApiKey</div>
 </div>
 
 <div class="mb-5">
@@ -90,10 +90,10 @@
 @code {
 	string? urlInput;
 	string? externalIdInput;
-	string? accessKeyInput;
+	string? apiKeyInput;
 
 	string? externalIdError;
-	string? accessKeyError;
+	string? apiKeyError;
 
 	void ApplyOperationSettings()
 	{
@@ -103,7 +103,7 @@
 		}
 
 		externalIdError = null;
-		accessKeyError  = null;
+		apiKeyError  = null;
 
 		if (Guid.TryParse(externalIdInput, out Guid parsedExternalId) 
 			&& parsedExternalId != Guid.Empty)
@@ -115,22 +115,22 @@
 			externalIdError = "Invalid GUID format for External ID.";
 		}
 
-		if (Guid.TryParse(accessKeyInput, out Guid parsedAccessKey) 
+		if (Guid.TryParse(apiKeyInput, out Guid parsedAccessKey) 
 			&& parsedAccessKey != Guid.Empty)
 		{
-			ApplicationState.OperationsSettings.AccessKey = parsedAccessKey;
+			ApplicationState.OperationsSettings.ApiKey = parsedAccessKey;
 		}
-		else if (!string.IsNullOrWhiteSpace(accessKeyInput))
+		else if (!string.IsNullOrWhiteSpace(apiKeyInput))
 		{
-			accessKeyError = "Invalid GUID format for Access Key.";
+			apiKeyError = "Invalid GUID format for Access Key.";
 		}
 	}
 
 	string? toolsExternalIdInput;
-	string? toolsAccessKeyInput;
+	string? toolsApiKeyInput;
 
 	string? toolsExternalIdError;
-	string? toolsAccessKeyError;
+	string? toolsApiKeyError;
 
 	bool registering;
 	bool registrationSucceeded;
@@ -144,7 +144,7 @@
 		}
 
 		toolsExternalIdError = null;
-		toolsAccessKeyError  = null;
+		toolsApiKeyError  = null;
 
 		if (Guid.TryParse(toolsExternalIdInput, out Guid parsedExternalId) 
 			&& parsedExternalId != Guid.Empty)
@@ -156,14 +156,14 @@
 			toolsExternalIdError = "Invalid GUID format for External ID.";
 		}
 
-		if (Guid.TryParse(toolsAccessKeyInput, out Guid parsedAccessKey) 
+		if (Guid.TryParse(toolsApiKeyInput, out Guid parsedAccessKey) 
 			&& parsedAccessKey != Guid.Empty)
 		{
-			ApplicationState.ToolsRegistrationSettings.AccessKey = parsedAccessKey;
+			ApplicationState.ToolsRegistrationSettings.ApiKey = parsedAccessKey;
 		}
-		else if (!string.IsNullOrWhiteSpace(toolsAccessKeyError))
+		else if (!string.IsNullOrWhiteSpace(toolsApiKeyError))
 		{
-			toolsAccessKeyError = "Invalid GUID format for Access Key.";
+			toolsApiKeyError = "Invalid GUID format for Access Key.";
 		}
 
 		registering         = true;
