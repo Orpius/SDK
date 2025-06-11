@@ -1,7 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Net.Http;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.RpcServices;
+using ProtoBuf.Grpc.ClientFactory;
+
 using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 
 namespace Orpius.Platform.Tooling.ToolRegistration
@@ -13,7 +18,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		{
 			/* We send the API Key and External ID to Orpius in the headers of the request.
 			   This class relies on IToolRegistrationParameters.*/
-			services.AddSingleton<RegistrationHeaderHandler>();
+			services.AddSingleton<ToolsRegistrationHeaderHandler>();
 
 			/* This allows tools to be resolved using the IServiceProvider. */
 			services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
@@ -39,6 +44,55 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 
 			return services;
 		}
+
+		public static IServiceCollection AddToolsRegistrationGrpcClient(
+			this IServiceCollection services, 
+			Func<Uri> getOrpiusServerAddress, bool dangerousAcceptAnyCertificate)
+		{
+			var builder = services.AddCodeFirstGrpcClient<IToolsRegistrationService>(
+									  options => 
+									  {
+										  options.Address = getOrpiusServerAddress();
+									  })
+								  .AddHttpMessageHandler<ToolsRegistrationHeaderHandler>();
+
+			if (dangerousAcceptAnyCertificate)
+			{
+				builder.ConfigurePrimaryHttpMessageHandler(CreateHandler);
+			}
+
+			return services;
+		}
+
+		public static IServiceCollection AddOperationsGrpcClient(
+			this IServiceCollection services,
+			Func<Uri> getOrpiusServerAddress, bool dangerousAcceptAnyCertificate)
+		{
+			//var builder = services.AddCodeFirstGrpcClient<IOperationsService>(
+			//						  options => { options.Address = getOrpiusServerAddress(); })
+			//					  .AddInterceptor(() => new OperationInterceptor())
+			//					  .ConfigurePrimaryHttpMessageHandler(CreateHandler);
+			var builder = services.AddCodeFirstGrpcClient<IOperationsService>(
+									  options =>
+									  {
+										  options.Address = getOrpiusServerAddress();
+									  })
+								  .AddHttpMessageHandler<OperationsHeaderHandler>();
+
+			if (dangerousAcceptAnyCertificate)
+			{
+				builder.ConfigurePrimaryHttpMessageHandler(CreateHandler);
+			}
+
+			return services;
+		}
+
+		static HttpMessageHandler CreateHandler() => new HttpClientHandler
+		{
+			/* For use with self-signed certificate. Not for production. */
+			ServerCertificateCustomValidationCallback
+				= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+		};
 
 		internal static void AddAssociatedSingletons<TInterface, TImplementation>(this IServiceCollection services)
 			where TInterface : class

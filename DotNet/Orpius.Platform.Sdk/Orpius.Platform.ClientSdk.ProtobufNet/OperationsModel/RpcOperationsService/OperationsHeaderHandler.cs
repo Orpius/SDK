@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Orpius.Platform.OperationsModel;
+using Orpius.Platform.OperationsModel.RpcOperationsService;
 using Orpius.Platform.Tooling.RpcToolsRegistrationService;
-using Orpius.Platform.Tooling.ToolRegistration;
 
-namespace Orpius.Platform.RpcServiceModel
+namespace Orpius.Platform.Tooling.ToolRegistration
 {
-	public class RegistrationHeaderHandler : DelegatingHandler
+	public class OperationsHeaderHandler : DelegatingHandler
 	{
-		readonly IToolRegistrationParameters parameters;
+		readonly IOperationsServiceParameters parameters;
 
-		public RegistrationHeaderHandler(IToolRegistrationParameters parameters)
+		public OperationsHeaderHandler(IOperationsServiceParameters parameters)
 		{
 			this.parameters = parameters
 							  ?? throw new ArgumentNullException(nameof(parameters));
@@ -24,8 +26,13 @@ namespace Orpius.Platform.RpcServiceModel
 		{
 			Guid apiKey = await parameters.GetApiKeyAsync();
 
-			request.Headers.Add(ToolsRegistrationHeaders.ExternalId, parameters.ExternalId.ToString());
-			request.Headers.Add(ToolsRegistrationHeaders.AccessKey, apiKey.ToString());
+			request.Headers.Add(
+				OperationHeaders.ExternalId,
+				parameters.ExternalId.ToString());
+
+			request.Headers.Authorization = new AuthenticationHeaderValue(
+				OperationHeaders.ApiKey, 
+				apiKey.ToString());
 
 			try
 			{

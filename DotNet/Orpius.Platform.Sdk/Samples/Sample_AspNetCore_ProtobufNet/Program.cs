@@ -1,3 +1,4 @@
+using Orpius.Platform.OperationsModel;
 using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling;
@@ -44,29 +45,33 @@ namespace Sample_AspNetCore_ProtobufNet
 
 			services.AddToolRegistration().WithAutomaticProviderRegistration();
 
-			/* We add two GRPC interceptors,
-			   allowing us to include the authentication headers. */
+			FuncOperationsParameters funcOperationsParameters = new(
+				() => ApplicationState.OperationsSettings.ExternalId,
+				() => Task.FromResult(ApplicationState.OperationsSettings.AccessKey));
+
+			services.AddSingleton<IOperationsServiceParameters>(funcOperationsParameters);
+
+			Uri GetOrpiusServerUri() => new(ApplicationState.OrpiusServerUrl);
 
 			/* Tools - They allow your AI Agent to call your server to carry out tasks. */
-			services.AddCodeFirstGrpcClient<IToolsRegistrationService>(
-						options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
-					.AddHttpMessageHandler<RegistrationHeaderHandler>()
-					.ConfigurePrimaryHttpMessageHandler(CreateHandler);
+			services.AddToolsRegistrationGrpcClient(GetOrpiusServerUri,
+				dangerousAcceptAnyCertificate: true);
 
 			/* Operations - They allow your application to communicate with an AI Agent. */
-			services.AddCodeFirstGrpcClient<IOperationsService>(
-						options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
-					.AddInterceptor(() => new OperationInterceptor())
-					.ConfigurePrimaryHttpMessageHandler(CreateHandler);
+			services.AddOperationsGrpcClient(GetOrpiusServerUri,
+				dangerousAcceptAnyCertificate: true);
+
+			//services.AddCodeFirstGrpcClient<IOperationsService>(
+			//			options => { options.Address = new Uri(ApplicationState.OrpiusServerUrl); })
+			//		.AddInterceptor(() => new OperationInterceptor())
+			//		.ConfigurePrimaryHttpMessageHandler(CreateHandler);
 
 			/* The generated class in your project pulls in the `IToolRegistry`
 			   and registers itself. The tools are generated 
 			   via the `GenerateToolRegistryItemAttribute` (at the top of this file). */
 			services.AddSingleton<SampleTools>();
 
-			/* Add your tool implementations.
-			   The IToolRegistry uses the IToolResolver, to locate the services 
-			   when a `UseToolRequest` arrives. */
+			/* Add your tool implementations. */
 			services.AddSingleton<FlightStatusChecker>();
 			services.AddSingleton<WeatherForecaster>();
 
@@ -112,16 +117,5 @@ namespace Sample_AspNetCore_ProtobufNet
 			ServerCertificateCustomValidationCallback 
 				= HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
 		};
-	}
-
-	static class ServiceCollectionExtensions
-	{
-		internal static void AddAssociatedSingletons<TInterface, TImplementation>(this IServiceCollection services)
-			where TInterface : class
-			where TImplementation : class, TInterface
-		{
-			services.AddSingleton<TImplementation>();
-			services.AddSingleton<TInterface>(sp => sp.GetRequiredService<TImplementation>());
-		}
 	}
 }

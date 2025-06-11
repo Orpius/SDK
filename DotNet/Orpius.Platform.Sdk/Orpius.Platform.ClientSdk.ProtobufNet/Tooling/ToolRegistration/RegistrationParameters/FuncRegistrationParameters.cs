@@ -11,14 +11,14 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 
 		public FuncRegistrationParameters(Func<Uri> getLocalUrl,
 										  Func<Guid> getExternalId,
-										  Func<Task<Guid>> getAccessToken)
+										  Func<Task<Guid>> getApiKey)
 		{
 			this.getLocalUrl = getLocalUrl
 							   ?? throw new ArgumentNullException(nameof(getLocalUrl));
 			this.getExternalId = getExternalId
 								 ?? throw new ArgumentNullException(nameof(getExternalId));
-			this.getApiKey = getAccessToken
-								  ?? throw new ArgumentNullException(nameof(getAccessToken));
+			this.getApiKey = getApiKey
+							 ?? throw new ArgumentNullException(nameof(getApiKey));
 		}
 
 		public Task<Guid> GetApiKeyAsync()

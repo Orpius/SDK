@@ -9,4 +9,5 @@
 		<!-- include everything except the csproj file. -->
 		<Content Include="**\*.*" Exclude="$(MSBuildThisFileFullPath)" />
 	</ItemGroup>
+
 </Project>
