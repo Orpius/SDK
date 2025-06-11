@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable RedundantUsingDirective
+using System;
 using System.Collections.Generic;
 
 using Orpius.Platform.Inferencing;
@@ -10,7 +11,6 @@ using ProtoBuf.Grpc.Configuration;
 
 namespace Sample_AspNetCore_ProtobufNet.Services
 {
-	//[Service("mycompany.myapplication.v1.MyMobileAppService")]
 	[Service("MyMobileAppService")]
 	public interface IMyMobileAppService
 	{

@@ -10,6 +10,7 @@ namespace Sample_AspNetCore_ProtobufNet.RpcServiceModel
 	class ApplicationUrlResolver
 	{
 		readonly IServiceProvider serviceProvider;
+		/* If this is true, we only use the port and rely on host.docker.internal */
 		readonly bool orpiusHostedInDocker = true;
 
 		public ApplicationUrlResolver(IServiceProvider serviceProvider)

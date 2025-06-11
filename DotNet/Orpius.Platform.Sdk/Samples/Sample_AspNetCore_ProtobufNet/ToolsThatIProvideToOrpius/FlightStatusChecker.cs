@@ -24,7 +24,7 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 					{
 						DepartureTime = DateTime.UtcNow + TimeSpan.FromHours(3),
 						FlightStatus  = FlightStatus.OnTime,
-						ExtraInformation = string.Empty//"Refuelling in progress"
+						ExtraInformation = string.Empty
 					};
 				default:
 					throw new RpcException(new Status(StatusCode.NotFound, 
