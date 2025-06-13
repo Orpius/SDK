@@ -59,7 +59,8 @@ namespace Sample_AspNetCore_ProtobufNet
 						CallBackHeaders = new List<HeaderMessage>
 						{
 							/* Headers are sent back to your application with each `UseTool` request,
-							   allowing you to authenticate the Orpius server. */
+							   allowing you to authenticate the Orpius server.
+							   These are encrypted and stored securely by the Orpius system. */
 							new("MySecretHeader", "MyValue")
 						}
 					};
