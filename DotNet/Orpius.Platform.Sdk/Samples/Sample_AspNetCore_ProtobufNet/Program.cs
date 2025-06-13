@@ -2,6 +2,7 @@ using Orpius.Platform.OperationsModel;
 using Orpius.Platform.OperationsModel.ServiceCollectionExtensions;
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling;
+using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 using Orpius.Platform.Tooling.ToolRegistration;
 
 using ProtoBuf.Grpc.Configuration;
@@ -51,10 +52,17 @@ namespace Sample_AspNetCore_ProtobufNet
 				sp =>
 				{
 					return new FuncRegistrationParameters(
-						getLocalUrl:() => GetApplicationUri(sp),
-						getExternalId:() => ApplicationState.ToolsRegistrationSettings.ExternalId,
-						getApiKey:() => ApplicationState.ToolsRegistrationSettings.ApiKey
-					);
+						getLocalUrl: () => GetApplicationUri(sp),
+						getExternalId: () => ApplicationState.ToolsRegistrationSettings.ExternalId,
+						getApiKey: () => ApplicationState.ToolsRegistrationSettings.ApiKey)
+					{
+						CallBackHeaders = new List<HeaderMessage>
+						{
+							/* Headers are sent back to your application with each `UseTool` request,
+							   allowing you to authenticate the Orpius server. */
+							new("MySecretHeader", "MyValue")
+						}
+					};
 				});
 
 			services.AddOrpiusToolRegistration(GetOrpiusServerUri, 
