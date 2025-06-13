@@ -133,7 +133,6 @@ namespace Sample_AspNetCore_ProtobufNet
 		/// ApplicationState is a demonstration-only static class
 		/// that is populated using the Components/Pages/Home.razor page.
 		/// </summary>
-		/// <returns></returns>
 		static Uri GetOrpiusServerUri() => new(ApplicationState.OrpiusServerUrl);
 
 		static Uri? applicationUri;
