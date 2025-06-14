@@ -204,7 +204,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 					string displayName = ad.NamedArguments.FirstOrDefault(pair => pair.Key == "Name").Value.Value as string
 										 ?? p.Name;
 
-					bool required = (bool?)ad.NamedArguments.FirstOrDefault(k => k.Key == "Required").Value.Value
+					bool required = (bool?)ad.NamedArguments.FirstOrDefault(pair => pair.Key == "Required").Value.Value
 									?? false;
 
 					string? description = ad.NamedArguments.FirstOrDefault(pair => pair.Key == "Description").Value.Value as string;
@@ -313,13 +313,13 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 
 			foreach (IMethodSymbol m in tool.GetMembers().OfType<IMethodSymbol>())
 			{
-				if (!m.GetAttributes().Any(a => a.AttributeClass?.Name == "ToolMethodAttribute"))
+				if (!m.GetAttributes().Any(data => data.AttributeClass?.Name == "ToolMethodAttribute"))
 				{
 					continue;
 				}
 
 				AttributeData attr = m.GetAttributes()
-									  .First(a => a.AttributeClass?.Name == "ToolMethodAttribute");
+									  .First(data => data.AttributeClass?.Name == "ToolMethodAttribute");
 
 				string methodName =
 					attr.NamedArguments.FirstOrDefault(kv => kv.Key == "Name").Value.Value
@@ -371,8 +371,8 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 
 	sealed class ContractCollector
 	{
-		readonly Dictionary<ITypeSymbol, ContractModel> map =
-			new(SymbolEqualityComparer.Default);
+		readonly Dictionary<ITypeSymbol, ContractModel> map 
+			= new(SymbolEqualityComparer.Default);
 
 		public void Add(ITypeSymbol t)
 		{
@@ -484,7 +484,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 				""");
 			}
 			
-			/* class header & ctor */
+			/* class header and constructor */
 			sb.Append($$"""
 
 				partial class {{m.ClassName}} : IToolRegistryItem
@@ -516,11 +516,11 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 
 			foreach (ToolModel t in m.Tools)
 			{
-				string var = SafeVar(t.Symbol);
+				string variableName = ToSafeVariableName(t.Symbol);
 
 				sb.Append($$"""
 				
-						ToolMessage {{var}} = new ToolMessage(
+						ToolMessage {{variableName}} = new ToolMessage(
 							toolName: "{{t.ExposedName}}",
 							typeName: typeof({{t.Symbol.ToDisplayString(fqn)}}).FullName!)
 						{
@@ -572,7 +572,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 						};
 
 						return new ToolsMetadata(
-							new ToolMessage[] { {{string.Join(", ", m.Tools.Select(t => SafeVar(t.Symbol)))}} },
+							new ToolMessage[] { {{string.Join(", ", m.Tools.Select(t => ToSafeVariableName(t.Symbol)))}} },
 							contracts);
 					}
 				""");
@@ -675,7 +675,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 					}
 				""");
 
-			/* close class & namespace */
+			/* close class and namespace */
 			sb.Append("""
 
 				}
@@ -691,7 +691,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 
 			return sb.ToString();
 
-			static string SafeVar(INamedTypeSymbol s) =>
+			static string ToSafeVariableName(INamedTypeSymbol s) =>
 				s.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)
 				 .Replace('.', '_')
 				 .Replace('<', '_')
