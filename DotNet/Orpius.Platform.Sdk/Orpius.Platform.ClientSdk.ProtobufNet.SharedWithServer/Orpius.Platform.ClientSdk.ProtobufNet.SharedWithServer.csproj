@@ -10,4 +10,9 @@
 		<Content Include="**\*.*" Exclude="$(MSBuildThisFileFullPath)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Remove="obj\**" />
+	  <None Remove="obj\**" />
+	</ItemGroup>
+
 </Project>

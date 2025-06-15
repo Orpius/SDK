@@ -3,7 +3,7 @@
 //using System;
 //using System.Collections.Generic;
 
-//namespace Orpius.Platform.Inferencing.ToolsModel
+//namespace Orpius.Platform.Inferencing.Tooling
 //{
 //	[ProtoContract]
 //	public class ToolResult
