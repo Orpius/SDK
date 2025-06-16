@@ -114,8 +114,8 @@ namespace Orpius.Platform.OperationsModel.RpcOperationsService
 	[ProtoContract]
 	public enum ToolPresence
 	{
-		Required,
-		NotRequired
+		Required = 0,
+		NotRequired = 1
 	}
 
 	partial class ChatResponse
