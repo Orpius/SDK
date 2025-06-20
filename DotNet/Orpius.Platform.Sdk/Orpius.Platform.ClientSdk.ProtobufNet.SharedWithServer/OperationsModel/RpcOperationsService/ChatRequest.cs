@@ -63,9 +63,9 @@ namespace Orpius.Platform.OperationsModel.RpcOperationsService
 		/// </summary>
 		[ProtoMember(5, IsRequired = false)]
 #if NET7_0_OR_GREATER
-		public required string? JsonParametersProvidedToAgent { get; set; }
+		public required string? JsonProvidedToAgent { get; set; }
 #else
-		public string? JsonParametersProvidedToAgent { get; set; }
+		public string? JsonProvidedToAgent { get; set; }
 #endif
 
 		/// <summary>
