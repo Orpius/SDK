@@ -13,4 +13,20 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
 	</ItemGroup>
 
+	<!-- NuGet -->
+	<PropertyGroup>
+		<PackageId>Orpius.Platform.ClientSdk.ProtobufNet.Generators</PackageId>
+		<Version>1.0.0-beta.1</Version>
+		<Company>Orpius</Company>
+		<RepositoryUrl>https://github.com/Orpius/SDK</RepositoryUrl>
+		<PackageProjectUrl>https://orpius.com</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description>Source generators that produce the types necessary to register as a tool provider with an Orpius server.</Description>
+		<PackageTags>orpius;protobuf;sourcegenerator</PackageTags>
+
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+
 </Project>

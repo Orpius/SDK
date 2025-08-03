@@ -33,4 +33,20 @@
 		<Folder Include="RpcServices\" />
 	</ItemGroup>
 
+	<!-- NuGet -->
+	<PropertyGroup>
+		<PackageId>Orpius.Platform.ClientSdk.ProtobufNet</PackageId>
+		<Version>1.0.0-beta.1</Version>
+		<Company>Orpius</Company>
+		<RepositoryUrl>https://github.com/Orpius/SDK</RepositoryUrl>
+		<PackageProjectUrl>https://orpius.com</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description>Core library for Orpius operation and tooling integration. This library allows you to intergrate your application with the Orpius server; providing communication with, and tools for, your Orpius agents. This library uses Protobuf-net for communications with the Orpius server.</Description>
+		<PackageTags>orpius;ai;protobuf;sdk</PackageTags>
+
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+
 </Project>
