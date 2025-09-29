@@ -119,3 +119,8 @@ To create a **persistent tunnel** with a fixed URL, see:
 * [Cloudflare Tunnels Documentation](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
 * [.NET Development Certificates](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dev-certs)
 
+
+# NuGet Packages
+
+* [Orpius.Platform.ClientSdk.ProtobufNet](https://www.nuget.org/packages/Orpius.Platform.ClientSdk.ProtobufNet)
+* [Orpius.Platform.ClientSdk.ProtobufNet.Generators](https://www.nuget.org/packages/Orpius.Platform.ClientSdk.ProtobufNet.Generators)
