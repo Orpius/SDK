@@ -120,7 +120,7 @@ To create a **persistent tunnel** with a fixed URL, see:
 * [.NET Development Certificates](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dev-certs)
 
 
-# NuGet Packages
+## NuGet Packages
 
 * [Orpius.Platform.ClientSdk.ProtobufNet](https://www.nuget.org/packages/Orpius.Platform.ClientSdk.ProtobufNet)
 * [Orpius.Platform.ClientSdk.ProtobufNet.Generators](https://www.nuget.org/packages/Orpius.Platform.ClientSdk.ProtobufNet.Generators)
