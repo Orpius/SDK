@@ -9,18 +9,18 @@ This guide will help you get started quickly, using a local development setup th
 ## Getting Started
 
 1. **Clone this repository**  
-   ```powershell
-   git clone https://github.com/Orpius/SDK.git
-````
+	```powershell
+	git clone https://github.com/Orpius/SDK.git
+	````
 
 2. **Open the solution** in **Visual Studio 2022** (or later).
 
 3. **Build and run** the sample application to confirm everything is working locally.
    By default, the sample project runs on:
 
-   ```
-   https://localhost:7194
-   ```
+	```
+	https://localhost:7194
+	```
 
 ---
 
@@ -40,15 +40,15 @@ Orpius communicates over HTTPS. We need to export the development certificate us
 
 1. Create a directory to store the exported certificate.
 
-   ```powershell
-   New-Item -ItemType Directory -Force -Path "C:\Dev\Certificates\ExportedDev" | Out-Null
-   ```
+	```powershell
+	New-Item -ItemType Directory -Force -Path "C:\Dev\Certificates\ExportedDev" | Out-Null
+	```
 
 2. Export the certificate:
 
-   ```powershell
-   dotnet dev-certs https --export-path "C:\Dev\Certificates\ExportedDev\aspnet-dev.pem" --format Pem -p ""
-   ```
+	```powershell
+	dotnet dev-certs https --export-path "C:\Dev\Certificates\ExportedDev\aspnet-dev.pem" --format Pem -p ""
+	```
 
 ---
 
@@ -56,9 +56,9 @@ Orpius communicates over HTTPS. We need to export the development certificate us
 
 1. Install `cloudflared` on Windows using **winget**:
 
-   ```powershell
-   winget install --id Cloudflare.cloudflared
-   ```
+	```powershell
+	winget install --id Cloudflare.cloudflared
+	```
 
    For macOS/Linux, follow the [Cloudflare downloads page](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/).
 
