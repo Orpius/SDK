@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+
 using Orpius.Platform.OperationsModel;
 using Orpius.Platform.OperationsModel.ServiceCollectionExtensions;
 using Orpius.Platform.RpcServices;
@@ -37,7 +39,11 @@ namespace Sample_AspNetCore_ProtobufNet
 			services.AddSingleton(BinderConfiguration.Create(
 				binder: new BinderFromServices(builder.Services)));
 
-			/* ------ Tooling (enabling your AI Agent to call your server to carry out task) ------ */
+			builder.WebHost.ConfigureKestrel(
+				options => { options.ConfigureEndpointDefaults(
+					e => { e.Protocols = HttpProtocols.Http1AndHttp2; }); });
+
+			/* ------ Orpius Tooling (enabling your AI Agent to call your server to carry out tasks) ------ */
 
 			/* ApplicationUrlResolver resolves the URI of *this* server,
 			   allowing Orpius to know where to call back to for tool use. 
@@ -70,7 +76,7 @@ namespace Sample_AspNetCore_ProtobufNet
 						dangerousAcceptAnyCertificate: true)
 					.WithAutomaticProviderRegistration();
 
-			/* ------ Operations (chatting with your AI Agent) ------ */
+			/* ------ Orpius Operations (chatting with your AI Agent) ------ */
 
 			FuncOperationsParameters funcOperationsParameters = new(
 				() => ApplicationState.OperationsSettings.ExternalId,

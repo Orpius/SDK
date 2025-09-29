@@ -8,17 +8,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
-		<PackageReference Include="protobuf-net" Version="3.2.52" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
+		<PackageReference Include="protobuf-net" Version="3.2.56" />
 		<PackageReference Include="protobuf-net.Grpc" Version="1.2.2" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.2.2" />
 		<PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.2.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Orpius.Platform.ClientSdk.ProtobufNet.Generators\Orpius.Platform.ClientSdk.ProtobufNet.Generators.csproj"
-		                  OutputItemType="Analyzer"
-		                  ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\Orpius.Platform.ClientSdk.ProtobufNet.Generators\Orpius.Platform.ClientSdk.ProtobufNet.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\..\Orpius.Platform.ClientSdk.ProtobufNet\Orpius.Platform.ClientSdk.ProtobufNet.csproj" />
 	</ItemGroup>
 
