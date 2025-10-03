@@ -1,0 +1,25 @@
+<Project>
+	<!-- Default; projects can override in their own PropertyGroup -->
+	<PropertyGroup>
+		<StartYear Condition="'$(StartYear)' == ''">2025</StartYear>
+		<DisableDynamicCopyright Condition="'$(DisableDynamicCopyright)' == ''">false</DisableDynamicCopyright>
+	</PropertyGroup>
+
+	<Target Name="SetDynamicCopyright"
+	        BeforeTargets="GenerateNuspec;Pack"
+	        Condition="'$(IsPackable)' == 'true' AND '$(DisableDynamicCopyright)' != 'true'">
+		<PropertyGroup>
+			<CurrentYear>$([System.DateTime]::Now.ToString("yyyy"))</CurrentYear>
+
+			<_CopyrightSingle>© $(CurrentYear) Orpius</_CopyrightSingle>
+			<_CopyrightRange>© $(StartYear)–$(CurrentYear) Orpius</_CopyrightRange>
+
+			<Copyright Condition="'$(Copyright)' == '' AND ('$(StartYear)' == '' OR '$(StartYear)' == '$(CurrentYear)')">
+				$(_CopyrightSingle)
+			</Copyright>
+			<Copyright Condition="'$(Copyright)' == '' AND '$(StartYear)' != '' AND '$(StartYear)' != '$(CurrentYear)'">
+				$(_CopyrightRange)
+			</Copyright>
+		</PropertyGroup>
+	</Target>
+</Project>
