@@ -1,4 +1,4 @@
-## Getting Started
+# Getting Started with the SDK
 
 1. **Clone this repository**  
 	```powershell
@@ -15,4 +15,8 @@
 	```
 
 ---
+
+# Using Operations
+
+Operations allow your own application to communicate with your Orpius AI Agents.
 

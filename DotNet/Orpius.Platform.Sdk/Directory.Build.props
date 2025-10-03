@@ -1,21 +1,9 @@
 <Project>
 
-	<PropertyGroup>
-		<PackageIcon>OrpiusLogoIconSquare128.png</PackageIcon>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<!-- MSBuildThisFileDirectory points to the folder 
-		     that contains this props file (solution root). -->
-		<None Include="$(MSBuildThisFileDirectory)Assets/OrpiusLogoIconSquare128.png"
-		      Pack="true"
-		      PackagePath="\" />
-	</ItemGroup>
-
-	<!-- Central versioning (lockstep) -->
+	<!-- Centralized versioning -->
 	<PropertyGroup>
 		<!-- NuGet package version -->
-		<Version>1.0.6-alpha.1</Version>
+		<Version>1.0.7-alpha.1</Version>
 
 		<Company Condition="'$(Company)' == ''">Orpius</Company>
 		<Authors Condition="'$(Authors)' == ''">Orpius</Authors>
@@ -39,5 +27,17 @@
 		<PackageProjectUrl Condition="'$(PackageProjectUrl)' == ''">https://orpius.com</PackageProjectUrl>
 		<PackageLicenseExpression Condition="'$(PackageLicenseExpression)' == ''">MIT</PackageLicenseExpression>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageIcon>OrpiusLogoIconSquare128.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- MSBuildThisFileDirectory points to the folder 
+		     that contains this props file (solution root). -->
+		<None Include="$(MSBuildThisFileDirectory)Assets/OrpiusLogoIconSquare128.png"
+		      Pack="true"
+		      PackagePath="\" />
+	</ItemGroup>
 
 </Project>
