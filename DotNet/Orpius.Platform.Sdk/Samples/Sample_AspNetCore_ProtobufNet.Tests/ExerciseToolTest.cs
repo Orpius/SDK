@@ -38,14 +38,14 @@ namespace Sample_AspNetCore_ProtobufNet.Tests
 			// 1) Arrange: create an HttpClient that points at the in-memory TestServer.
 			//    We give it a dummy BaseAddress ("http://localhost") so that
 			//    GrpcChannel.ForAddress(...) will accept it, but all traffic actually
-			//    goes through the TestServer’s handler.
+			//    goes through the TestServer's handler.
 			var httpClient = applicationFactory.CreateClient(new WebApplicationFactoryClientOptions
 			{
 				BaseAddress = new Uri("http://localhost")
 			});
 
 			// 2) Wrap that HttpClient in a GrpcChannel. This allows us to call gRPC over
-			//    the same in-memory server. Because TestServer doesn’t do real TLS/HTTP2,
+			//    the same in-memory server. Because TestServer does not do real TLS/HTTP2,
 			//    Grpc.Net.Client will automatically downgrade to HTTP/1.1+ProtoBuf framing.
 			var channel = GrpcChannel.ForAddress("http://localhost", new GrpcChannelOptions
 			{
@@ -64,7 +64,7 @@ namespace Sample_AspNetCore_ProtobufNet.Tests
 				ParameterAsJson = "{\"FlightNumber\":123}"
 			};
 
-			// 5) Act: call the server’s UseTool(...) method. This is calling your
+			// 5) Act: call the server's UseTool(...) method. This is calling your
 			//    IToolProviderService implementation registered via MapGrpcService<IToolProviderService>().
 			var response = await toolClient.UseTool(request);
 
