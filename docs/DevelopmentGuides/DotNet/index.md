@@ -16,14 +16,4 @@
 
 ---
 
-# Using Operations
-
-Operations allow your own application to communicate with your Orpius AI Agents.
-
-# Creating your own Custom Tools
-
-To allow Orpius to call your tools, Orpius needs to know the **publicly reachable URL** of your server.
-Since development machines usually run on `localhost`, we recommend creating a secure tunnel.
-
-[Learn how to create a secure channel](../CreatingAChannel)
 
