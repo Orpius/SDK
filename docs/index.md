@@ -1,4 +1,4 @@
-# Orpius Document Hub
+![Orpius Document Hub](Images/OrpiusDocumentHub.png)
 
 * [Orpius User Guide](UserGuide/index.md) (for new users)
 * Orpius SDK Software Development Guides

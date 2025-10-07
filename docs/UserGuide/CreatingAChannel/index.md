@@ -1,4 +1,4 @@
-# Setting up Tool Support
+# Creating a Secure Channel to Orpius
 
 To allow Orpius to call your tools, Orpius needs to know the **publicly reachable URL** of your server.
 Since development machines usually run on `localhost`, we recommend creating a secure tunnel.
@@ -82,7 +82,7 @@ To create a **persistent tunnel** with a fixed URL, see:
 ## Next Steps
 
 * Explore the **sample code** in this repository.
-* Add your own tools and expose them via the tunnel.
+* [Add your own tools](../../DevelopmentGuides/DotNet/index.md#connecting-your-code-to-orpius) and make them available to Orpius via the tunnel.
 * Integrate the Orpius SDK into your existing application.
 
 ---
