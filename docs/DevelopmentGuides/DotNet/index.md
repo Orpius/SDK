@@ -182,8 +182,13 @@ We look closer at the request/response API later in the document.
 
 The `IMyMobileAppService` implementation is `MyMobileAppService` 
 and it is located in the same directory.
+This service is used by the *Sample_MobileApp_ProtobufNet* project.
+Providing access to Orpius via a middle-ware application
+allows us to keep the Orpius Operation's access key safely within
+our middle-ware application, while also affording us the opportunity to enrich
+calls to Orpius with user specific information.
 
-It is placed in the services collection in the `Program` class's `Main` method, like so:
+The `IMyMobileAppService` is placed in the services collection in the `Program` class's `Main` method, like so:
 ```cs
 services.AddAssociatedSingletons<IMyMobileAppService, MyMobileAppService>();
 ```
@@ -231,7 +236,17 @@ You'll notice that we send a list of `Tool` objects along with the `ChatRequest`
 These define what, if any, custom tools can be used by your AI agent
 when performing the request. We delve into that in greater detail later.
 
+> **NOTE:** When calling `IOperationsService.Chat`, a conversation is considered 'new'
+if the `ChatRequest.ConversationId` is not provided; it is `null` or equal to `Guid.Empty`.
+If the `ConversationId` is *not* `null` or empty then the system will attempt 
+to continue an existing conversation with that ID. If none exists with that ID,
+an RpcException is thrown.
 
+The conversation ID, that can be used to resume a conversation,
+is returned as the `ChatResponse.ConversationId` property.
+
+In the sample `MyMobileAppService` we simply relay the received `ChatResponse`
+objects back to the mobile app consumer.
 
 ```cs
 public class MyMobileAppService : IMyMobileAppService
@@ -266,3 +281,25 @@ public class MyMobileAppService : IMyMobileAppService
 	}
 }
 ```
+
+# Including Call Specific Information in a Chat
+
+How do we pass user or application-specific information to an AI Agent?
+And what about private information for custom tools?
+We'll explore the latter in more depth later, but here’s a brief overview.
+
+The `ChatRequest` class provides two mechanisms:
+
+* `string JsonProvidedToAgent`
+* `Dictionary<string, string> Context`
+
+As the name suggests, `JsonProvidedToAgent` contains raw JSON passed directly 
+to the AI Agent within the system prompt. Use this to include any information 
+you want the agent itself to process.
+
+The `Context` property, on the other hand, provides key/value pairs shared 
+with your custom tools. These values persist across tool calls 
+and can be modified as tools run. For example, one tool might update 
+the context, and those changes will be visible to others for the lifetime of the conversation.
+Importantly, the AI Agent does *not* have access to the `Context` contents.
+
