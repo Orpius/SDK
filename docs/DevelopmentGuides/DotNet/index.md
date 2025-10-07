@@ -350,7 +350,6 @@ the command calls through to `SendMessageCoreAsync`, shown below.
 
 The conversation ID is retained in a field (`conversationId`) in the viewmodel.
 
-
 ```cs
 async Task SendMessageCoreAsync()
 {
@@ -471,3 +470,35 @@ to Orpius may see many returned messages within a single round.
 	}
 }
 ```
+
+Within the *MainWindow.xaml* there are various `DataTemplate` elements,
+which are automatically selected based on the `Type` of the message.
+See below. 
+
+> **NOTE:** We do not go into detail about the XAML implementation,
+because many developers may choose to roll out mobile clients using
+a different technology.
+
+```xml
+<DataTemplate DataType="inferencing:UserMessage">
+	<Border Padding="12"
+			CornerRadius="8"
+			Background="#FF0A84FF"
+			HorizontalAlignment="Right"
+			MaxWidth="400"
+			Margin="8">
+		<TextBlock Text="{Binding Text}" 
+					Foreground="White" 
+					TextWrapping="Wrap" />
+	</Border>
+</DataTemplate>
+```
+
+## Bringing in your own Custom Tools
+
+One of the most powerful aspects of intergrating Orpius with your applications
+is its ability for AI Agents to securely call out, across a network, into your
+code. In this section you'll see how, with just a few lines of code, you empoyer
+your own agents to call into your code on your server.
+
+
