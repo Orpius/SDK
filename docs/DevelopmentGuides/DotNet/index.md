@@ -56,7 +56,7 @@ See [Operations](../../UserGuide/Operations/Operations.md).
 
 You'll need the *External ID* and *Access Key 1* to connect your application to Orpius.
 
-## Setting up your middle-tier Application
+## Setting up your Middle-Tier Application
 
 In the SDK sample, the *Sample_AspNetCore_ProtobufNet* is a consise example
 of the key parts that you are likely to have in your project.
@@ -199,12 +199,14 @@ We use it to register the interface for use with gRPC rather than the class itse
 ```cs
 static class ServiceCollectionExtensions
 {
-	internal static void AddAssociatedSingletons<TInterface, TImplementation>(this IServiceCollection services)
+	internal static void AddAssociatedSingletons<TInterface, TImplementation>(
+		this IServiceCollection services)
 		where TInterface : class
 		where TImplementation : class, TInterface
 	{
 		services.AddSingleton<TImplementation>();
-		services.AddSingleton<TInterface>(sp => sp.GetRequiredService<TImplementation>());
+		services.AddSingleton<TInterface>(
+			sp => sp.GetRequiredService<TImplementation>());
 	}
 }
 ```
@@ -215,7 +217,7 @@ This allows use to then register the gRPC service, using its interface, like so:
 app.MapGrpcService<IMyMobileAppService>();
 ```
 
-Now we've seen how to register the custom service, let's take a look at its implementation.
+Now you've seen how to register the custom service, let's take a look at its implementation.
 
 The constructor for `MyMobileAppService` requires an instance of `IOperationsService`,
 which is provided when the `IOperationsService` is resolved, 
