@@ -58,9 +58,9 @@ you can enlist your own custom tools, located on your organization's network.
 To allow Orpius to call your tools, Orpius needs to know the **publicly reachable URL** of your server.
 Since development machines usually run on `localhost`, we recommend creating a secure tunnel.
 
-[Learn how to create a secure channel](../CreatingAChannel)
+[Learn how to create a secure channel](../CreatingAChannel/index.md)
 
 The programming language specific Operations Development Guides are:
 
-* [Developer Guide for .NET](../../DevelopmentGuides/DotNet/)
+* [Developer Guide for .NET](../../DevelopmentGuides/DotNet/index.md)
 * Developer Guide for Java (coming soon)
