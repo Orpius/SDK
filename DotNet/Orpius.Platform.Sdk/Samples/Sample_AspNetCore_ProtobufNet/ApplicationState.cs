@@ -8,8 +8,8 @@
 		{
 			// Credentials are located on the Operation page
 			// inside the Orpius client application.
-			public static Guid ExternalId { get; set; } = Guid.Parse("65c7df12-9fdd-70d9-f584-b087a74cca3b");
-			public static Guid ApiKey  { get; set; } = Guid.Parse("c110d87e-fd7c-592c-7514-987324867e07");
+			public static Guid ExternalId { get; set; } = Guid.Parse("40402bf7-53d0-6e51-df31-5725d843ef19");
+			public static Guid ApiKey  { get; set; } = Guid.Parse("40402bf7-53d0-6e51-df31-5725d843ef19");
 		}
 
 		public static class ToolsRegistrationSettings

@@ -68,6 +68,16 @@ See [Operations](../../UserGuide/Operations/Operations.md).
 
 You'll need the *External ID* and *Access Key 1* to connect your application to Orpius.
 
+
+
+![Entering Operation Registration Information](Images/SampleWeb1.png)
+
+*Entering Operation Registration Information*
+
+
+
+
+
 ## Setting up Your Middle-Tier Application
 
 In the SDK sample, the *Sample_AspNetCore_ProtobufNet* is a consise example
@@ -524,6 +534,12 @@ and deterministic results. This approach eliminates much
 of the uncertainty around agent reliability while allowing 
 you to expose only the capabilities you choose, under your own security model.
 
+![Copying custom tool credentials from console](Images/ConsoleCustomTools.png)
 
+*Copying custom tool credentials from console*
+
+![Entering Tool Registration Information](Images/SampleWeb2.png)
+
+*Entering Tool Registration Information*
 
 

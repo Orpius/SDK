@@ -15,14 +15,40 @@
 	<div class="text-muted mt-1">Current: @ApplicationState.OrpiusServerUrl</div>
 </div>
 
+<h2>Operation Settings</h2>
+
+<div class="mb-3">
+	<label>External ID</label>
+	<input @bind="externalIdInput" placeholder="Enter External ID" class="form-control"/>
+	@if (!string.IsNullOrEmpty(externalIdError))
+	{
+		<div class="text-danger">@externalIdError</div>
+	}
+	<div class="text-muted mt-1">Current: @ApplicationState.OperationsSettings.ExternalId</div>
+</div>
+
+<div class="mb-3">
+	<label>API Key</label>
+	<input @bind="apiKeyInput" placeholder="Enter API Key" class="form-control"/>
+	@if (!string.IsNullOrEmpty(apiKeyError))
+	{
+		<div class="text-danger">@apiKeyError</div>
+	}
+	<div class="text-muted mt-1">Current: @ApplicationState.OperationsSettings.ApiKey</div>
+</div>
+
+<div class="mb-5">
+	<button @onclick="ApplyOperationSettings" class="btn btn-primary">Apply Operation Settings</button>
+</div>
+
 <h2>Tools Registration Settings</h2>
 
 <p>Registering as a tool provider means that your application will receive requests to use tools,
-    which you define by decorating your classes with the Tool attribute. 
-    See the FlightStatusChecker in this sample.
+	which you define by decorating your classes with the Tool attribute. 
+	See the FlightStatusChecker in this sample.
 </p>
 <p>If an operation in your space happens to make use of a tool, 
-    Orpius will reach out to your application to use the tool.
+	Orpius will reach out to your application to use the tool.
 </p>
 <p>You can define your own applications that provide different tools for your Space.</p>
 
@@ -57,32 +83,6 @@
 			@registrationMessage
 		</div>
 	}
-</div>
-
-<h2>Operation Settings</h2>
-
-<div class="mb-3">
-	<label>External ID</label>
-	<input @bind="externalIdInput" placeholder="Enter External ID" class="form-control"/>
-	@if (!string.IsNullOrEmpty(externalIdError))
-	{
-		<div class="text-danger">@externalIdError</div>
-	}
-	<div class="text-muted mt-1">Current: @ApplicationState.OperationsSettings.ExternalId</div>
-</div>
-
-<div class="mb-3">
-	<label>API Key</label>
-	<input @bind="apiKeyInput" placeholder="Enter API Key" class="form-control"/>
-	@if (!string.IsNullOrEmpty(apiKeyError))
-	{
-		<div class="text-danger">@apiKeyError</div>
-	}
-	<div class="text-muted mt-1">Current: @ApplicationState.OperationsSettings.ApiKey</div>
-</div>
-
-<div class="mb-5">
-	<button @onclick="ApplyOperationSettings" class="btn btn-primary">Apply Operation Settings</button>
 </div>
 
 <div class="mb-3"></div>
