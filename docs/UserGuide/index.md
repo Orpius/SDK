@@ -2,7 +2,7 @@
 # Welcome to Orpius
 This guide provides an overview of Orpius and instructions for getting started.
 # Introducing Orpius
-Orpius is a unified, ready-to-use system that provides the core infrastructure for building AI-driven applications.
+Orpius is a unified system that provides ready-to-use core infrastructure for building AI-driven applications.
 
 You can use Orpius as a:
 * **Foundation to integrate AI into existing applications**
@@ -228,13 +228,26 @@ See the **SDK documentation** for more details on custom tools. Example implemen
 
 # Events
 
-Events provide a flexible and secure way to connect Orpius to your systems.
+Events provide a secure way to connect your systems with Orpius and perform activities in response to external triggers.
 
-In the Console, you register events that external systems can call through a remote API to trigger tasks. Each event has a unique identifier that can be used in a webhook or integrated system. After registering an event, you add the activities or follow-up events that should run when it is triggered. Orpius then orchestrates the response in real time. (Note: in the current release, Events are handled by the in-built Orpius Agents.)
+## How Events Work in Orpius
 
-Orpius is designed to be adaptive rather than following rigid workflows. To keep this behavior reliable, you can set guardrails by defining which tools and constraints an agent is allowed to use.
+* In the Console, you register events that external systems can call through a remote API to trigger tasks. Each event has a unique identifier that can be used in a webhook or integrated system. 
+* After registering an event, you add the activities or follow-up events that should run when it is triggered. 
+* Orpius then orchestrates the response in real time.
 
-Using a foundation like Orpius allows you to add an agentic security layer to your application. This works similarly to the principle of Segregation of Duties (SoD): customer-facing agents can use events to signal more privileged agents to perform tasks, without directly exposing sensitive capabilities such as scheduling, storage, or team information to customers.
+**Example of how events may flow in a Surveillance Application**
+* A camera sends a motion detected event. 
+* You configure this event to trigger a notification activity and an analysis activity.
+* Orpius then orchestrates the response: it notifies the right user, launches the analysis, and, depending on the outcome, can automatically trigger follow-up actions such as raising an alert, starting a recording, or handing off to another tool.
+
+(Note: In the current release, events are handled by the in-built Orpius agents.)
+
+## Security and Control
+
+Orpius is designed to be adaptive rather than follow rigid workflows. To keep this behaviour reliable, you can set **guardrails** by defining which **tools** and **constraints** an agent is allowed to use.
+
+The event system can also provide a built-in **security layer** based on the principle of Segregation of Duties (SoD). Customer-facing agents can trigger events to request actions from more privileged agents, without having direct access to sensitive capabilities such as scheduling, storage, or team information.
 
 ## HTTP Parameters
 
@@ -242,28 +255,26 @@ Using a foundation like Orpius allows you to add an agentic security layer to yo
 * Parameters without an underscore are passed to your tool and the AI Agent.
 
 
-*Tip* For instructing events or activities avoid any mentions of the schedulle or the actual event in the task descriptopn becaise it confuses the agents and the agent may attmept to store the infor in the memoery if it think it has to wait. You must say do this now.
-*tip* When defining events or activities, avoid using words like schedule, event, or similar timing references in the task description. This can confuse the agent, causing it to interpret the instruction as a command to schedule itself or create an event. Instead, phrase the instruction as an immediate action i.e. "Do this now."
-
-Example of how events may flow in a Surveillance Application
-A camera sends a motion detected event. You configure this event to trigger a notification activity and an analysis activity. Orpius then orchestrates the response: it notifies the right user, launches the analysis, and, depending on the outcome, can automatically trigger follow-up actions such as raising an alert, starting a recording, or handing off to another tool.
-
 ## Setting up and event
-There are two ways to define an event in Orpius: manually or via chat.
+
+There are two ways to define an event in Orpius: manually or through chat.
+
+**Tip**: When defining activities that are triggered by an event, avoid using words such as schedule or references to the event itself in the task instruction. This can confuse the agent, leading it to interpret the instruction as a command to schedule itself or create a new event. Instead, phrase the instruction as an immediate action.
+
 
 **Manual setup**
-1. **Register the event**
+1. **Register the Event**
     * Open the **Events** pane from the sidebar.
     * Select **+ New Event**.
-    * In the Event Configuration pane, enter the event name (for example, NewOrderReceived).
-2. **Define the triggered work (Activity)**
-    * In the Triggered Work pane, select  **+ New Activity**.
-    * Provide a **Title** and clear **Instructions** for the agent (for example, send a notification to the user).
-    * (upcoming feature) Supply Custom Tools that the agent can use when executing the task.
-3. **Trigger and execute**
-    * When an external system fires the NewOrderReceived event, Orpius automatically executes the defined activity.
+    * In the Event Configuration pane, enter the event name (for example, *NewOrderReceived*).
+2. **Define the Triggered Work (Activity)**
+    * In the **Triggered Work** pane, select  **+ New Activity**.
+    * Provide a **Title** and clear **Instructions** for the agent (for example, *"send a notification to the user"*).
+    * You can define multiple activities for the same event.
+    * *(Upcoming feature)* Supply Custom Tools that the agent can use when executing the task.
+3. **Trigger and Execute**
+    * When an external system fires the *NewOrderReceived* event, Orpius automatically executes the defined activity.
 
-This allows automation of tasks based on external triggers using Orpius events.
 
 
 **Setup via Chat**
