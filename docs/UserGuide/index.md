@@ -17,17 +17,23 @@ Orpius provides a complete foundation for building and running AI-driven applica
 
 It includes:
 * **Integration with external systems** via API-driven events or customer-facing AI agents
+* **Built-in capabalities**
+    * **Code execution tooling** currently supports C#, with Java and VB coming soon
+    * **Events registeration and triggering**
+    * **Notification and messaging** for collaboration and **team awareness** across time zones
+    * **Scheduling** for running tasks at defined times or intervals
+    * **Memory**
+    * **Video feed image analysis**
+    * **Web page retrieval**
 * **Custom Agent creation**
-* **Events registery**
 * **Multi-model support** 
 * **Shared storage**
-* **Security**
+* **Permissions and Security**
 * **Secrets system**
 * **Orchestration** 
 * **Tooling framework** with Built-in tools that provide core capabilities out of the box and support for custom tooling
-* **Messaging system**
-* **Collaboration and team awareness** across time zones
-* **Scheduling** for running tasks at defined times or intervals
+
+
 
 
 ## Built-in Productivity Features
@@ -142,10 +148,11 @@ The system is designed to work with any AI model, whether hosted **on-premises**
 You can configure as many models as you need. For example, some agents might use GPT-5 for complex tasks, while others can run on a lower-cost model such as OpenAI gpt-5-mini. 
 
 ## Configuring a New Model
-1.	Open the **Model** pane from the sidebar 
-2.	Select **+ New Model**
-3.	Enter the required information
-4.	Save
+
+1. Open the **Models** view from the sidebar 
+2. Select **'+'** button in the toolbar of the **Models** view
+3. Enter the required information
+4. Save
 
 # Agents
 In Orpius, Agents are consider users, just like humans. Orpius includes two built-in agents: **Orpius** and **Phaedra**.
@@ -162,9 +169,9 @@ When integrating your application with Orpius, you configure a **Custom Agent**.
 
 ## Configuring a Custom Agent
 
-To create a custom agent:
-1. Open the **Agents** pane from the sidebar 
-2. Select **+ New Agent**.
+
+1. Open the **Agents** view from the sidebar 
+2. Select **'+'** button in the toolbar of the **Agents** view
 3. Give the Agent a **Name**
 4. Select a suitable **Model** for your Agent
 5. Define the Agent’s **Persona**
@@ -195,6 +202,7 @@ Orpius includes the following set of built-in tools:
     * **VideoFeedMonitor** – Real Time Streaming Protocol (RTSP). Downloads a still image from a video feed which can be used for image analysis.
     * **EventRegistry** – registers an event name that can be used by a remote API to trigger a task. The identifier can then be used with a web hook in the system.
     * **Memory** – Allows an agent to add a record of an event or experience to the agents memory store, enabling it to track changes across multiple tasks.
+    * **EventTrigger** - triggers an event that was previously registered
 
 The following **example** shows how a simple instruction can lead the agent to **autonomously** combine **multiple tools** to complete the task.
 
@@ -219,7 +227,7 @@ In addition to the built-in tools, you can register your own custom tools (plugi
 
 ## How it works:
 
-1. **Register a custom tool** – Open the **Agent Tools** pane from the sidebar and select **Custom Tools**.
+1. **Register a custom tool** – Open the **Agent Tools** view from the sidebar and select **Custom Tools** .
 2. **Integrate with your application** – Copy the **External ID** and **Access Key**, then paste them into **your application**.
 3.**Expose functionality to Orpius** – Decorate your code with the [Tool] and [ToolMethod] attributes.
 4. **Execute** – The Orpius SDK automatically receives and dispatches tool requests at runtime.
@@ -264,11 +272,11 @@ There are two ways to define an event in Orpius: manually or through chat.
 
 **Manual setup**
 1. **Register the Event**
-    * Open the **Events** pane from the sidebar.
-    * Select **+ New Event**.
-    * In the Event Configuration pane, enter the event name (for example, *NewOrderReceived*).
+    * Open the **Events** view from the sidebar.
+    * Select the **'+'** button in the toolbar of the **Events** view
+    * In the **Event Configuration** view, enter the event name (for example, *NewOrderReceived*).
 2. **Define the Triggered Work (Activity)**
-    * In the **Triggered Work** pane, select  **+ New Activity**.
+    * In the **Event Triggered Work** view, select the **'+'** button in the toolbar of the **Event Triggered Work** view.
     * Provide a **Title** and clear **Instructions** for the agent (for example, *"send a notification to the user"*).
     * You can define multiple activities for the same event.
     * *(Upcoming feature)* Supply Custom Tools that the agent can use when executing the task.
@@ -281,10 +289,10 @@ There are two ways to define an event in Orpius: manually or through chat.
 
 Orpius understands events and can be instructed through chat to create new ones with specific actions.
 
-* Start new **Chat** 
+* Start a new **Chat** 
 * For example, you could say: *"Create an event named 'NewOrderReceived' that sends me a notification with the order details when triggered."*
 * Orpius will then register the event and set up the instructions accordingly, including your user ID for proper execution.
-* Open the **Events** pane to review or modify the newly created event.
+* Open the **Events** view to review or modify the newly created event.
 
 
 # Isolated Storage
@@ -303,15 +311,15 @@ Access to files within a space is controlled by permission levels. Members with 
 
 ## Uploading files
 
-* Open the **Files** pane from the sidebar
-* Click the **Upload** icon and select the files you want to upload
+* Open the **Files** view from the sidebar
+* Click the **Upload** button in the toolbar of the **Files** view and select the files you want to upload
 * Click **Open**
 
 
 ## Downloading files
 
-* Open the **Files** pane from the sidebar
-* Select the file(s) you wish to download and click the **Download** icon
+* Open the **Files** view from the sidebar
+* Select the file(s) you wish to download and click the **Download** butoon in the toolbar of the **Files** view
 * Choose the folder where you want the files saved
 
 **Please note**: in the pre-release version, files downloaded locally are not being managed. This means they may overwrite an existing file in the chosen folder without warning.
@@ -319,6 +327,31 @@ Access to files within a space is controlled by permission levels. Members with 
 ## Creating files using chat
 
 Orpius can create a wide variety of file types depending on your needs. Common examples include text files (e.g. .txt, .csv), code files (e.g. .cs, .py, .js), document files (e.g. .md, .html), and data files (e.g. .json, .xml).
-* Start new **Chat**
+* Start a new **Chat**
 * For example, you could say: *"Create a file called test.txt and insert 10 city names."*
 * Orpius will create a new file named test.txt containing the 10 city names and save it in your isolated storage directory.
+
+# Team Management
+
+Each organization can contain multiple spaces, and each space can have as many members as needed. 
+
+Orpius has built-in team awareness across time zones and can plan or take actions based on that.
+
+## How it works:
+
+* For example, you can use the chat and ask *"Who is on my team?"*
+* Orpius will respond with a list of team members. 
+* Or you might ask *"Please thank John for the lovely flowers"*
+* Orpius will send John both an email and a notification on your behalf.
+
+In system settings can (System Owners only:
+• Set the maximum number of users in an organisational unit.
+• Set the maximum number of administrators in an organisational unit.
+• Restrict new users to having an email address within the organisation by configuring a regular expression. For example: ^[A-Za-z0-9._%+-]+@yourcompany\.(com|org|net)$
+
+Adding Members
+The Owner and Administrator of a space can invite members, either from within or outside the organisation. Each member is assigned a role that determines their permissions:
+• Participant – minimal permissions. Can receive notifications (email) and perform tasks.
+• Editor – includes all Participant privileges, plus the ability to modify content and manage tasks in the space.
+• Administrator – can manage members, configure settings, and oversee activity.
+• Owner – full control over the space, including deleting it or transferring ownership.
