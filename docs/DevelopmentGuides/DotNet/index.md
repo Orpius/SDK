@@ -1,4 +1,15 @@
-# Getting Started with the SDK
+# Orpius SDK Developer Guide for .NET
+
+<!--TOC-->
+  - [Getting Started with the Orpius SDK](#getting-started-with-the-orpius-sdk)
+  - [Setting up your Middle-Tier Application](#setting-up-your-middle-tier-application)
+  - [Calling your Operation](#calling-your-operation)
+- [Including Call Specific Information in a Chat](#including-call-specific-information-in-a-chat)
+  - [Exploring the Mobile App sample](#exploring-the-mobile-app-sample)
+  - [Bringing in your own Custom Tools](#bringing-in-your-own-custom-tools)
+<!--/TOC-->
+
+## Getting Started with the Orpius SDK
 
 1. **Clone this repository**  
 	```powershell
@@ -19,17 +30,18 @@
 If you haven't already, please read the [Operations section](../../UserGuide/Operations/)
 of the user guide.
 
-The [Orpius SDK repository](https://github.com/Orpius/SDK) contains varios sample projects.
+The [Orpius SDK repository](https://github.com/Orpius/SDK) contains various sample projects.
 This section focusses on the *Sample_AspNetCore_ProtobufNet* project 
 and the *Sample_MobileApp_ProtobufNet* project.
 The ASP.NET Core sample shows how to set up your own web application so that 
-it can commicate with the Orpius server.
-The MobileApp project demonstrates how you might create a mobile or desktop
+it can communicate with the Orpius server.
+The *MobileApp* project demonstrates how you might create a mobile or desktop
 app that communicates directly with your web API application, which relays
 communication from Orpius. See below.
 
 ![Comminication from Mobile App to Web API to Orpius](Images/MobileToWebApiToOrpius_Small.png)
-*Comminication from Mobile App to Web API to Orpius*
+
+*Communication from Mobile App to Web API to Orpius*
 
 The Orpius SDK for .NET consists of a class library, 
 *Orpius.Platform.ClientSdk.ProtobufNet*, which contains the types 
@@ -475,7 +487,7 @@ to Orpius may see many returned messages within a single round.
 
 Within the *MainWindow.xaml* there are various `DataTemplate` elements,
 which are automatically selected based on the `Type` of the message.
-See below. 
+See below.
 
 > **NOTE:** We do not go into detail about the XAML implementation,
 because many developers may choose to roll out mobile clients using
