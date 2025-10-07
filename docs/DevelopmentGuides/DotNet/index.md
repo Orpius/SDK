@@ -496,9 +496,15 @@ a different technology.
 
 ## Bringing in your own Custom Tools
 
-One of the most powerful aspects of intergrating Orpius with your applications
-is its ability for AI Agents to securely call out, across a network, into your
-code. In this section you'll see how, with just a few lines of code, you empoyer
-your own agents to call into your code on your server.
+One of the most powerful aspects of integrating Orpius 
+into your applications is that your AI Agents can securely call 
+into your existing codebase—often representing years of proven, 
+reliable logic. With just a few lines of setup, you can let agents invoke 
+your own server-side functions, giving you complete control 
+and deterministic results. This approach eliminates much 
+of the uncertainty around agent reliability while allowing 
+you to expose only the capabilities you choose, under your own security model.
+
+
 
 
