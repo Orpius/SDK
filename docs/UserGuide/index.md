@@ -230,7 +230,7 @@ See the **SDK documentation** for more details on custom tools. Example implemen
 
 Events provide a secure way to connect your systems with Orpius and perform activities in response to external triggers.
 
-## How Events Work in Orpius
+## How it Works:
 
 * In the Console, you register events that external systems can call through a remote API to trigger tasks. Each event has a unique identifier that can be used in a webhook or integrated system. 
 * After registering an event, you add the activities or follow-up events that should run when it is triggered. 
