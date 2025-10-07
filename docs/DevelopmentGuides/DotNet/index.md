@@ -2,10 +2,10 @@
 
 <!--TOC-->
   - [Getting Started with the Orpius SDK](#getting-started-with-the-orpius-sdk)
-  - [Setting up your Middle-Tier Application](#setting-up-your-middle-tier-application)
-  - [Calling your Operation](#calling-your-operation)
+  - [Setting up Your Middle-Tier Application](#setting-up-your-middle-tier-application)
+  - [Calling Your Operation](#calling-your-operation)
 - [Including Call Specific Information in a Chat](#including-call-specific-information-in-a-chat)
-  - [Exploring the Mobile App sample](#exploring-the-mobile-app-sample)
+  - [Exploring the Mobile App Sample](#exploring-the-mobile-app-sample)
   - [Connecting Your Code to Orpius](#connecting-your-code-to-orpius)
 <!--/TOC-->
 
@@ -68,7 +68,7 @@ See [Operations](../../UserGuide/Operations/Operations.md).
 
 You'll need the *External ID* and *Access Key 1* to connect your application to Orpius.
 
-## Setting up your Middle-Tier Application
+## Setting up Your Middle-Tier Application
 
 In the SDK sample, the *Sample_AspNetCore_ProtobufNet* is a consise example
 of the key parts that you are likely to have in your project.
@@ -149,7 +149,7 @@ that returns the Orpius server’s base URL.
 services.AddOrpiusOperations(GetOrpiusServerUri);
 ```
 
-## Calling your Operation
+## Calling Your Operation
 
 In the *Sample_AspNetCore_ProtobufNet* project 
 there is a `IMyMobileAppService` gRPC service, with a single mthod `Chat`.
@@ -318,7 +318,7 @@ the context, and those changes will be visible to others
 for the lifetime of the conversation.
 Importantly, the AI Agent does *not* have access to the `Context` contents.
 
-## Exploring the Mobile App sample
+## Exploring the Mobile App Sample
 
 The sample mobile app, located in the *Sample_MobileApp_ProtobufNet* project,
 demonstrates how you can connect a client-facing application with a middle-ware
@@ -411,7 +411,7 @@ IMyMobileAppService GetClient()
 }
 ```
 
-We construct the `UserMessage` (the Orpius SDK type)
+We construct the `UserMessage` (the type from the Orpius SDK)
 using the `string` present in the prompt `TextBox`.
 We construct our custom `MobileAppChatRequest`, assigning the `UserMessage`,
 and providing the nullable `Guid` ConversationId.
@@ -507,6 +507,11 @@ a different technology.
 	</Border>
 </DataTemplate>
 ```
+
+In this section we looked at how the sample app sends
+and receives messages to the Orpius server via a middle-ware
+application. In the next section you see how to extend 
+your agents capabilities by bringing in custom tools.
 
 ## Connecting Your Code to Orpius
 
