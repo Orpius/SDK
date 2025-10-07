@@ -318,6 +318,156 @@ library, giving it access to the types sent to and from the Orpius `IOperationsS
 The sample app has been built using [Avalonia](https://avaloniaui.net/),
 which can be a good choice for building cross-platform apps in .NET.
 
+The mobile sample app consists of a single window (see below),
+with a `MainWindowViewModel` class providing its behaviour.
+
 ![Mobile sample design time](/Images/MobileSampleDesign.png)
 
 *Mobile sample design-time*
+
+The `MainWindow.axaml` has databinding to the `Messages` property of the viewmodel.
+
+```
+<ItemsControl ItemsSource="{Binding Messages}">
+...
+</ItemsControl>
+```
+
+The `Messages` property is a `ObservableCollection<IChatMessage>`.
+`IChatMessage` is located in the SDK and is the interface common
+across `UserMessage`, `AssistantMessage`, and `SystemMessage`.
+
+We've already looked at `UserMessage`. `AssistantMessage` and `SystemMessage`,
+require further explanation. `AssistantMessage` represents a message
+from your AI Agent. `SystemMessage`, on the otherhand, represents
+a message that is sent from the Orpius server and may provide information
+such as notification about the start or beginning of an API call made
+by your agent. These allow you to provide feedback to the user
+as they are interacting with the system.
+
+When a user submits the text in the prompt box, via the `SendMessageCommand`,
+the command calls through to `SendMessageCoreAsync`, shown below.
+
+The conversation ID is retained in a field (`conversationId`) in the viewmodel.
+
+
+```cs
+async Task SendMessageCoreAsync()
+{
+	if (string.IsNullOrWhiteSpace(promptText))
+	{
+		return;
+	}
+
+	if (string.IsNullOrWhiteSpace(serverUrl))
+	{
+		throw new InvalidOperationException("Server URL is not set.");
+	}
+
+	IMyMobileAppService client = GetClient();
+	...
+```
+
+The `GetClient` method uses the static `GrpcChannel.ForAddress` method
+to create a `Grpc.Net.Client.GrpcChannel` from the `Grpc.Net.Client` library. See below.
+
+We then create a strongly typed client using the `GrpcChannel.CreateGrpcService<T>`
+method. The client object allows us to consume the `IMyMobileAppService` 
+in the middle-ware application as though it was a local service.
+
+```cs
+IMyMobileAppService GetClient()
+{
+	lock (channelCreationLock)
+	{
+		if (grpcClient is not null)
+		{
+			return grpcClient;
+		}
+
+		if (string.IsNullOrWhiteSpace(serverUrl))
+		{
+			throw new InvalidOperationException("serverUrl cannot be null or whitespace.");
+		}
+
+		grpcChannel = GrpcChannel.ForAddress(serverUrl, GetChannelOptions());
+		grpcClient  = grpcChannel.CreateGrpcService<IMyMobileAppService>();
+
+		return grpcClient;
+	}
+}
+```
+
+We construct the `UserMessage` (the Orpius SDK type)
+using the `string` present in the prompt `TextBox`.
+We construct our custom `MobileAppChatRequest`, assigning the `UserMessage`,
+and providing the nullable `Guid` ConversationId.
+If it's the first time that the user has sent a message, 
+then `conversationId` is null. Otherwise, we pick up the conversation 
+from where we left off by supplying the previously returned `ConversationId`.
+
+We then call the `IMyMobileAppService.Chat` method using an `await foreach`.
+`Chat` returns an `IAsyncEnumerable<ChatResponse>`, with each `ChatResponse`
+containing either a `SystemMessage` or an `AssistantMessage`.
+
+As the messages arrive, we place them into the `Messages` collection,
+which immediately displays them in the UI.
+
+Your AI Agent may call multiple custom tools or built-in tools;
+waiting for responses from the tools, and calling other tools based
+on those responses. Therefore, the sending of a single `UserMessage`
+to Orpius may see many returned messages within a single round.
+
+*SendMessageCoreAsync() continued*
+```cs
+
+	// Orpius's user message.
+	// This is sent on to the Orpius server via your server.
+	UserMessage userMessage = new()
+	{
+		Text = promptText
+	};
+			
+	// Your server's request message.
+	// This is defined by you, and contains information
+	// relevant to your application.
+	// You will probably want to place authentication information,
+	// such as an access token, in the headers of the request.
+	MobileAppChatRequest chatRequest = new()
+	{
+		UserMessage    = userMessage,
+		ConversationId = conversationId
+	};
+
+	bool userMessageAdded = false;
+
+	// Your server relays the messages back from the Orpius server.
+	// The messages may contain zero or more API calls for tools,
+	// and one or more messages from the assistant.
+	await foreach (ChatResponse response in client.Chat(chatRequest))
+	{
+		if (!userMessageAdded)
+		{
+			Messages.Add(userMessage);
+			PromptText       = string.Empty;
+			userMessageAdded = true;
+		}
+
+		conversationId = response.ConversationId;
+
+		SystemMessage? systemMessage = response.SystemMessage;
+
+		if (systemMessage is not null)
+		{
+			Messages.Add(systemMessage);
+		}
+
+		AssistantMessage? assistantMessage = response.AssistantMessage;
+
+		if (assistantMessage is not null)
+		{
+			Messages.Add(assistantMessage);
+		}
+	}
+}
+```

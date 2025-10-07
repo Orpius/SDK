@@ -63,7 +63,8 @@ namespace SampleProtobufNet
 
 		ActionCommand? sendMessageCommand;
 
-		public ICommand SendMessageCommand => sendMessageCommand ??= new ActionCommand(SendMessage);
+		public ICommand SendMessageCommand 
+			=> sendMessageCommand ??= new ActionCommand(SendMessage);
 
 		void SendMessage(object? arg)
 		{
