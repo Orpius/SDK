@@ -323,7 +323,7 @@ which can be a good choice for building cross-platform apps in .NET.
 The mobile sample app consists of a single window (see below),
 with a `MainWindowViewModel` class providing its behaviour.
 
-![Mobile sample design time](/Images/MobileSampleDesign.png)
+![Mobile sample design time](Images/MobileSampleDesign.png)
 
 *Mobile sample design-time*
 
