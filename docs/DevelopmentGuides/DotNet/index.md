@@ -129,5 +129,140 @@ URLs of this type usually begin with a unique identifier (GUID) assigned to your
 **Example:**  
 `https://fscnry5cyy3myzh55kky4jmgjx.app.orpius.com`
 
+Finally, to complete our Operation's setup, we use the `AddOrpiusOperations`
+extension method; passing it the GetOrpiusServerUri delegate 
+that returns the Orpius server’s base URL.
+
+```cs
+services.AddOrpiusOperations(GetOrpiusServerUri);
+```
+
+## Calling your Operation
+
+In the *Sample_AspNetCore_ProtobufNet* project 
+there is a `IMyMobileAppService` gRPC service, with a single mthod `Chat`.
+
+We'll use this service to accept incoming chat requests from our sample mobile
+app in the project *Sample_MobileApp_ProtobufNet*.
+
+There is nothing specific to Orpius in the service definition.
+It merely defines a gRPC service with a single service method.
+
+```cs
+[Service("MyMobileAppService")]
+public interface IMyMobileAppService
+{
+	IAsyncEnumerable<ChatResponse> Chat(MobileAppChatRequest request,
+										CallContext context = default);
+}
+```
+
+The single parameter of type `MobileAppChatRequest`, is shown below.
+It uses the *Protobuf-net* `ProtoContractAttribute` and `ProtoMemberAttribute` attributes.
+See below:
+
+```cs
+[ProtoContract]
+public class MobileAppChatRequest
+{
+	[ProtoMember(1, IsRequired = true)]
+	public required UserMessage UserMessage { get; set; }
+
+	[ProtoMember(2, IsRequired = false)]
+	public required Guid? ConversationId { get; set; }
+}
+```
+
+The SDK's `UserMessage` type contains a `string` *Text* property,
+which is the text that ultimately makes its way to your AI Agent,
+and a `Guid` *PublicId* property, which allows you to correlate messages in your application.
+Response messages `AssistantMessage` and `SystemMessage` also contain a `PublicId` property.
+We look closer at the request/response API later in the document.
+**TODO: ensure we have this**
+
+The `IMyMobileAppService` implementation is `MyMobileAppService` 
+and it is located in the same directory.
+
+It is placed in the services collection in the `Program` class's `Main` method, like so:
+```cs
+services.AddAssociatedSingletons<IMyMobileAppService, MyMobileAppService>();
+```
+
+The `AddAssociatedSingletons` extension method is contained with the sample project.
+We use it to register the interface for use with gRPC rather than the class itself.
+
+```cs
+static class ServiceCollectionExtensions
+{
+	internal static void AddAssociatedSingletons<TInterface, TImplementation>(this IServiceCollection services)
+		where TInterface : class
+		where TImplementation : class, TInterface
+	{
+		services.AddSingleton<TImplementation>();
+		services.AddSingleton<TInterface>(sp => sp.GetRequiredService<TImplementation>());
+	}
+}
+```
+
+This allows use to then register the gRPC service, using its interface, like so:
+
+```cs
+app.MapGrpcService<IMyMobileAppService>();
+```
+
+Now we've seen how to register the custom service, let's take a look at its implementation.
+
+The constructor for `MyMobileAppService` requires an instance of `IOperationsService`,
+which is provided when the `IOperationsService` is resolved, 
+via the `IServiceCollection` and dependency injection. See below.
+
+Likewise, the ASP.NET Core built-in service container 
+resolves the `IOperationsService` (located in the SDK library project).
+
+The `IOperationsService` provides the asynchronous message sending API to Orpius.
+The `MyMobileAppService.Chat` method takes the custom `MobileAppChatRequest` request
+and pulls out the `UserMessage` property; assigned it to the *chatRequest* instance.
+The `ExternalId` of the Operation is included.
+Given that the `IOperationsServiceParameters` was previously added
+to the services collection, the `IOperationsService` has everything it needs
+to action the request.
+
+You'll notice that we send a list of `Tool` objects along with the `ChatRequest`.
+These define what, if any, custom tools can be used by your AI agent
+when performing the request. We delve into that in greater detail later.
 
 
+
+```cs
+public class MyMobileAppService : IMyMobileAppService
+{
+	readonly IOperationsService operationsClient;
+
+	public MyMobileAppService(IOperationsService operationsClient)
+	{
+		this.operationsClient = operationsClient 
+			?? throw new ArgumentNullException(nameof(operationsClient));
+	}
+
+	public async IAsyncEnumerable<ChatResponse> Chat(MobileAppChatRequest request, 
+													 CallContext context = default)
+	{
+		ChatRequest chatRequest = new(
+			operationExternalId: ApplicationState.OperationsSettings.ExternalId,
+			userMessage: request.UserMessage)
+		{
+			Tools = new List<Tool>
+			{
+				new(name: nameof(FlightStatusChecker)) { ToolPresence = ToolPresence.Required },
+				new(name: "WeatherForecast") { ToolPresence           = ToolPresence.Required }
+			},
+			ConversationId = request.ConversationId
+		};
+
+		await foreach (ChatResponse response in operationsClient.Chat(chatRequest))
+		{
+			yield return response;
+		}
+	}
+}
+```

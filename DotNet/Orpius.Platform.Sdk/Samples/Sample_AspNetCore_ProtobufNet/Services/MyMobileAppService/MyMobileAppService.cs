@@ -12,7 +12,8 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 
 		public MyMobileAppService(IOperationsService operationsClient)
 		{
-			this.operationsClient = operationsClient ?? throw new ArgumentNullException(nameof(operationsClient));
+			this.operationsClient = operationsClient 
+									?? throw new ArgumentNullException(nameof(operationsClient));
 		}
 
 		public async IAsyncEnumerable<ChatResponse> Chat(MobileAppChatRequest request, 

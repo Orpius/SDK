@@ -14,7 +14,8 @@ namespace Sample_AspNetCore_ProtobufNet.Services
 	[Service("MyMobileAppService")]
 	public interface IMyMobileAppService
 	{
-		IAsyncEnumerable<ChatResponse> Chat(MobileAppChatRequest request, CallContext context = default);
+		IAsyncEnumerable<ChatResponse> Chat(MobileAppChatRequest request,
+											CallContext context = default);
 	}
 
 	[ProtoContract]
