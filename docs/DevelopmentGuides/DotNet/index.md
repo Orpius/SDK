@@ -300,6 +300,24 @@ you want the agent itself to process.
 The `Context` property, on the other hand, provides key/value pairs shared 
 with your custom tools. These values persist across tool calls 
 and can be modified as tools run. For example, one tool might update 
-the context, and those changes will be visible to others for the lifetime of the conversation.
+the context, and those changes will be visible to others 
+for the lifetime of the conversation.
 Importantly, the AI Agent does *not* have access to the `Context` contents.
 
+## Exploring the Mobile App sample
+
+The sample mobile app, located in the *Sample_MobileApp_ProtobufNet* project,
+demonstrates how you can connect a client-facing application with a middle-ware
+application using gRPC. The mobile app sends text, entered by a user,
+to the *Sample_AspNetCore_ProtobufNet* project. 
+
+The mobile app project links in the `IMyMobileAppService` interface
+from the web application. It also references the *Orpius.Platform.ClientSdk.ProtobufNet*
+library, giving it access to the types sent to and from the Orpius `IOperationsService`.
+
+The sample app has been built using [Avalonia](https://avaloniaui.net/),
+which can be a good choice for building cross-platform apps in .NET.
+
+![Mobile sample design time](/Images/MobileSampleDesign.png)
+
+*Mobile sample design-time*

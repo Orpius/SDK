@@ -4,7 +4,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:s="clr-namespace:SampleProtobufNet"
 		xmlns:inferencing="clr-namespace:Orpius.Platform.Inferencing;assembly=Orpius.Platform.ClientSdk.ProtobufNet"
-		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
 		x:Class="SampleProtobufNet.MainWindow"
 		Title="Sample using ProtobufNet"
 		x:DataType="s:MainWindowViewModel">
