@@ -6,7 +6,7 @@
   - [Calling your Operation](#calling-your-operation)
 - [Including Call Specific Information in a Chat](#including-call-specific-information-in-a-chat)
   - [Exploring the Mobile App sample](#exploring-the-mobile-app-sample)
-  - [Bringing in your own Custom Tools](#bringing-in-your-own-custom-tools)
+  - [Connecting Your Code to Orpius](#connecting-your-code-to-orpius)
 <!--/TOC-->
 
 ## Getting Started with the Orpius SDK
@@ -508,7 +508,7 @@ a different technology.
 </DataTemplate>
 ```
 
-## Bringing in your own Custom Tools
+## Connecting Your Code to Orpius
 
 One of the most powerful aspects of integrating Orpius 
 into your applications is that your AI Agents can securely call 
