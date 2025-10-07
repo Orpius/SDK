@@ -2,7 +2,7 @@
 # Welcome to Orpius
 This guide provides an overview of Orpius and instructions for getting started.
 # Introducing Orpius
-Orpius is a unified system that provides the core infrastructure for LLM-driven applications.
+Orpius is a unified, ready-to-use system that provides the core infrastructure for building AI-driven applications.
 
 You can use Orpius as a:
 * **Foundation to integrate AI into existing applications**
@@ -13,7 +13,7 @@ Gives you a ready environment for building AI-powered solutions from the ground 
 All configuration is handled through the Orpius Console, a desktop client that runs on the same infrastructure available to your applications so anything the platform can do, the Console can do directly. The Console is also aware of the system itself, letting you set up parts such as events through an interactive chat interface.
 
 ## Orpius Provides
-Orpius offers a complete foundation for building and running AI-driven applications. 
+Orpius provides a complete foundation for building and running AI-driven applications.
 
 It includes:
 * **Integration with external systems** via API-driven events or customer-facing AI agents
@@ -24,14 +24,14 @@ It includes:
 * **Security**
 * **Secrets system**
 * **Orchestration** 
-* **Tooling framework** with Built-in tools that provide core capabilities out of the box
+* **Tooling framework** with Built-in tools that provide core capabilities out of the box and support for custom tooling
 * **Messaging system**
 * **Collaboration and team awareness** across time zones
 * **Scheduling** for running tasks at defined times or intervals
-* **Built-in tools** with support for custom tooling
+
 
 ## Built-in Productivity Features
-The following examples show some of the productivity features available directly in the Console. This may give you a sense of what you can achieve in your own applications, though with custom tooling you can expand the capabilities much further. 
+The following examples show some of the productivity features available directly in the Console. These may give you a sense of what you can achieve in your own applications, though with custom tooling you can expand the capabilities much further. 
 
 For example, you can use chat in the Console to instruct Orpius to:
 * Schedule and carry out tasks
@@ -46,7 +46,7 @@ Currently, the Orpius platform is deployed as a single-tenant cloud service. Sup
 # System Structure Overview
 Orpius is organized around organizations and spaces. 
 
-At the top level is the **Organization**, which represents your company or team.  Each Organization contains one or more **Spaces**.   
+At the top level is the **Organization**, which represents your company or team. Each Organization contains one or more **Spaces**.   
 
 When Orpius is first installed, a default organization and space are created automatically for each user. 
 
@@ -161,6 +161,7 @@ Agents in Orpius do not have fixed tools or workflows of their own. Instead, the
 When integrating your application with Orpius, you configure a **Custom Agent**. This agent will handle all incoming requests from your application.
 
 ## Configuring a Custom Agent
+
 To create a custom agent:
 1. Open the **Agents** pane from the sidebar 
 2. Select **+ New Agent**.
@@ -172,6 +173,7 @@ To create a custom agent:
 8. Save.
 
 # Agent Tools
+
 Tools in Orpius are not tied to a single agent. They live in a shared pool that any agent can access if it has permission. Tools can be combined, triggered by events, and reused across different agents. Agents can autonomously select and combine the tools they need to complete a task.
 
 ## Build-in Tools
@@ -216,6 +218,7 @@ What the agent does:
 In addition to the built-in tools, you can register your own custom tools (plugins) with Orpius. These extend the system with domain-specific capabilities that your agents can use during inferencing.
 
 ## How it works:
+
 1. **Register a custom tool** – Open the **Agent Tools** pane from the sidebar and select **Custom Tools**.
 2. **Integrate with your application** – Copy the **External ID** and **Access Key**, then paste them into **your application**.
 3.**Expose functionality to Orpius** – Decorate your code with the [Tool] and [ToolMethod] attributes.
@@ -234,8 +237,13 @@ Orpius is designed to be adaptive rather than following rigid workflows. To keep
 Using a foundation like Orpius allows you to add an agentic security layer to your application. This works similarly to the principle of Segregation of Duties (SoD): customer-facing agents can use events to signal more privileged agents to perform tasks, without directly exposing sensitive capabilities such as scheduling, storage, or team information to customers.
 
 ## HTTP Parameters
+
 * Parameters starting with an underscore ( _ ) are passed to your tool only.
 * Parameters without an underscore are passed to your tool and the AI Agent.
+
+
+*Tip* For instructing events or activities avoid any mentions of the schedulle or the actual event in the task descriptopn becaise it confuses the agents and the agent may attmept to store the infor in the memoery if it think it has to wait. You must say do this now.
+*tip* When defining events or activities, avoid using words like schedule, event, or similar timing references in the task description. This can confuse the agent, causing it to interpret the instruction as a command to schedule itself or create an event. Instead, phrase the instruction as an immediate action i.e. "Do this now."
 
 Example of how events may flow in a Surveillance Application
 A camera sends a motion detected event. You configure this event to trigger a notification activity and an analysis activity. Orpius then orchestrates the response: it notifies the right user, launches the analysis, and, depending on the outcome, can automatically trigger follow-up actions such as raising an alert, starting a recording, or handing off to another tool.
@@ -244,21 +252,62 @@ A camera sends a motion detected event. You configure this event to trigger a no
 There are two ways to define an event in Orpius: manually or via chat.
 
 **Manual setup**
-1. Register the event
-    * Open the Events pane from the sidebar.
-    * Click the + icon to add a new event.
+1. **Register the event**
+    * Open the **Events** pane from the sidebar.
+    * Select **+ New Event**.
     * In the Event Configuration pane, enter the event name (for example, NewOrderReceived).
-2. Define the triggered work
-    * In the Triggered Work pane, click the + icon to add a task.
-    * Provide a Title and clear Instructions for the agent (for example, send a notification to the user or update the database).
+2. **Define the triggered work (Activity)**
+    * In the Triggered Work pane, select  **+ New Activity**.
+    * Provide a **Title** and clear **Instructions** for the agent (for example, send a notification to the user).
     * (upcoming feature) Supply Custom Tools that the agent can use when executing the task.
-3. Trigger and execute
-    * When an external system fires the NewOrderReceived event, Orpius automatically executes the defined tasks.
+3. **Trigger and execute**
+    * When an external system fires the NewOrderReceived event, Orpius automatically executes the defined activity.
 
 This allows automation of tasks based on external triggers using Orpius events.
 
+
 **Setup via Chat**
-* Open a chat window
-* Orpius understands events and can be directed through chat to create new ones with specific actions
-* For example, you could say: "Create an event named 'NewOrderReceived' that sends me a notification with the order details when triggered."
+
+Orpius understands events and can be instructed through chat to create new ones with specific actions.
+
+* Start new **Chat** 
+* For example, you could say: *"Create an event named 'NewOrderReceived' that sends me a notification with the order details when triggered."*
 * Orpius will then register the event and set up the instructions accordingly, including your user ID for proper execution.
+* Open the **Events** pane to review or modify the newly created event.
+
+
+# Isolated Storage
+
+Each organisation has an allocated shared storage area that can be used across its spaces.
+
+Files uploaded here can be accessed directly by agents within the same space. This allows you to provide data, documents, or other resources for your agents to use while keeping everything securely contained.
+
+Agents can read, write, and modify files within this storage.
+
+For example, you could upload a sales report and ask Orpius:
+
+*"Summarise the key trends from last quarter's sales and write the summary to a file called SalesSummary.txt. If the file already exists, append to it."*
+
+Access to files within a space is controlled by permission levels. Members with roles above Participant have access to files in that space.
+
+## Uploading files
+
+* Open the **Files** pane from the sidebar
+* Click the **Upload** icon and select the files you want to upload
+* Click **Open**
+
+
+## Downloading files
+
+* Open the **Files** pane from the sidebar
+* Select the file(s) you wish to download and click the **Download** icon
+* Choose the folder where you want the files saved
+
+**Please note**: in the pre-release version, files downloaded locally are not being managed. This means they may overwrite an existing file in the chosen folder without warning.
+
+## Creating files using chat
+
+Orpius can create a wide variety of file types depending on your needs. Common examples include text files (e.g. .txt, .csv), code files (e.g. .cs, .py, .js), document files (e.g. .md, .html), and data files (e.g. .json, .xml).
+* Start new **Chat**
+* For example, you could say: *"Create a file called test.txt and insert 10 city names."*
+* Orpius will create a new file named test.txt containing the 10 city names and save it in your isolated storage directory.
