@@ -39,6 +39,8 @@ namespace Sample_AspNetCore_ProtobufNet
 			services.AddSingleton(BinderConfiguration.Create(
 				binder: new BinderFromServices(builder.Services)));
 
+			/* We enable HTTP1 and HTTP2 support for development purposes,
+			   enabling gRPC support over non-TLS channels. */
 			builder.WebHost.ConfigureKestrel(
 				options => { options.ConfigureEndpointDefaults(
 					e => { e.Protocols = HttpProtocols.Http1AndHttp2; }); });
