@@ -6,7 +6,7 @@ This guide provides an overview of Orpius and instructions for getting started.
 
 # Introducing Orpius
 
-Orpius is a system that gives developers the infrastructure they need to connect AI capabilities to their applications with minimal setup.
+Orpius is an unified agentic system that gives developers the infrastructure they need to connect AI capabilities to their applications with minimal setup.
 
 You can use Orpius as a:
 * **Foundation for integrating AI into existing applications**
@@ -17,14 +17,15 @@ Gives you a ready environment for building AI-powered solutions from the ground 
 All configuration is handled through the Orpius Console, a desktop client that runs on the same infrastructure available to your applications so anything the platform can do, the Console can do directly. The Console is also aware of the system itself, letting you set up parts such as events through an interactive chat interface.
 
 ## Orpius Provides
-Orpius provides a complete foundation for building and running AI-driven applications.
+
+Orpius provides a complete foundation for building AI-driven applications.
 
 It includes:
 * **Integration with external systems** via API-driven events or customer-facing AI agents
 * **Built-in capabalities**
     * **Code execution tooling** currently supports C#, with Java and VB coming soon
     * **Events registeration and triggering**
-    * **Notification and messaging** for collaboration and **team awareness** across time zones
+    * **Notification and messaging and Team Awareness** across time zones
     * **Scheduling** for running tasks at defined times or intervals
     * **Memory**
     * **Video feed image analysis**
@@ -38,22 +39,25 @@ It includes:
 * **Tools Integration** with Built-in tools that provide core capabilities out of the box and support for custom tooling
 
 
-
-
 ## Built-in Productivity Features
-The following examples show some of the productivity features available directly in the Console. These may give you a sense of what you can achieve in your own applications, though with custom tooling you can expand the capabilities much further. 
+
+The following examples show some of the productivity features available directly in the Console. These may give you some sense of what you can achieve in your own applications, though with custom tooling you can expand the capabilities much further. 
 
 For example, you can use chat in the Console to instruct Orpius to:
 * Schedule and carry out tasks
 * Read, analyze, and write files
 * Apply image analysis to video streams in real time
 * Send emails and notifications to members of your team
-* Organize meeting that suit everyone’s time zone
+* Organize meeting that suit everyone's time zone
 
 # Deployment
+
 Currently, the Orpius platform is deployed as a single-tenant cloud service. Support for on-premises deployments is planned.
 
+**Note**: A multitenant environment is provided for evaluation and proof-of-concept testing.
+
 # System Structure Overview
+
 Orpius is organized around organizations and spaces. 
 
 At the top level is the **Organization**, which represents your company or team. Each Organization contains one or more **Spaces**.   
@@ -71,6 +75,7 @@ When Orpius is first installed, a default organization and space are created aut
 **Space** – A workspace within an organization, similar to a project or repository. Spaces contain all the resources for a specific project, such as agents, tools, models, operations, and events. Each organization can have multiple spaces, and access is controlled through roles and permissions.
 
 # Getting started
+
 Before you can start working with Orpius, you will need:
 
 * **Orpius Client Application (Orpius Console)** – A lightweight desktop client for configuring everything from models to agents and tools.
@@ -78,14 +83,14 @@ Before you can start working with Orpius, you will need:
 * **Access to Email server (System owners only)** – Because Orpius runs in your own private cloud, email handling is not provided as a shared service. An email server is required during initial setup so new users can verify their email addresses (a sending-only server is sufficient). It will also be used to send notifications or messages to team members. In addition, we have future plans to introduce email driven events.
 * **Access to your own LLM provider** – Orpius connects to AI models you choose whether hosted on-premises or in the cloud. It currently supports OpenAI and Azure OpenAI, with more providers to follow.
 
-In a nutshell, how it works:
+## How it works:
 
 1. **Configure** – Define your models, agents, events, and operations in the Orpius Console.
 (Operations are the chat entry points (AI assistants) through which your systems or users interact with your agents.)
 2. **Integrate with your system** – Add the SDK libraries to your application, and by coping and pasting the credentials from Orpius client to your application, embed the AI assistant directly into your application.
 3. **Execute** – The AI assistant can now call your server-side tools. The Orpius Server runs them and manages orchestration, integration, state, storage, and security.
 
-# Installing the Orpius Console Application
+# Installing the Client Application
 
 The Orpius Console is a lightweight desktop client that connects directly to the Orpius infrastructure.
 
@@ -102,13 +107,16 @@ Follow these steps:
 5. Enter the Access Key (System owners only).
 
 # Setting up Orpius for the first time
+
 ## Setting up email server (System owners only)
+
 During first-time setup, you’ll be prompted to enter your email server details. The email server is used by Orpius to handle email requests such as sending messages to team members. Setting up the email server as part of the initial setup is a required step because it allows new users to verify their email address. 
 
 Enter your email server details.
 You can update this information later in **System Settings**.
 
 ## Creating an user account
+
 Every Orpius user creates and signs into a user account.
 
 During the first time setup, you’ll be prompted to create your account.
@@ -120,6 +128,10 @@ During the first time setup, you’ll be prompted to create your account.
 You’ll receive a confirmation email from the system address you configured during email server setup (e.g. noreply@yourdomain.com) containing a code.
 
 If you see an error message, click **Previous** and check that your email address and email server information are correct.
+
+## Managing Limits and Restrictions (System owners only)
+
+Email, Event Server Port. Organization user count, Organization, Appliation Iferencing, Workflow
 
 # First Launch
 After the initial setup is completed, Orpius opens in the Spaces view. Each user begins with an auto-generated default Space. For more details on creating and managing Spaces, see Spaces.
@@ -141,12 +153,14 @@ Within a Space, you can:
 * Interact with LLMs via chat 
 
 ## Creating a Space
+
 To create a new Space:
 1.	From the **Space View** page, select **Create a Space**.
 2.	Enter a name for the Space. 
 3.	Confirm to create.
 
 # Models
+
 The system is designed to work with any AI model, whether hosted **on-premises** or in the **cloud**. Currently, OpenAI and Azure OpenAI are supported, with more providers to follow.
 
 You can configure as many models as you need. For example, some agents might use GPT-5 for complex tasks, while others can run on a lower-cost model such as OpenAI gpt-5-mini. 
@@ -159,6 +173,7 @@ You can configure as many models as you need. For example, some agents might use
 4. Save
 
 # Agents
+
 In Orpius, Agents are consider users, just like humans. Orpius includes two built-in agents: **Orpius** and **Phaedra**.
 * **Orpius** is the agent you interact with directly through chat.
 * **Phaedra** is the agent that orchestrates non-interactive conversations, such as scheduled tasks and background activity execution.
@@ -212,11 +227,10 @@ The following **example** shows how a simple instruction can lead the agent to *
 
 **Prompt:**
 
->Analyze <%=Key:WebCam%> every 2 minutes, record the findings into a file and notify John if cars are parked in the restricted space. 
+>*Add a scheduled item for every 2 minutes to analyze rtsp://orpius:<%=Key:WebCam%>@172.22.22.69:554/cam/realmonitor?channel=1&subtype=0. Please record the car colors and their position in the bays to a csv file named 'parking.csv' by appending to the file. If it doesn't exist, create it with the column headers. If it already exists then append the data to the file without the headers.
+Include a row for each car you see. Notify John if cars are parked in the restricted space.*
 
-**Note:** that the prompt may be made more descriptive, i.e. specifying the file name and extension, providing instructions on how to append the file and what information to record and how.)
-
-What the agent does:
+**What the agent does:**
 1. Retrieves the video stream URL **(Secrets)**
 2. Connects to the video stream **(VideoFeedMonitor)**
 3. Captures a frame every two minutes **(Scheduler)**
@@ -233,7 +247,7 @@ In addition to the built-in tools, you can register your own custom tools (plugi
 
 1. **Register a custom tool** – Open the **Agent Tools** view from the sidebar and select **Custom Tools** .
 2. **Integrate with your application** – Copy the **External ID** and **Access Key**, then paste them into **your application**.
-3.**Expose functionality to Orpius** – Decorate your code with the [Tool] and [ToolMethod] attributes.
+3. **Expose functionality to Orpius** – Decorate your code with the [Tool] and [ToolMethod] attributes.
 4. **Execute** – The Orpius SDK automatically receives and dispatches tool requests at runtime.
 
 See the **SDK documentation** for more details on custom tools. Example implementations are included in the downloadable SDK.
@@ -335,7 +349,7 @@ Orpius can create a wide variety of file types depending on your needs. Common e
 * For example, you could say: *"Create a file called test.txt and insert 10 city names."*
 * Orpius will create a new file named test.txt containing the 10 city names and save it in your isolated storage directory.
 
-# Team Management
+# Team Awareness and Management
 
 Each organization can contain multiple spaces, and each space can have as many members as needed. 
 
@@ -348,14 +362,35 @@ Orpius has built-in team awareness across time zones and can plan or take action
 * Or you might ask *"Please thank John for the lovely flowers"*
 * Orpius will send John both an email and a notification on your behalf.
 
-In system settings can (System Owners only:
-• Set the maximum number of users in an organisational unit.
-• Set the maximum number of administrators in an organisational unit.
-• Restrict new users to having an email address within the organisation by configuring a regular expression. For example: ^[A-Za-z0-9._%+-]+@yourcompany\.(com|org|net)$
 
-Adding Members
-The Owner and Administrator of a space can invite members, either from within or outside the organisation. Each member is assigned a role that determines their permissions:
-• Participant – minimal permissions. Can receive notifications (email) and perform tasks.
-• Editor – includes all Participant privileges, plus the ability to modify content and manage tasks in the space.
-• Administrator – can manage members, configure settings, and oversee activity.
-• Owner – full control over the space, including deleting it or transferring ownership.
+## Adding Members to a Space
+
+Users with the **Administrator** or **Owner** permission level can invite members to a space, either from within or outside the organisation.
+
+Each member is assigned a **role** that determines their permissions:
+
+* **Participant** – minimal access. Can receive notifications (email) and perform tasks.
+* **Editor** – includes all Participant privileges, plus the ability to modify content and manage tasks in the space.
+* **Administrator** – can manage members, configure settings, and oversee activity.
+* **Owner** – full control over the space, including deleting it or transferring ownership.
+
+**Adding a member to a space:**
+* Open the **Team** view from the sidebar
+* Select the **'+ Add New Team Member'** button in the toolbar of the **Team** view
+* Search for the team memebr you wish to add
+* Select the desired permission, optionally enter a message for the team memeber
+* Send Invitation
+
+**Accepting invitation:**
+* Sign in to the Orpius Console and select any Space (invitations are visible in all your spaces).
+* Open the **Notification** View - You'll see an invitation notification to a Space you've been invited to join.
+* Accept the invitation
+* Sign in again to access the Space view, where you can see your new Space.
+
+### Managing User Limits (System Owners only)
+
+System owners can configure limits that control user access across the organisation:
+* **Set the maximum number of users** in an organisation.
+* **Set the maximum number of administrators** in an organisation.
+* **Restrict new users** to having an email address within the organisation by configuring a regular expression. For example: ```^[A-Za-z0-9._%+-]+@yourcompany\.(com|org|net)$```
+
