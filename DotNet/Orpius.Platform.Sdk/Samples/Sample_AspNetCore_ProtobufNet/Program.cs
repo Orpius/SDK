@@ -55,24 +55,21 @@ namespace Sample_AspNetCore_ProtobufNet
 			/* We provide one or more IToolRegistrationParameters instances,
 			   which are used to register tools with the Orpius server.
 			   NOTE: You can add multiple IToolRegistrationParameters instances.
-			         All are registered. */
-			services.AddSingleton<IToolRegistrationParameters>(
-				sp =>
+					 All are registered. */
+			FuncRegistrationParameters toolRegistrationParameters
+				= new(getLocalUrl: () => ApplicationState.ToolsRegistrationSettings.IncomingUrl,
+					getExternalId: () => ApplicationState.ToolsRegistrationSettings.ExternalId,
+					getApiKey: () => ApplicationState.ToolsRegistrationSettings.AccessKey)
 				{
-					return new FuncRegistrationParameters(
-						getLocalUrl: () => GetApplicationUri(sp),
-						getExternalId: () => ApplicationState.ToolsRegistrationSettings.ExternalId,
-						getApiKey: () => ApplicationState.ToolsRegistrationSettings.ApiKey)
+					CallBackHeaders = new List<HeaderMessage>
 					{
-						CallBackHeaders = new List<HeaderMessage>
-						{
-							/* Headers are sent back to your application with each `UseTool` request,
-							   allowing you to authenticate the Orpius server.
-							   These are encrypted and stored securely by the Orpius system. */
-							new("MySecretHeader", "MyValue")
-						}
-					};
-				});
+						/* Headers are sent back to your application with each `UseTool` request,
+						   allowing you to authenticate the Orpius server.
+						   These are encrypted and stored securely by the Orpius system. */
+						new("MySecretHeader", "MyValue")
+					}
+				};
+			services.AddSingleton<IToolRegistrationParameters>(toolRegistrationParameters);
 
 			services.AddOrpiusToolRegistration(GetOrpiusServerUri, 
 						dangerousAcceptAnyCertificate: true)

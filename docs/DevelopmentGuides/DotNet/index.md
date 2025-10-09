@@ -68,15 +68,21 @@ See [Operations](../../UserGuide/Operations/Operations.md).
 
 You'll need the *External ID* and *Access Key 1* to connect your application to Orpius.
 
-
+Debugging the sample launches the sample mobile application and the sample
+ASP.NET Core web application. The web application's home pages have fields
+for your Operation settings. See below.
 
 ![Entering Operation Registration Information](Images/SampleWeb1.png)
 
 *Entering Operation Registration Information*
 
+Once you've pasted your Orpius URL, entered your Operations credentials,
+and pressed the *Apply Operation Settings* button, 
+the sample mobile should relay input to your AI Agent, as shown below:
 
+![Chatting with the agent](Images/MobileApp1.png)
 
-
+*Chatting with the agent*
 
 ## Setting up Your Middle-Tier Application
 
@@ -534,12 +540,42 @@ and deterministic results. This approach eliminates much
 of the uncertainty around agent reliability while allowing 
 you to expose only the capabilities you choose, under your own security model.
 
+The *Custom Tools* section of the *Agent Tools* view in the console
+contains the credentials your need to register your middle-ware server
+with the Orpius backend. See below.
+
 ![Copying custom tool credentials from console](Images/ConsoleCustomTools.png)
 
 *Copying custom tool credentials from console*
 
+Copy the *External ID* and *Access Key 1* into the corresponding
+fields into the *Tools Registration* section 
+into the sample middle-ware application. See below.
+
+The URL field needs to be populated with a URL that Orpius can use
+to call back to the middle-ware application.
+Please see the guidance on how to [Create a Secure Channel](../../UserGuide/CreatingAChannel/index.md)
+Once you have set up the secure channel to your machine,
+insert the Cloudflare URL into the text box.
+
+The *Apply Tools Registration Settings* button, sends the API surface
+of the custom tools located in the project over to Orpius,
+along with the callback URL.
+Orpius then provides your custom agent with the information
+it needs to call the APIs on your server.
+All this is done automatically for you.
+
 ![Entering Tool Registration Information](Images/SampleWeb2.png)
 
 *Entering Tool Registration Information*
+
+With the registration successful, when you return 
+to the sample mobile app, and enter a prompt, 
+such as "What is the status of flight 123?", your custom agent
+now has the means to go and look-up that information via your middle-ware
+server. It dutifully does so, and returns the information to you.
+See below.
+
+
 
 

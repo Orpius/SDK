@@ -4,6 +4,7 @@ using System.Linq;
 
 using Grpc.Core;
 
+using Orpius.Platform.Collections;
 using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 
@@ -11,13 +12,21 @@ namespace Orpius.Platform.Tooling.ToolRegistration.RpcServiceModel
 {
 	public class ToolRegistrationInterceptor : InterceptorForHeadersBase
 	{
-		readonly IDictionary<Guid, IToolRegistrationParameters> dictionary;
+		readonly MutableKeyIndex<Guid, IToolRegistrationParameters> keyIndex;
 
 		public ToolRegistrationInterceptor(IEnumerable<IToolRegistrationParameters> parameters)
 		{
-			dictionary = parameters.ToDictionary(trp => trp.ToolsetExternalId);
+			IDictionary<Guid, IToolRegistrationParameters> dictionary
+				= parameters.ToDictionary(osp => osp.ToolsetExternalId);
+
+			/* Wrap with a self-healing index that knows how
+			   to read the current key from the value. */
+			keyIndex = new MutableKeyIndex<Guid, IToolRegistrationParameters>(
+				dictionary,
+				osp => osp.ToolsetExternalId);
 		}
 
+		/// <inheritdoc />
 		protected override CallOptions AddHeaders(CallOptions options, object request)
 		{
 			var externalIdOwner = request as IToolsetExternalIdProvider;
@@ -28,12 +37,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration.RpcServiceModel
 					$"The request must implement {nameof(IToolsetExternalIdProvider)}.", nameof(request));
 			}
 
-			if (!dictionary.TryGetValue(externalIdOwner.ToolsetExternalId, out IToolRegistrationParameters? trp))
-			{
-				throw new ArgumentException(
-					$"No tool registration parameters found for toolset ID: {externalIdOwner.ToolsetExternalId}",
-					nameof(IToolsetExternalIdProvider.ToolsetExternalId));
-			}
+			var trp = keyIndex.GetOrRepair(externalIdOwner.ToolsetExternalId);
 
 			Metadata meta = options.Headers ?? new Metadata();
 			meta.Add(ToolsRegistrationHeaders.ExternalId,

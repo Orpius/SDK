@@ -28,8 +28,8 @@
 </div>
 
 <div class="mb-3">
-	<label>API Key</label>
-	<input @bind="apiKeyInput" placeholder="Enter API Key" class="form-control"/>
+	<label>Access Key</label>
+	<input @bind="apiKeyInput" placeholder="Enter Access Key" class="form-control"/>
 	@if (!string.IsNullOrEmpty(apiKeyError))
 	{
 		<div class="text-danger">@apiKeyError</div>
@@ -69,7 +69,18 @@
 	{
 		<div class="text-danger">@toolsApiKeyError</div>
 	}
-	<div class="text-muted mt-1">Current: @ApplicationState.ToolsRegistrationSettings.ApiKey</div>
+	<div class="text-muted mt-1">Current: @ApplicationState.ToolsRegistrationSettings.AccessKey</div>
+</div>
+
+<div class="mb-3">
+	<label>URL where Orpius can reach this sample application</label>
+	<input @bind="toolsIncomingUrl" placeholder="https://....trycloudflare.com"
+		   class="form-control" />
+	@if (!string.IsNullOrEmpty(toolsIncomingUrlError))
+	{
+		<div class="text-danger">@toolsIncomingUrlError</div>
+	}
+	<div class="text-muted mt-1">Current: @ApplicationState.ToolsRegistrationSettings.IncomingUrl</div>
 </div>
 
 <div class="mb-5">
@@ -128,9 +139,11 @@
 
 	string? toolsExternalIdInput;
 	string? toolsApiKeyInput;
+	string? toolsIncomingUrl;
 
 	string? toolsExternalIdError;
 	string? toolsApiKeyError;
+	string? toolsIncomingUrlError;
 
 	bool registering;
 	bool registrationSucceeded;
@@ -143,8 +156,9 @@
 			ApplicationState.OrpiusServerUrl = urlInput;
 		}
 
-		toolsExternalIdError = null;
-		toolsApiKeyError  = null;
+		toolsExternalIdError  = null;
+		toolsApiKeyError      = null;
+		toolsIncomingUrlError = null;
 
 		if (Guid.TryParse(toolsExternalIdInput, out Guid parsedExternalId) 
 			&& parsedExternalId != Guid.Empty)
@@ -159,11 +173,20 @@
 		if (Guid.TryParse(toolsApiKeyInput, out Guid parsedAccessKey) 
 			&& parsedAccessKey != Guid.Empty)
 		{
-			ApplicationState.ToolsRegistrationSettings.ApiKey = parsedAccessKey;
+			ApplicationState.ToolsRegistrationSettings.AccessKey = parsedAccessKey;
 		}
 		else if (!string.IsNullOrWhiteSpace(toolsApiKeyError))
 		{
 			toolsApiKeyError = "Invalid GUID format for Access Key.";
+		}
+
+		if (Uri.TryCreate(toolsIncomingUrl, UriKind.Absolute, out var toolsIncomingUri))
+		{
+			ApplicationState.ToolsRegistrationSettings.IncomingUrl = toolsIncomingUri;
+		}
+		else
+		{
+			toolsIncomingUrlError = "Invalid URL format for Incoming URL.";
 		}
 
 		registering         = true;
