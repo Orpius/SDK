@@ -6,14 +6,14 @@ This guide provides an overview of the Orpius system and instructions for gettin
 
 # Introducing Orpius
 
-Orpius is a ready-to-use system that gives developers a complete AI infrastructure for integrating AI capabilities into their applications without the need to build it from scratch.
+Orpius provides the AI infrastructure developers need to add AI capabilities to their applications without building it themselves.
 
 You can use Orpius as a:
-* **Foundation for integrating AI into existing applications**
+* **Foundation for integrating AI into existing applications** - 
 Provides all the infrastructure you need to add AI features without the overhead of building it yourself. 
-* **Foundation for developing new AI systems, applications and tools**
+* **Foundation for developing new AI systems, applications and tools** - 
 Gives you a ready environment for building AI-powered solutions from the ground up.
-* **Productivity tool**
+* **Productivity tool** - 
 All configuration is handled through the Orpius Console, a desktop client that runs on the same infrastructure available to your applications so anything the platform can do, the Console can do directly. The Console is also aware of the system itself, letting you set up parts such as events through an interactive chat interface.
 
 ## Orpius Provides
