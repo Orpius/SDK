@@ -37,7 +37,9 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		{
 			try
 			{
-				IEnumerable<RegistrationResult>? results = await toolRegistry.RegisterWithServerAsync().ConfigureAwait(false);
+				IEnumerable<RegistrationResult>? results 
+					= await toolRegistry.RegisterWithServerAsync().ConfigureAwait(false);
+
 				bool hasErrors = false;
 
 				if (results != null)
@@ -80,7 +82,8 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 
 			try
 			{
-				var results = await toolRegistry.DeregisterWithServerAsync(cancellationToken).ConfigureAwait(false);
+				IEnumerable<DeregistrationResult> results 
+					= await toolRegistry.DeregisterWithServerAsync(cancellationToken).ConfigureAwait(false);
 
 				bool hasErrors = false;
 				

@@ -13,19 +13,22 @@ namespace Orpius.Platform.Collections
 		}
 
 		/// <summary>
-		///     True if the dictionary has been modified since the last call to ResetVersion().
+		/// True if the dictionary has been modified
+		/// since the last call to ResetVersion().
 		/// </summary>
 		public bool Dirty { get; private set; }
 
 		/// <summary>
-		///     Call this after you detect/handle the change. Resets the dirty flag.
+		/// Call this after you detect/handle the change.
+		/// Resets the dirty flag.
 		/// </summary>
 		public void ResetDirty()
 		{
 			Dirty = false;
 		}
 
-		// Whenever someone writes to the dictionary, flip IsDirty = true
+		// Whenever someone writes to the dictionary,
+		// flip IsDirty = true
 		void MarkDirty()
 		{
 			Dirty = true;
@@ -38,7 +41,7 @@ namespace Orpius.Platform.Collections
 			get => inner[key];
 			set
 			{
-				// Only mark dirty if this is truly a *change* (optional check)
+				// Only mark dirty if this is truly a *change*.
 				if (!inner.TryGetValue(key, out string? oldValue) || oldValue != value)
 				{
 					inner[key] = value;

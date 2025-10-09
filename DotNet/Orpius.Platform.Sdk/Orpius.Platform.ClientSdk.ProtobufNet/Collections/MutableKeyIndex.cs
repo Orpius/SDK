@@ -79,9 +79,11 @@ namespace Orpius.Platform.Collections
 					/* Value not currently indexed under any key; index it now. */
 					TKey newKey = keySelector(matching);
 
-					if (map.TryGetValue(newKey, out TValue other) && !ReferenceEquals(other, matching))
+					if (map.TryGetValue(newKey, out TValue other) 
+						&& !ReferenceEquals(other, matching))
 					{
-						throw new InvalidOperationException($"Two values claim the same key: {newKey}");
+						throw new InvalidOperationException(
+							$"Two values claim the same key: {newKey}");
 					}
 
 					map[newKey] = matching;
@@ -91,7 +93,14 @@ namespace Orpius.Platform.Collections
 			}
 		}
 
-		/* Fast path that returns false instead of throwing when not found after repair. */
+		/// <summary>
+		/// Fast path that returns false instead of throwing when not found after repair.
+		/// </summary>
+		/// <param name="key"></param>
+		/// <param name="value"></param>
+		/// <returns><c>true</c> if the value is returned; <c>false</c> otherwise.</returns>
+		/// <exception cref="ArgumentNullException"></exception>
+		/// <exception cref="InvalidOperationException"></exception>
 		public bool TryGetOrRepair(TKey key, out TValue value)
 		{
 			if (key == null)
@@ -121,9 +130,11 @@ namespace Orpius.Platform.Collections
 					{
 						map.Remove(oldKey);
 
-						if (map.TryGetValue(newKey, out TValue other) && !ReferenceEquals(other, matching))
+						if (map.TryGetValue(newKey, out TValue other)
+							&& !ReferenceEquals(other, matching))
 						{
-							throw new InvalidOperationException($"Two values claim the same key: {newKey}");
+							throw new InvalidOperationException(
+								$"Two values claim the same key: {newKey}");
 						}
 
 						map[newKey] = matching;
@@ -140,9 +151,11 @@ namespace Orpius.Platform.Collections
 				{
 					TKey newKey = keySelector(matching);
 
-					if (map.TryGetValue(newKey, out TValue other) && !ReferenceEquals(other, matching))
+					if (map.TryGetValue(newKey, out TValue other) 
+						&& !ReferenceEquals(other, matching))
 					{
-						throw new InvalidOperationException($"Two values claim the same key: {newKey}");
+						throw new InvalidOperationException(
+							$"Two values claim the same key: {newKey}");
 					}
 
 					map[newKey] = matching;
@@ -153,7 +166,12 @@ namespace Orpius.Platform.Collections
 			}
 		}
 
-		/* Optional helper: add a value ensuring its current key is unique. */
+		/// <summary>
+		/// Add a value ensuring its current key is unique.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <exception cref="ArgumentNullException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public void AddOrReplaceByCurrentKey(TValue value)
 		{
 			if (value == null)
@@ -165,9 +183,11 @@ namespace Orpius.Platform.Collections
 			{
 				TKey key = keySelector(value);
 
-				if (map.TryGetValue(key, out TValue existing) && !ReferenceEquals(existing, value))
+				if (map.TryGetValue(key, out TValue existing) 
+					&& !ReferenceEquals(existing, value))
 				{
-					throw new ArgumentException($"Duplicate key detected: {key}", nameof(value));
+					throw new ArgumentException(
+						$"Duplicate key detected: {key}", nameof(value));
 				}
 
 				map[key] = value;

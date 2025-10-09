@@ -569,12 +569,158 @@ All this is done automatically for you.
 
 *Entering Tool Registration Information*
 
-With the registration successful, when you return 
-to the sample mobile app, and enter a prompt, 
+With the registration successful, your AI Agent is informed
+of the available of various tools that are located
+in the *Sample_AspNetCore_ProtobufNet* project.
+
+For example, you'll note the `FlightStatusChecker` class 
+in the 'ToolsThatIProvideToOrpius' directory.
+This class is a custom tool that we are giving access to the agent.
+Tools like it, live on your server and run in your application.
+If we ask a question pertaining to something that the Agent
+believes the tool can be used to retrieve, the Agent will make
+an API call that is funneled down to your application.
+
+When you return to the sample mobile app, and enter a prompt, 
 such as "What is the status of flight 123?", your custom agent
 now has the means to go and look-up that information via your middle-ware
 server. It dutifully does so, and returns the information to you.
 See below.
+
+![The Agent uses local tools](Images/MobileApp2.png)
+
+*The Sarah AI Agent using the local FlightStatusChecker tool*
+
+In the next section we take a closer look at how Orpius accomplishes this,
+and you'll how, with next to no effort, you can create your own
+engaging AI experiences that are enriched by your custom tools.
+
+### Creating a Custom Tool
+
+### Understanding Tools
+
+In the system prompt, usually at the beginning of a conversation,
+an AI agent is given the names of functions and their parameters
+that it can use to carry out particular tasks.
+In Orpius, agents are made aware of internal tools, 
+such as the *Notifier*, and they also told about custom tools.
+Custom tools are located outside of the Orpius kernel (the core application)
+and are created by you.
+
+All that is required to define a custom tool, 
+is a plain class decorated with the `[Tool]` attribute.
+In this class, you add methods that you'd like your agent to be able to 
+call; decorating them with a `[ToolMethod]` attribute. See below.
+
+> **NOTE:** The `ToolMethod.Description` property is important because this
+information is provided to your agent, and a carefully worded description
+will allow the agent to understand when and how to use the method.
+
+```cs
+[Tool]
+public class FlightStatusChecker
+{
+	[ToolMethod(Description = "Returns the flight status for the specified flight.")]
+	public async Task<GetStatusResponse> GetStatus(GetStatusRequest request, ICombinedContext context)
+	{
+		switch (request.FlightNumber)
+		{
+			case 123:
+				return new GetStatusResponse
+				{
+					DepartureTime = DateTime.UtcNow + TimeSpan.FromHours(1),
+					FlightStatus = FlightStatus.Delayed,
+					ExtraInformation = "Undergoing mechanical repairs."
+				};
+			case 456:
+				return new GetStatusResponse
+				{
+					DepartureTime = DateTime.UtcNow + TimeSpan.FromHours(3),
+					FlightStatus  = FlightStatus.OnTime,
+					ExtraInformation = string.Empty
+				};
+			default:
+				throw new RpcException(new Status(StatusCode.NotFound, 
+					$"Flight {request.FlightNumber} not found."));
+		}
+	}
+}
+```
+
+The `FlightStatusChecker` sample tool receives a `GetStatusRequest` argument,
+and returns a `GetStatusResponse` object.
+`GetStatusRequest` is shown below. Its `FlightNumber` property
+is decorate with the third attribute you need to know about; the `[ToolProperty]` attribute.
+
+`ToolProperty` also includes a `Description` property that can
+assist your agent in understanding the purpose of the property.
+The `Required` property informs the agent that it must supply 
+a value for the property. By default `Required` is `false`.
+
+```cs
+public class GetStatusRequest
+{
+	[ToolProperty(Required = true)]
+	public required int FlightNumber { get; set; }
+}
+```
+
+The return type of the method is `GetStatusResponse`. See below.
+
+Just like the request type, the 'shape' of the response object
+(its property types and descriptions and so forth)
+is provided to your agent. Thus, the agent can determine
+if, by calling a particular ToolMethod, it will receive information
+needed for best communicating with you or a customer, or when
+carrying out an event or schedule driven activity.
+
+> **NOTE:** If a type is used as the type of a request parameter
+or tool method return type, they can also contain properties
+that are complex types with properties decorated with 
+`ToolProperty` attributes. In this way, types can contain
+any number of nested properties that refer to either other
+complex types, or to the same parent type. This recursive
+structure allows you to be as expressive 
+*as your agent's model is capabile*.
+
+```cs
+public class GetStatusResponse
+{
+	[ToolProperty]
+	public required DateTime DepartureTime { get; set; }
+
+	[ToolProperty]
+	public required FlightStatus FlightStatus { get; set; }
+
+	[ToolProperty(Description = "A field for the extra information.")]
+	public required string ExtraInformation { get; set; }
+}
+```
+
+> **NOTE:** Tool types are usually classes, but interfaces may 
+also be used if you supply an IoC container.
+
+The SDK contains an ASP.NET Core specific extension method
+`AddOrpiusToolRegistration`. 
+When you call this method the `IServiceCollection` is used
+as the container for resolving Tool types; whether they be
+interfaces or classes. Under the covers the extension method
+performs the following:
+
+```cs
+services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
+```
+
+### Sharing Data between Tool and Operations
+
+When working 
+Allows you to correlate users across agent conversations and
+tool provider calls.
+
+In the previous `ICombinedContext`
+
+that closely
+resembles a gRPC 
 
 
 
