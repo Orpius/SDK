@@ -1,5 +1,46 @@
 # Orpius User Guide
 
+<!--TOC-->
+- [Welcome to Orpius](#welcome-to-orpius)
+- [Introducing Orpius](#introducing-orpius)
+  - [Orpius Provides](#orpius-provides)
+  - [Built-in Productivity Features](#built-in-productivity-features)
+- [Deployment](#deployment)
+- [Getting started](#getting-started)
+  - [How it works:](#how-it-works)
+- [System Structure Overview](#system-structure-overview)
+  - [Roles and Structure](#roles-and-structure)
+- [Installing the Client Application](#installing-the-client-application)
+- [Setting up Orpius for the first time](#setting-up-orpius-for-the-first-time)
+  - [Setting up email server (System owners only)](#setting-up-email-server-system-owners-only)
+  - [Creating an user account](#creating-an-user-account)
+  - [Managing System Settings and Limits (System Owners only)](#managing-system-settings-and-limits-system-owners-only)
+- [First Launch](#first-launch)
+- [Spaces](#spaces)
+  - [Creating a Space](#creating-a-space)
+- [Models](#models)
+  - [Configuring a New Model](#configuring-a-new-model)
+- [Agents](#agents)
+  - [Configuring a Custom Agent](#configuring-a-custom-agent)
+- [Agent Tools](#agent-tools)
+  - [Build-in Tools](#build-in-tools)
+- [Custom Tools](#custom-tools)
+  - [How it works:](#how-it-works)
+- [Events](#events)
+  - [How it Works:](#how-it-works)
+  - [Security and Control](#security-and-control)
+  - [HTTP Parameters](#http-parameters)
+  - [Setting up and event](#setting-up-and-event)
+- [Isolated Storage](#isolated-storage)
+  - [Uploading files](#uploading-files)
+  - [Downloading files](#downloading-files)
+  - [Creating files using chat](#creating-files-using-chat)
+- [Team Awareness and Management](#team-awareness-and-management)
+  - [How it works:](#how-it-works)
+  - [Adding Members to a Space](#adding-members-to-a-space)
+    - [Managing User Limits (System Owners only)](#managing-user-limits-system-owners-only)
+<!--/TOC-->
+
 # Welcome to Orpius
 
 This guide provides an overview of the Orpius system and instructions for getting started.
@@ -27,7 +68,7 @@ It includes:
     * **Events registeration and triggering**
     * **Notification and messaging and Team Awareness** across time zones
     * **Scheduling** for running tasks at defined times or intervals
-    * **Memory** agents manage their own memory, deciding what to keep and when to use it. 
+    * **Memory** agents manage their own memory, deciding what to keep and when to use it.
     * **Video feed image analysis**
     * **Web page retrieval**
 * **Custom Agent creation**
@@ -140,17 +181,17 @@ System Owners can manage key configurations and restrictions in the **System Set
 
 Key areas include:
 
-* Email - Change the settings you configured when first setting up the system.
+* **Email Server** - Change the settings you configured when first setting up the system.
 
-* SMTP Event Server Port – Specify the port used by the Orpius SMTP server for incoming email notification.
+* **SMTP Event Server Port** – Specify the port used by the Orpius SMTP server for incoming email notification.
 
-* Organisation – Set the maximum number of users and administrator users allowed in an organisation.
+* **Organisation** – Set the maximum number of users and administrator users allowed in an organisation.
 
-* Application - Restrict new users to those from within your organisation. Set limits for cache item lifespan, refresh token lifespan, and timeouts.
+* **Application** - Restrict new users to those from within your organisation. Set limits for cache item lifespan, refresh token lifespan, and timeouts.
 
-* Inferencing – Manage limits on inferencing operations.
+* **Inferencing** – Manage limits on inferencing operations.
 
-* Workflow – Control limits related to workflow execution and activity processing.
+* **Workflow** – Control limits related to workflow execution and activity processing.
 
 # First Launch
 
@@ -168,10 +209,10 @@ Your Spaces are listed on the Organization View page, where you can:
 
 Within a Space, you can:
 
-* View notifications
-* View and manage scheduled tasks
-* Upload and download files to and from your isolated storage
-* Invite and manage members for collaboration
+* View **notifications**
+* View and manage **scheduled tasks**
+* Upload and download **files** to and from your isolated storage
+* Invite and manage **members** for collaboration
 * Configure your Models, Agents, Tools, Operations, Secrets, and Events
 * Interact with LLMs via chat 
 
@@ -316,9 +357,12 @@ The event system can also provide a built-in **security layer** based on the pri
 
 ## HTTP Parameters
 
+**GET**
 * Parameters starting with an underscore ( _ ) are passed to your tool only.
 * Parameters without an underscore are passed to your tool and the AI Agent.
 
+**POST**
+* Everything that comes in apart from the access key is sent in the context to your tool. To see more information on the context property see *[Including Call Specific Information in a Chat](DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
 
 ## Setting up and event
 
