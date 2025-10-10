@@ -3,11 +3,11 @@
 <!--TOC-->
 - [Welcome to Orpius](#welcome-to-orpius)
 - [Introducing Orpius](#introducing-orpius)
-  - [Orpius Provides](#orpius-provides)
+  - [What Orpius Provides](#what-orpius-provides)
   - [Built-in Productivity Features](#built-in-productivity-features)
 - [Deployment](#deployment)
 - [Getting started](#getting-started)
-  - [How it works:](#how-it-works)
+  - [How it works](#how-it-works)
 - [System Structure Overview](#system-structure-overview)
   - [Roles and Structure](#roles-and-structure)
 - [Installing the Client Application](#installing-the-client-application)
@@ -25,9 +25,9 @@
 - [Agent Tools](#agent-tools)
   - [Build-in Tools](#build-in-tools)
 - [Custom Tools](#custom-tools)
-  - [How it works:](#how-it-works)
+  - [How it works](#how-it-works)
 - [Events](#events)
-  - [How it Works:](#how-it-works)
+  - [How it Works](#how-it-works)
   - [Security and Control](#security-and-control)
   - [HTTP Parameters](#http-parameters)
   - [Setting up and event](#setting-up-and-event)
@@ -36,7 +36,7 @@
   - [Downloading files](#downloading-files)
   - [Creating files using chat](#creating-files-using-chat)
 - [Team Awareness and Management](#team-awareness-and-management)
-  - [How it works:](#how-it-works)
+  - [How it works](#how-it-works)
   - [Adding Members to a Space](#adding-members-to-a-space)
     - [Managing User Limits (System Owners only)](#managing-user-limits-system-owners-only)
 <!--/TOC-->
@@ -57,7 +57,7 @@ Gives you a ready environment for building AI-powered solutions from the ground 
 * **Productivity tool** - 
 All configuration is handled through the Orpius Console, a desktop client that runs on the same infrastructure available to your applications so anything the platform can do, the Console can do directly. The Console is also aware of the system itself, letting you set up parts such as events through an interactive chat interface.
 
-## Orpius Provides
+## What Orpius Provides
 
 Orpius provides a complete foundation for building applications with AI capabilities.
 
@@ -107,7 +107,7 @@ Before you can start working with Orpius, you will need:
 * **Access to Email server (System owners only)** – Because Orpius runs in your own private cloud, email handling is not provided as a shared service. An email server is required during initial setup so new users can verify their email addresses (a sending-only server is sufficient). It will also be used to send notifications or messages to team members. In addition, we have future plans to introduce email driven events.
 * **Access to your own LLM provider** – Orpius connects to AI models you choose (hosted on-premises or in the cloud). It currently supports OpenAI and Azure OpenAI, with more providers to follow.
 
-## How it works:
+## How it works
 
 1. **Configure** – Define your Models, Agents, Events, Tools, and Operations in the Orpius Console.
 (You can think of Operations as the integration mechanism that allows your application to communicate with your Orpius AI Agents.)
@@ -323,7 +323,7 @@ For example, you can create tools that:
 
 Each custom tool is registered in the system with a unique name and made available to AI Agents under your control. This allows agents to call your organisation’s existing code, libraries, or services securely—without exposing them externally.
 
-## How it works:
+## How it works
 
 1. **Register a custom tool** – Open the **Agent Tools** view from the sidebar and select **Custom Tools** .
 2. **Integrate with your application** – Copy the **External ID** and **Access Key**, then paste them into **your application**.
@@ -336,7 +336,7 @@ See the **SDK documentation** for more details on custom tools. Example implemen
 
 Events provide a secure way to connect your systems with Orpius and perform activities in response to external triggers.
 
-## How it Works:
+## How it Works
 
 * In the Console, you register events that external systems can call through a remote API to trigger tasks. Each event has a unique identifier that can be used in a webhook or integrated system. 
 * After registering an event, you add the activities or follow-up events that should run when it is triggered. 
@@ -362,7 +362,7 @@ The event system can also provide a built-in **security layer** based on the pri
 * Parameters without an underscore are passed to your tool and the AI Agent.
 
 **POST**
-* Everything that comes in apart from the access key is sent in the context to your tool. To see more information on the context property see *[Including Call Specific Information in a Chat](DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
+* Everything that comes in apart from the access key is sent in the context to your tool. To see more information on the context property see *[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
 
 ## Setting up and event
 
@@ -438,7 +438,7 @@ Each organization can contain multiple spaces, and each space can have as many m
 
 Orpius has built-in team awareness across time zones and can plan or take actions based on that.
 
-## How it works:
+## How it works
 
 * For example, you can use the chat and ask *"Who is on my team?"*
 * Orpius will respond with a list of team members. 
