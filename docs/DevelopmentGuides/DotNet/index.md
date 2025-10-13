@@ -595,22 +595,24 @@ In the next section we take a closer look at how Orpius accomplishes this,
 and you'll how, with next to no effort, you can create your own
 engaging AI experiences that are enriched by your custom tools.
 
-### Creating a Custom Tool
+### Understanding Custom Tools
 
-### Understanding Tools
-
-In the system prompt, usually at the beginning of a conversation,
-an AI agent is given the names of functions and their parameters
-that it can use to carry out particular tasks.
-In Orpius, agents are made aware of internal tools, 
-such as the *Notifier*, and they also told about custom tools.
-Custom tools are located outside of the Orpius kernel (the core application)
-and are created by you.
+In the system prompt within Orpius—typically at the start 
+of a conversation—an AI agent is given the names of functions 
+and their parameters that it can use to perform specific tasks. 
+Agents are made aware of Orpius’s built-in tools, such 
+as the *Notifier*, as well as any custom tools you provide. 
+Custom tools exist outside the Orpius kernel (the core application) 
+and are created and maintained by you.
 
 All that is required to define a custom tool, 
 is a plain class decorated with the `[Tool]` attribute.
 In this class, you add methods that you'd like your agent to be able to 
 call; decorating them with a `[ToolMethod]` attribute. See below.
+
+If you are already familiar with gRPC you'll notice that the tool 
+method signature closely resembles that of a gRPC service method;
+a single request parameter, a context object, and a return type.
 
 > **NOTE:** The `ToolMethod.Description` property is important because this
 information is provided to your agent, and a carefully worded description
@@ -711,17 +713,104 @@ performs the following:
 services.AddSingleton<IToolResolver>(sp => new ServiceProviderAdapter(sp));
 ```
 
-### Sharing Data between Tool and Operations
+### Initializing the Tooling Subsystem
 
-When working 
-Allows you to correlate users across agent conversations and
-tool provider calls.
+Just like with Operations, you need to provide the Orpius subsystem
+with the details it needs to register your tools with the Orpius server.
+In the *Sample_AspNetCore_ProtobufNet* project, we do this 
+in the `Program` class's `Main` method. See below.
 
-In the previous `ICombinedContext`
+You'll notice that we provide a header key and value in the `toolRegistrationParameters`.
+You see how to retrieve this value during a tool call later in the document.
 
-that closely
-resembles a gRPC 
+```cs
+/*  ApplicationUrlResolver resolves the URI of *this* server,
+	allowing Orpius to know where to call back to for tool use. 
+	Please adapt it to your needs. */
+services.AddSingleton<ApplicationUrlResolver>();
 
+/* We provide one or more IToolRegistrationParameters instances,
+   which are used to register tools with the Orpius server.
+   NOTE: You can add multiple IToolRegistrationParameters instances.
+         All are registered. */
+FuncRegistrationParameters toolRegistrationParameters
+	= new(getLocalUrl: () => ApplicationState.ToolsRegistrationSettings.IncomingUrl,
+		getExternalId: () => ApplicationState.ToolsRegistrationSettings.ExternalId,
+		getApiKey: () => ApplicationState.ToolsRegistrationSettings.AccessKey)
+	{
+		CallBackHeaders = new List<HeaderMessage>
+		{
+			/* Headers are sent back to your application with each `UseTool` request,
+				allowing you to authenticate the Orpius server.
+				These are encrypted and stored securely by the Orpius system. */
+			new("MySecretHeader", "MyValue")
+		}
+	};
+
+services.AddSingleton<IToolRegistrationParameters>(toolRegistrationParameters);
+
+services.AddOrpiusToolRegistration(GetOrpiusServerUri, 
+			dangerousAcceptAnyCertificate: true)
+		.WithAutomaticProviderRegistration();
+```
+
+We explicitly add each of our custom tools to the services collection,
+as shown below.
+
+```cs
+/* Add your tool implementations.
+   This allows them to be resolved when requested by an AI agent.
+   NOTE: For tools to be available during a chat session, 
+         they must be specified in the ChatRequest. 
+         See `MyMobileAppService` for an example. */
+
+services.AddSingleton<FlightStatusChecker>();
+services.AddSingleton<WeatherForecaster>();
+```
+
+### Sharing Data between Tools and Operations
+
+When working across multiple tools, and across tools and agents, 
+the `ICombinedContext` interface allows you to share data 
+and correlate users during agent conversations and tool provider calls.
+This is particularly useful in scenarios where you need 
+to maintain state or context across multiple steps in a workflow.
+Before the `ICombinedContext` is passed to your tool method,
+it is populated with data from the originating operation call,
+or from the event or schedule that triggered the agent's activity.
+
+The `ICombinedContext` interface is located in the SDK library project,
+and is shown below.
+
+The `SharedContext` property is a dictionary of key/value pairs
+containing the values provided by the operation, event, or schedule.
+For example, if an *event* triggers an agent, the event's query string
+parameters can be accessed via the `SharedContext` property.
+
+The `NativeContext` property, on the otherhand, is the technology specific context object,
+which, in the case of gRPC, is a `ProtoBuf.Grpc.CallContext` instance.
+
+```cs
+public interface ICombinedContext
+{
+	public object? NativeContext { get; set; }
+
+	IDictionary<string, string> SharedContext { get; set; }
+}
+```
+
+The `NativeContext` property give's your tool method access to the underlying
+gRPC context, which includes the request headers, caller IP address, and so forth.
+
+The `WeatherForecaster` custom tool in the *Sample_AspNetCore_ProtobufNet* project,
+demonstrates how to retrieve a header value from the native gRPC context.
+See below.
+
+```cs
+var callContext = context.NativeContext as ProtoBuf.Grpc.CallContext? ?? null;
+Metadata? headers = callContext?.RequestHeaders;
+string? customHeaderValue = headers?.GetValue("MySecretHeader");
+```
 
 
 

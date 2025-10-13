@@ -13,17 +13,17 @@ namespace Sample_AspNetCore_ProtobufNet
 			this.services = services;
 		}
 
-		public override IList<object> GetMetadata(MethodInfo method, 
-												  Type contractType, 
+		public override IList<object> GetMetadata(MethodInfo method,
+												  Type contractType,
 												  Type serviceType)
 		{
 			Type resolvedServiceType = serviceType;
 
 			if (serviceType.IsInterface)
 			{
-				resolvedServiceType = services.SingleOrDefault(
-										  descriptor => descriptor.ServiceType == serviceType)?.ImplementationType
-									  ?? serviceType;
+				resolvedServiceType
+					= services.SingleOrDefault(sd => sd.ServiceType == serviceType)?.ImplementationType
+					  ?? serviceType;
 			}
 
 			return base.GetMetadata(method, contractType, resolvedServiceType);
@@ -32,7 +32,8 @@ namespace Sample_AspNetCore_ProtobufNet
 
 	static class ServiceCollectionExtensions
 	{
-		internal static void AddAssociatedSingletons<TInterface, TImplementation>(this IServiceCollection services)
+		internal static void AddAssociatedSingletons<TInterface, TImplementation>(
+			this IServiceCollection services)
 			where TInterface : class
 			where TImplementation : class, TInterface
 		{

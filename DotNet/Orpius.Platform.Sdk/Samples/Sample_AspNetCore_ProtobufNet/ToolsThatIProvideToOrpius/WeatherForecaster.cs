@@ -51,8 +51,8 @@ namespace Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius
 			// This is intended for authentication of the Orpius server by your application.
 			// Ordinarily, middleware would handle this.
 			// See Program.cs for how to set these headers.
-			var callContext = context.NativeContext as ProtoBuf.Grpc.CallContext? ?? default;
-			var headers = callContext.RequestHeaders;
+			var callContext = context.NativeContext as ProtoBuf.Grpc.CallContext? ?? null;
+			var headers = callContext?.RequestHeaders;
 			string? customHeaderValue = headers?.GetValue("MySecretHeader");
 
 			return response;

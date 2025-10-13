@@ -11,7 +11,6 @@ using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Server;
 
 using Sample_AspNetCore_ProtobufNet.Components;
-using Sample_AspNetCore_ProtobufNet.RpcServiceModel;
 using Sample_AspNetCore_ProtobufNet.Services;
 using Sample_AspNetCore_ProtobufNet.ToolRegistration;
 using Sample_AspNetCore_ProtobufNet.ToolsThatIProvideToOrpius;
@@ -46,11 +45,6 @@ namespace Sample_AspNetCore_ProtobufNet
 					e => { e.Protocols = HttpProtocols.Http1AndHttp2; }); });
 
 			/* ------ Orpius Tooling (enabling your AI Agent to call your server to carry out tasks) ------ */
-
-			/* ApplicationUrlResolver resolves the URI of *this* server,
-			   allowing Orpius to know where to call back to for tool use. 
-			   Please adapt it to your needs. */
-			services.AddSingleton<ApplicationUrlResolver>();
 
 			/* We provide one or more IToolRegistrationParameters instances,
 			   which are used to register tools with the Orpius server.
@@ -139,20 +133,5 @@ namespace Sample_AspNetCore_ProtobufNet
 		/// that is populated using the Components/Pages/Home.razor page.
 		/// </summary>
 		static Uri GetOrpiusServerUri() => new(ApplicationState.OrpiusServerUrl);
-
-		static Uri? applicationUri;
-
-		static Uri GetApplicationUri(IServiceProvider serviceProvider)
-		{
-			if (applicationUri == null)
-			{
-				/* NOTE: We must wait until the web server is initialized
-				         before retrieving the application URL.*/
-				var resolver = serviceProvider.GetRequiredService<ApplicationUrlResolver>();
-				applicationUri = new Uri(resolver.GetApplicationUrl());
-			}
-
-			return applicationUri;
-		}
 	}
 }
