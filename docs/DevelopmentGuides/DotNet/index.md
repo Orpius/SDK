@@ -4,9 +4,12 @@
   - [Getting Started with the Orpius SDK](#getting-started-with-the-orpius-sdk)
   - [Setting up Your Middle-Tier Application](#setting-up-your-middle-tier-application)
   - [Calling Your Operation](#calling-your-operation)
-- [Including Call Specific Information in a Chat](#including-call-specific-information-in-a-chat)
+  - [Including Call Specific Information in a Chat](#including-call-specific-information-in-a-chat)
   - [Exploring the Mobile App Sample](#exploring-the-mobile-app-sample)
   - [Connecting Your Code to Orpius](#connecting-your-code-to-orpius)
+    - [Understanding Custom Tools](#understanding-custom-tools)
+    - [Initializing the Tooling Subsystem](#initializing-the-tooling-subsystem)
+    - [Sharing Data between Tools and Operations](#sharing-data-between-tools-and-operations)
 <!--/TOC-->
 
 ## Getting Started with the Orpius SDK
@@ -31,7 +34,7 @@ If you haven't already, please read the [Operations section](../../UserGuide/Ope
 of the user guide.
 
 The [Orpius SDK repository](https://github.com/Orpius/SDK) contains various sample projects.
-This section focusses on the *Sample_AspNetCore_ProtobufNet* project 
+This section focuses on the *Sample_AspNetCore_ProtobufNet* project 
 and the *Sample_MobileApp_ProtobufNet* project.
 The ASP.NET Core sample shows how to set up your own web application so that 
 it can communicate with the Orpius server.
@@ -39,7 +42,7 @@ The *MobileApp* project demonstrates how you might create a mobile or desktop
 app that communicates directly with your web API application, which relays
 communication from Orpius. See below.
 
-![Comminication from Mobile App to Web API to Orpius](Images/MobileToWebApiToOrpius_Small.png)
+![Communication from Mobile App to Web API to Orpius](Images/MobileToWebApiToOrpius_Small.png)
 
 *Communication from Mobile App to Web API to Orpius*
 
@@ -49,7 +52,7 @@ for creating and handling requests to and from the Orpius server;
 and an Analyzer project, *Orpius.Platform.ClientSdk.ProtobufNet.Generators* 
 that makes it easy to automatically generate 
 nearly everything you need to provide your own custom APIs (tools) 
-for your AI Agents to use.
+for your AI agents to use.
 
 The aforementioned libraries are both available as the following NuGet packages:
 
@@ -78,7 +81,7 @@ for your Operation settings. See below.
 
 Once you've pasted your Orpius URL, entered your Operations credentials,
 and pressed the *Apply Operation Settings* button, 
-the sample mobile should relay input to your AI Agent, as shown below:
+the sample mobile should relay input to your AI agent, as shown below:
 
 ![Chatting with the agent](Images/MobileApp1.png)
 
@@ -86,7 +89,7 @@ the sample mobile should relay input to your AI Agent, as shown below:
 
 ## Setting up Your Middle-Tier Application
 
-In the SDK sample, the *Sample_AspNetCore_ProtobufNet* is a consise example
+In the SDK sample, the *Sample_AspNetCore_ProtobufNet* is a concise example
 of the key parts that you are likely to have in your project.
 
 It references the *Orpius.Platform.ClientSdk.ProtobufNet*, and *Orpius.Platform.ClientSdk.ProtobufNet.Generators* project.
@@ -159,7 +162,7 @@ URLs of this type usually begin with a unique identifier (GUID) assigned to your
 
 Finally, to complete our Operation's setup, we use the `AddOrpiusOperations`
 extension method; passing it the GetOrpiusServerUri delegate 
-that returns the Orpius server’s base URL.
+that returns the Orpius server's base URL.
 
 ```cs
 services.AddOrpiusOperations(GetOrpiusServerUri);
@@ -168,7 +171,7 @@ services.AddOrpiusOperations(GetOrpiusServerUri);
 ## Calling Your Operation
 
 In the *Sample_AspNetCore_ProtobufNet* project 
-there is a `IMyMobileAppService` gRPC service, with a single mthod `Chat`.
+there is a `IMyMobileAppService` gRPC service, with a single method `Chat`.
 
 We'll use this service to accept incoming chat requests from our sample mobile
 app in the project *Sample_MobileApp_ProtobufNet*.
@@ -202,7 +205,7 @@ public class MobileAppChatRequest
 ```
 
 The SDK's `UserMessage` type contains a `string` *Text* property,
-which is the text that ultimately makes its way to your AI Agent,
+which is the text that ultimately makes its way to your AI agent,
 and a `Guid` *PublicId* property, which allows you to correlate messages in your application.
 Response messages `AssistantMessage` and `SystemMessage` also contain a `PublicId` property.
 We look closer at the request/response API later in the document.
@@ -239,7 +242,7 @@ static class ServiceCollectionExtensions
 }
 ```
 
-This allows use to then register the gRPC service, using its interface, like so:
+This allows us to then register the gRPC service, using its interface, like so:
 
 ```cs
 app.MapGrpcService<IMyMobileAppService>();
@@ -312,9 +315,9 @@ public class MyMobileAppService : IMyMobileAppService
 }
 ```
 
-# Including Call Specific Information in a Chat
+## Including Call Specific Information in a Chat
 
-How do we pass user or application-specific information to an AI Agent?
+How do we pass user or application-specific information to an AI agent?
 And what about private information for custom tools?
 We'll explore the latter in more depth later, but here’s a brief overview.
 
@@ -324,7 +327,7 @@ The `ChatRequest` class provides two mechanisms:
 * `Dictionary<string, string> Context`
 
 As the name suggests, `JsonProvidedToAgent` contains raw JSON passed directly 
-to the AI Agent within the system prompt. Use this to include any information 
+to the AI agent within the system prompt. Use this to include any information 
 you want the agent itself to process.
 
 The `Context` property, on the other hand, provides key/value pairs shared 
@@ -332,7 +335,7 @@ with your custom tools. These values persist across tool calls
 and can be modified as tools run. For example, one tool might update 
 the context, and those changes will be visible to others 
 for the lifetime of the conversation.
-Importantly, the AI Agent does *not* have access to the `Context` contents.
+Importantly, the AI agent does *not* have access to the `Context` contents.
 
 ## Exploring the Mobile App Sample
 
@@ -369,7 +372,7 @@ across `UserMessage`, `AssistantMessage`, and `SystemMessage`.
 
 We've already looked at `UserMessage`. `AssistantMessage` and `SystemMessage`,
 require further explanation. `AssistantMessage` represents a message
-from your AI Agent. `SystemMessage`, on the otherhand, represents
+from your AI agent. `SystemMessage`, on the other hand, represents
 a message that is sent from the Orpius server and may provide information
 such as notification about the start or beginning of an API call made
 by your agent. These allow you to provide feedback to the user
@@ -442,7 +445,7 @@ containing either a `SystemMessage` or an `AssistantMessage`.
 As the messages arrive, we place them into the `Messages` collection,
 which immediately displays them in the UI.
 
-Your AI Agent may call multiple custom tools or built-in tools;
+Your AI agent may call multiple custom tools or built-in tools;
 waiting for responses from the tools, and calling other tools based
 on those responses. Therefore, the sending of a single `UserMessage`
 to Orpius may see many returned messages within a single round.
@@ -456,7 +459,7 @@ to Orpius may see many returned messages within a single round.
 	{
 		Text = promptText
 	};
-			
+
 	// Your server's request message.
 	// This is defined by you, and contains information
 	// relevant to your application.
@@ -532,7 +535,7 @@ your agents capabilities by bringing in custom tools.
 ## Connecting Your Code to Orpius
 
 One of the most powerful aspects of integrating Orpius 
-into your applications is that your AI Agents can securely call 
+into your applications is that your AI agents can securely call 
 into your existing codebase—often representing years of proven, 
 reliable logic. With just a few lines of setup, you can let agents invoke 
 your own server-side functions, giving you complete control 
@@ -541,7 +544,7 @@ of the uncertainty around agent reliability while allowing
 you to expose only the capabilities you choose, under your own security model.
 
 The *Custom Tools* section of the *Agent Tools* view in the console
-contains the credentials your need to register your middle-ware server
+contains the credentials you need to register your middle-ware server
 with the Orpius backend. See below.
 
 ![Copying custom tool credentials from console](Images/ConsoleCustomTools.png)
@@ -549,8 +552,8 @@ with the Orpius backend. See below.
 *Copying custom tool credentials from console*
 
 Copy the *External ID* and *Access Key 1* into the corresponding
-fields into the *Tools Registration* section 
-into the sample middle-ware application. See below.
+fields in the *Tools Registration* section 
+of the sample middle-ware application. See below.
 
 The URL field needs to be populated with a URL that Orpius can use
 to call back to the middle-ware application.
@@ -567,18 +570,18 @@ All this is done automatically for you.
 
 ![Entering Tool Registration Information](Images/SampleWeb2.png)
 
-*Entering Tool Registration Information*
+*Entering tool registration information*
 
-With the registration successful, your AI Agent is informed
-of the available of various tools that are located
+With the registration successful, your AI agent is informed
+of the availability of various tools that are located
 in the *Sample_AspNetCore_ProtobufNet* project.
 
 For example, you'll note the `FlightStatusChecker` class 
-in the 'ToolsThatIProvideToOrpius' directory.
+in the *ToolsThatIProvideToOrpius* directory.
 This class is a custom tool that we are giving access to the agent.
 Tools like it, live on your server and run in your application.
-If we ask a question pertaining to something that the Agent
-believes the tool can be used to retrieve, the Agent will make
+If we ask a question pertaining to something that the agent
+believes the tool can be used to retrieve, the agent will make
 an API call that is funneled down to your application.
 
 When you return to the sample mobile app, and enter a prompt, 
@@ -587,12 +590,12 @@ now has the means to go and look-up that information via your middle-ware
 server. It dutifully does so, and returns the information to you.
 See below.
 
-![The Agent uses local tools](Images/MobileApp2.png)
+![The agent uses local tools](Images/MobileApp2.png)
 
-*The Sarah AI Agent using the local FlightStatusChecker tool*
+*The Sarah AI agent using the local FlightStatusChecker tool*
 
 In the next section we take a closer look at how Orpius accomplishes this,
-and you'll how, with next to no effort, you can create your own
+and you'll see how, with next to no effort, you can create your own
 engaging AI experiences that are enriched by your custom tools.
 
 ### Understanding Custom Tools
@@ -600,7 +603,7 @@ engaging AI experiences that are enriched by your custom tools.
 In the system prompt within Orpius—typically at the start 
 of a conversation—an AI agent is given the names of functions 
 and their parameters that it can use to perform specific tasks. 
-Agents are made aware of Orpius’s built-in tools, such 
+Agents are made aware of Orpius's built-in tools, such 
 as the *Notifier*, as well as any custom tools you provide. 
 Custom tools exist outside the Orpius kernel (the core application) 
 and are created and maintained by you.
@@ -683,7 +686,7 @@ that are complex types with properties decorated with
 any number of nested properties that refer to either other
 complex types, or to the same parent type. This recursive
 structure allows you to be as expressive 
-*as your agent's model is capabile*.
+*as your agent's model is capable*.
 
 ```cs
 public class GetStatusResponse
@@ -705,7 +708,7 @@ also be used if you supply an IoC container.
 The SDK contains an ASP.NET Core specific extension method
 `AddOrpiusToolRegistration`. 
 When you call this method the `IServiceCollection` is used
-as the container for resolving Tool types; whether they be
+as the container for resolving tool types; whether they be
 interfaces or classes. Under the covers the extension method
 performs the following:
 
@@ -724,15 +727,10 @@ You'll notice that we provide a header key and value in the `toolRegistrationPar
 You see how to retrieve this value during a tool call later in the document.
 
 ```cs
-/*  ApplicationUrlResolver resolves the URI of *this* server,
-	allowing Orpius to know where to call back to for tool use. 
-	Please adapt it to your needs. */
-services.AddSingleton<ApplicationUrlResolver>();
-
-/* We provide one or more IToolRegistrationParameters instances,
-   which are used to register tools with the Orpius server.
-   NOTE: You can add multiple IToolRegistrationParameters instances.
-         All are registered. */
+// We provide one or more IToolRegistrationParameters instances,
+// which are used to register tools with the Orpius server.
+// NOTE: You can add multiple IToolRegistrationParameters instances.
+//       All are registered.
 FuncRegistrationParameters toolRegistrationParameters
 	= new(getLocalUrl: () => ApplicationState.ToolsRegistrationSettings.IncomingUrl,
 		getExternalId: () => ApplicationState.ToolsRegistrationSettings.ExternalId,
@@ -740,9 +738,9 @@ FuncRegistrationParameters toolRegistrationParameters
 	{
 		CallBackHeaders = new List<HeaderMessage>
 		{
-			/* Headers are sent back to your application with each `UseTool` request,
-				allowing you to authenticate the Orpius server.
-				These are encrypted and stored securely by the Orpius system. */
+			// Headers are sent back to your application with each `UseTool` request,
+			// allowing you to authenticate the Orpius server.
+			// These are encrypted and stored securely by the Orpius system.
 			new("MySecretHeader", "MyValue")
 		}
 	};
@@ -758,11 +756,11 @@ We explicitly add each of our custom tools to the services collection,
 as shown below.
 
 ```cs
-/* Add your tool implementations.
-   This allows them to be resolved when requested by an AI agent.
-   NOTE: For tools to be available during a chat session, 
-         they must be specified in the ChatRequest. 
-         See `MyMobileAppService` for an example. */
+// Add your tool implementations.
+// This allows them to be resolved when requested by an AI agent.
+// NOTE: For tools to be available during a chat session, 
+//       they must be specified in the ChatRequest. 
+//       See `MyMobileAppService` for an example.
 
 services.AddSingleton<FlightStatusChecker>();
 services.AddSingleton<WeatherForecaster>();
@@ -799,12 +797,15 @@ public interface ICombinedContext
 }
 ```
 
-The `NativeContext` property give's your tool method access to the underlying
+The `NativeContext` property gives your tool method access to the underlying
 gRPC context, which includes the request headers, caller IP address, and so forth.
 
 The `WeatherForecaster` custom tool in the *Sample_AspNetCore_ProtobufNet* project,
 demonstrates how to retrieve a header value from the native gRPC context.
 See below.
+
+The header value, provided in the `CallBackHeaders` property,
+is stored securely by Orpius, and sent with each tool call.
 
 ```cs
 var callContext = context.NativeContext as ProtoBuf.Grpc.CallContext? ?? null;
