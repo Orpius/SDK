@@ -550,16 +550,26 @@ Customer-facing agents can trigger events to request actions
 from more privileged agents, without having direct access to sensitive capabilities 
 such as scheduling, storage, or team information.
 
-## HTTP Parameters
+### Passing HTTP Parameters to Events
 
-**GET**
-* Parameters starting with an underscore ( _ ) are passed to your tool only.
-* Parameters without an underscore are passed to your tool and the AI Agent.
+When an event is triggered, you can pass additional parameters
+that are provided either to your tools only, or to your tools and your agent.
 
-**POST**
-* Everything that comes in apart from the access key is sent in the context to your tool. To see more information on the context property see *[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
+Key value pairs are passed in the query string for both **GET** and **POST** requests.
+In addition, for **POST** requests, raw JSON can also be passed directly to the agent
+in the body of the request.
 
-# Isolated Storage
+#### Using HTTP GET to Trigger an Event
+* Query string keys that are prefixed with an underscore ( _ ) are passed to your tools only.
+* Query string keys that are not prefixed with an underscore are passed to both your tools and the agent.
+
+#### Using HTTP POST to Trigger an Event
+* When using POST all key/value pairs (apart from the **event-id**) is supplied in the context object of your tools.
+
+To see more information on the context property see 
+*[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
+
+# Working with Isolated Storage
 
 Each organisation has an allocated shared storage area that can be used across its spaces.
 
