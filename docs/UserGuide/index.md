@@ -15,9 +15,8 @@
     - [Organization Roles](#organization-roles)
   - [Installing the Client Application](#installing-the-client-application)
   - [Setting up Orpius for the first time](#setting-up-orpius-for-the-first-time)
-    - [Setting up email server (System owners only)](#setting-up-email-server-system-owners-only)
+    - [Setting up an email server (System owners only)](#setting-up-an-email-server-system-owners-only)
     - [Creating a user account](#creating-a-user-account)
-    - [Managing System Settings and Limits (System Owners only)](#managing-system-settings-and-limits-system-owners-only)
   - [First Launch](#first-launch)
     - [Understanding Spaces](#understanding-spaces)
       - [Creating a Space](#creating-a-space)
@@ -25,16 +24,21 @@
       - [Configuring a New Model](#configuring-a-new-model)
   - [Understanding Agents](#understanding-agents)
   - [Configuring a Custom Agent](#configuring-a-custom-agent)
-- [Agent Tools](#agent-tools)
-  - [Build-in Tools](#build-in-tools)
-- [Custom Tools](#custom-tools)
+  - [Agent Tools](#agent-tools)
+    - [Reviewing the Built-in Tools](#reviewing-the-built-in-tools)
+    - [Custom Tools](#custom-tools)
   - [How it works](#how-it-works)
-- [Events](#events)
-  - [How it Works](#how-it-works)
-  - [Security and Control](#security-and-control)
-  - [HTTP Parameters](#http-parameters)
-  - [Setting up and event](#setting-up-and-event)
-- [Isolated Storage](#isolated-storage)
+  - [Using Events to Trigger Activities](#using-events-to-trigger-activities)
+    - [Creating an Event](#creating-an-event)
+  - [Creating an Event through Chat](#creating-an-event-through-chat)
+    - [Manual Creation of an Event](#manual-creation-of-an-event)
+    - [Triggering an Event](#triggering-an-event)
+    - [Editing Event Activities](#editing-event-activities)
+    - [Events for Improving Security and Control](#events-for-improving-security-and-control)
+    - [Passing HTTP Parameters to Events](#passing-http-parameters-to-events)
+      - [Using HTTP GET to Trigger an Event](#using-http-get-to-trigger-an-event)
+      - [Using HTTP POST to Trigger an Event](#using-http-post-to-trigger-an-event)
+  - [Working with Isolated Storage](#working-with-isolated-storage)
   - [Uploading files](#uploading-files)
   - [Downloading files](#downloading-files)
   - [Creating files using chat](#creating-files-using-chat)
@@ -42,6 +46,7 @@
   - [How it works](#how-it-works)
   - [Adding Members to a Space](#adding-members-to-a-space)
     - [Managing User Limits (System Owners only)](#managing-user-limits-system-owners-only)
+    - [Managing System Settings and Limits (System Owners only)](#managing-system-settings-and-limits-system-owners-only)
 <!--/TOC-->
 
 ## Introducing Orpius
@@ -569,7 +574,7 @@ in the body of the request.
 To see more information on the context property see 
 *[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
 
-# Working with Isolated Storage
+## Working with Isolated Storage
 
 Each organisation has an allocated shared storage area that can be used across its spaces.
 
