@@ -540,7 +540,7 @@ your agents capabilities by bringing in custom tools.
 
 One of the most powerful aspects of integrating Orpius 
 into your applications is that your AI agents can securely call 
-into your existing codebase—often representing years of proven, 
+into your existing codebase-often representing years of proven, 
 reliable business logic. With just a few lines of configuration, 
 you can let agents invoke your own server-side functions, 
 giving you complete control and deterministic results. 
@@ -606,8 +606,8 @@ engaging AI experiences that are enriched by your custom tools.
 
 ### Understanding Custom Tools
 
-In the system prompt within Orpius—typically at the start 
-of a conversation—an AI agent is given the names of functions 
+In the system prompt within Orpius-typically at the start 
+of a conversation-an AI agent is given the names of functions 
 and their parameters that it can use to perform specific tasks. 
 Agents are made aware of Orpius's built-in tools, such 
 as the *Notifier*, as well as any custom tools you provide. 
