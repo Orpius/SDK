@@ -2,6 +2,7 @@
 
 <!--TOC-->
   - [Getting Started with the Orpius SDK](#getting-started-with-the-orpius-sdk)
+  - [Overview of the Orpius SDK Libraries](#overview-of-the-orpius-sdk-libraries)
   - [Setting Up Your Middle-Tier Application](#setting-up-your-middle-tier-application)
   - [Calling Your Operation](#calling-your-operation)
   - [Including Call-Specific Information in a Chat](#including-call-specific-information-in-a-chat)
@@ -46,6 +47,8 @@ communication from Orpius.
 ![Communication from Mobile App to Web API to Orpius](Images/MobileToWebApiToOrpius_Small.png)
 
 *Communication from Mobile App to Web API to Orpius*
+
+## Overview of the Orpius SDK Libraries
 
 The Orpius SDK for .NET consists of a class library, 
 *Orpius.Platform.ClientSdk.ProtobufNet*, which contains the types 

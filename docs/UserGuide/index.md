@@ -1,26 +1,29 @@
-# Orpius User Guide
+ï»¿# Orpius User Guide
 
 <!--TOC-->
-- [Welcome to Orpius](#welcome-to-orpius)
-- [Introducing Orpius](#introducing-orpius)
+  - [Introducing Orpius](#introducing-orpius)
+    - [For Developers](#for-developers)
+    - [For Productivity and Operations Users](#for-productivity-and-operations-users)
   - [What Orpius Provides](#what-orpius-provides)
   - [Built-in Productivity Features](#built-in-productivity-features)
 - [Deployment](#deployment)
 - [Getting started](#getting-started)
   - [How it works](#how-it-works)
-- [System Structure Overview](#system-structure-overview)
-  - [Roles and Structure](#roles-and-structure)
-- [Installing the Client Application](#installing-the-client-application)
-- [Setting up Orpius for the first time](#setting-up-orpius-for-the-first-time)
-  - [Setting up email server (System owners only)](#setting-up-email-server-system-owners-only)
-  - [Creating an user account](#creating-an-user-account)
-  - [Managing System Settings and Limits (System Owners only)](#managing-system-settings-and-limits-system-owners-only)
-- [First Launch](#first-launch)
-- [Spaces](#spaces)
-  - [Creating a Space](#creating-a-space)
-- [Models](#models)
-  - [Configuring a New Model](#configuring-a-new-model)
-- [Agents](#agents)
+- [Understanding the Orpius System Structure](#understanding-the-orpius-system-structure)
+  - [Understanding User Roles](#understanding-user-roles)
+    - [Space Roles](#space-roles)
+    - [Organization Roles](#organization-roles)
+  - [Installing the Client Application](#installing-the-client-application)
+  - [Setting up Orpius for the first time](#setting-up-orpius-for-the-first-time)
+    - [Setting up email server (System owners only)](#setting-up-email-server-system-owners-only)
+    - [Creating a user account](#creating-a-user-account)
+    - [Managing System Settings and Limits (System Owners only)](#managing-system-settings-and-limits-system-owners-only)
+  - [First Launch](#first-launch)
+    - [Understanding Spaces](#understanding-spaces)
+      - [Creating a Space](#creating-a-space)
+    - [Working with Large Language Models (LLM)](#working-with-large-language-models-llm)
+      - [Configuring a New Model](#configuring-a-new-model)
+  - [Understanding Agents](#understanding-agents)
   - [Configuring a Custom Agent](#configuring-a-custom-agent)
 - [Agent Tools](#agent-tools)
   - [Build-in Tools](#build-in-tools)
@@ -41,50 +44,80 @@
     - [Managing User Limits (System Owners only)](#managing-user-limits-system-owners-only)
 <!--/TOC-->
 
-# Welcome to Orpius
+## Introducing Orpius
 
-This guide provides an overview of the Orpius system and instructions for getting started.
+Welcome to **Orpius** â€” the secure AI platform that gives you everything 
+you need to integrate, build, and use generative AI 
+without the complexity of managing the underlying technology.
 
-# Introducing Orpius
+Security and privacy are built into Orpius from the ground up.
+Data is secured both **at rest and in transit**, secrets are managed safely 
+through dedicated tools that never expose them to models, and all server 
+and internal components follow industry best practices for infrastructure 
+and data protection.
 
-Orpius provides the AI infrastructure developers need to add AI capabilities to their applications without building it themselves.
+### For Developers
 
-You can use Orpius as a:
-* **Foundation for integrating AI into existing applications** - 
-Provides all the infrastructure you need to add AI features without the overhead of building it yourself. 
-* **Foundation for developing new AI systems, applications and tools** - 
-Gives you a ready environment for building AI-powered solutions from the ground up.
-* **Productivity tool** - 
-All configuration is handled through the Orpius Console, a desktop client that runs on the same infrastructure available to your applications so anything the platform can do, the Console can do directly. The Console is also aware of the system itself, letting you set up parts such as events through an interactive chat interface.
+Orpius provides a complete, **secure AI infrastructure** for adding 
+intelligence to your applications â€” without building or maintaining it yourself.
+
+Use Orpius as a:
+
+* **Foundation for integrating AI into existing applications**  
+  Integrate models, automation, and intelligent processing into your existing systems.
+  Orpius manages the infrastructure, data security, and communication pipelines,
+  allowing you to focus on application design and functionality.
+
+* **Foundation for developing new AI systems, applications, and tools**  
+  Build AI-powered solutions from the ground up in a ready-to-use environment designed for rapid development, flexibility, and robust security.
+
+### For Productivity and Operations Users
+
+Orpius isn't just for developers â€” it's also a powerful productivity platform.
+
+All configuration and management are handled through the **Orpius Console**,
+a desktop client that runs on the same infrastructure as your applications.
+The Console provides an interactive, chat-based interface that understands 
+the system itself â€” allowing you to set up and manage AI agents, models,
+schedules, events, and even your team without writing code.
 
 ## What Orpius Provides
 
-Orpius provides a complete foundation for building applications with AI capabilities.
+Orpius provides a complete foundation for building AI applications.
 
 It includes:
+
 * **Integration with external systems** via API-driven events or customer-facing AI agents
-* **Built-in capabalities**
-    * **Code execution tooling** currently supports C#, with Java and VB coming soon
-    * **Events registeration and triggering**
-    * **Notification and messaging and Team Awareness** across time zones
-    * **Scheduling** for running tasks at defined times or intervals
-    * **Memory** agents manage their own memory, deciding what to keep and when to use it.
-    * **Video feed image analysis**
-    * **Web page retrieval**
+* **Isolated Code execution environment**  
+  Agents can write compilable code and run it in a secure sandboxed environment.
+* **Events**  
+  Agents are called into action by external systems through registered events.
+* **Notifications, messaging, and team awareness**  
+  Agents communicate via notifications or email, and are time zone aware;
+  enabling team collaboration.
+* **Scheduling** for running tasks at defined times or intervals.
+* **Memory**  
+  Agents manage their own memory, deciding what to keep and when to use it.
+* **Video feed image analysis**
+* **Web page retrieval**
 * **Custom Agent creation**
 * **Multi-model support** 
-* **Shared storage**
+* **Shared team storage**
 * **Permissions and Security**
 * **Secrets system**
 * **Orchestration** 
-* **Tools Integration** with Built-in tools that provide core capabilities out of the box and support for custom tooling
-
+* **Tools Integration** with Built-in tools that provide core capabilities 
+  out of the box and powerful support for custom tooling
 
 ## Built-in Productivity Features
 
-The following examples show some of the productivity features available directly in the Console. These may give you some sense of what you can achieve in your own applications, though with custom tooling you can expand the capabilities much further. 
+The following examples show some of the productivity features available directly 
+in the Console. These may give you some sense of what you can achieve 
+in your own applications, though with custom tooling you can expand 
+the capabilities much further. 
 
 For example, you can use chat in the Console to instruct Orpius to:
+
 * Schedule and carry out tasks
 * Read, analyze, and write files
 * Apply image analysis to video streams in real time
@@ -93,51 +126,89 @@ For example, you can use chat in the Console to instruct Orpius to:
 
 # Deployment
 
-Currently, the Orpius platform is deployed as a single-tenant cloud service. Support for on-premises deployments is planned.
+The Orpius platform is deployed as a single-tenant cloud service. Support for on-premises deployments is planned.
 
 **Note**: A multitenant environment is provided for evaluation and proof-of-concept testing.
-
 
 # Getting started
 
 Before you can start working with Orpius, you will need:
 
-* **Orpius Client Application (Orpius Console)** – A lightweight desktop client for configuring everything from models to agents and tools.
-* **SDK for the Orpius platform** – Includes libraries that simplify integration into your applications, plus sample applications that help you get started.
-* **Access to Email server (System owners only)** – Because Orpius runs in your own private cloud, email handling is not provided as a shared service. An email server is required during initial setup so new users can verify their email addresses (a sending-only server is sufficient). It will also be used to send notifications or messages to team members. In addition, we have future plans to introduce email driven events.
-* **Access to your own LLM provider** – Orpius connects to AI models you choose (hosted on-premises or in the cloud). It currently supports OpenAI and Azure OpenAI, with more providers to follow.
+* **Orpius Client Application (Orpius Console)** â€“ A lightweight desktop client for configuring everything from models to agents and tools.
+* **Access to your own LLM provider** â€“ Orpius connects to AI models you choose (hosted on-premises or in the cloud). It currently supports OpenAI and Azure OpenAI, with more providers to follow.
+* **Access to an Email server (System owners only)**  
+  Because Orpius runs in your own private cloud, email handling is not provided 
+  as a shared service. An email server is required during initial setup so new users 
+  can verify their email addresses (a sending-only server is sufficient).
+  It will also be used to send notifications or messages to team members. 
 
 ## How it works
 
-1. **Configure** – Define your Models, Agents, Events, Tools, and Operations in the Orpius Console.
-(You can think of Operations as the integration mechanism that allows your application to communicate with your Orpius AI Agents.)
-2. **Integrate with your system** – Add the SDK libraries to your application, and by coping and pasting the credentials from Orpius client to your application, embed the AI assistant directly into your application.
-3. **Execute** – The AI assistant can now call your server-side tools. The Orpius Server runs them and manages orchestration, integration, state, storage, and security.
+1. **Configure** â€“ Define your Models, Agents, Events, Tools, and Operations 
+   in the Orpius Console. (You can think of Operations as the integration mechanism
+   that allows your application to communicate with your Orpius AI Agents.)
+2. **Integrate with your system** using events or with operations and tooling; using
+   the Orpius SDK libraries, allowing you to embed your AI assistant directly 
+   into your application.
+3. **Execute** â€“ The AI assistant can now call your server-side tools.
+   The Orpius Server runs them and manages orchestration, integration, state, storage, and security.
 
-
-# System Structure Overview
+# Understanding the Orpius System Structure
 
 Orpius is organized around organizations and spaces. 
 
-At the top level is the **Organization**, which represents your company or team. Each Organization contains one or more **Spaces**.   
+At the top level is the **System**, which represents the Orpius installation itself.
+Within the system, there are multiple organizations.
 
-When Orpius is first installed, a default organization and space are created automatically for each user. 
+The **Organization** represents your company or organization.
+Each organization has its own storage allocation, and set of members.
 
-## Roles and Structure
+Each Organization contains one or more **Spaces**.
+A Space is a dedicated workspace for a specific project or team.
+Each Space contains all the resources for that project, 
+such as agents, tools, models, operations, and events,
+and has its own isolated storage area.
 
-**System Owner** – The person responsible for deploying and maintaining the Orpius installation within a stack. The owner manages the underlying environment, including settings such as mail server configuration, member access restrictions, and inference or application limits. Each installation runs in its own private cloud environment.
-**Note:** For evaluation and proof-of-concept testing, we act as the System Owner.
+```mermaid
+mindmap
+  root((Orpius System))
+    Organization A
+      Space A1
+      Space A2
+    Organization B
+      Space B1
+      Space B2
+    Organization C
+      Space C1
+      Space C2
+```
 
-**User** - Anyone with access to Orpius in the same stack, without system-level privileges.
+*The Orpius system contains organizations, which contain spaces*
 
-**Organization** – Represents a company or team within the system. Each organization has its own infrastructure, storage, and members. A user can belong to multiple organizations.
+> **NOTE:** When a user registers with Orpius, a default organization 
+and space are created automatically for that user. 
+You may invite other users to join your organization and collaborate in the same space.
 
-**Space** – A workspace within an organization, similar to a project or repository. Spaces contain all the resources for a specific project, such as agents, tools, models, operations, and events. Each organization can have multiple spaces, and access is controlled through roles and permissions.
+## Understanding User Roles
 
+A user may have different roles across different organizations and spaces.
 
-# Installing the Client Application
+### Space Roles
+* **Participant** - Can receive notifications and perform tasks.
+* **Editor** â€“ Able to create and modify content and manage schedules and events in the space. 
+* **Administrator** â€“ Able to add new members and manage space settings.
+* **Owner** â€“ Able to delete the space or assign administrator privileges.
 
-The Orpius Console is a lightweight desktop client that connects directly to the Orpius infrastructure.
+### Organization Roles
+* **Participant** - A member of a space within the organization.
+* **Administrator** â€“ Able to add or remove members and manage organization settings.
+* **Owner** â€“ Able to delete the organization or assign administrator privileges.
+  Able to manage language models.
+
+## Installing the Client Application
+
+The Orpius Console is a lightweight desktop application 
+that connects directly to the Orpius infrastructure.
 
 To get started, you'll receive a message from us containing:
 
@@ -153,15 +224,24 @@ Follow these steps:
 4. Enter the **Server URL** into the field provided.
 5. Enter the **Access Key** (System owners only).
 
-# Setting up Orpius for the first time
+## Setting up Orpius for the first time
 
-## Setting up email server (System owners only)
+If you are the system owner of an Orpius installation,
+you will be prompted to set up the system the first time you launch the Orpius Console.
 
-During first-time setup, you'll be prompted to enter your email server details. The email server is used by Orpius to handle email requests such as sending messages to team members. Setting up the email server as part of the initial setup is a required step because it allows new users to verify their email address. 
+### Setting up an email server (System owners only)
 
-Enter your email server details. You can update this information later in **System Settings**.
+During the first-time setup of the Orpius server, you'll be prompted 
+to enter your email server details.
+The email server is used by Orpius to handle email requests 
+such as sending messages to team members. 
+Setting up the email server is required because it allows 
+new users to verify an email address. 
 
-## Creating an user account
+Enter your email server details. 
+You can update this information later in **System Settings** within the application.
+
+### Creating a user account
 
 Every Orpius user creates and signs into a user account.
 
@@ -169,37 +249,28 @@ During the first time setup, you'll be prompted to create your account.
 
 * Enter your account **Username**, **Email**, **Given Name**, **Surname** and **Password** into the fields provided.
 
-**Note:** At present, account information can't be changed after your account is created. Options to update these details will be available in an upcoming version.
+> **Note:** At present, account information can't be changed after your account is created. 
+  Options to update these details will be available in an upcoming version.
 
-You'll receive a confirmation email from the system address you configured during email server setup (e.g. noreply@yourdomain.com) containing a code.
+You'll receive a confirmation email from the system address you configured 
+during email server setup (e.g. noreply@yourdomain.com) containing a code.
 
-If you see an error message, click **Previous** and check that your email address and email server information are correct.
+If you see an error message, click **Previous** and check that your email address 
+and email server information are correct.
 
-## Managing System Settings and Limits (System Owners only)
+## First Launch
 
-System Owners can manage key configurations and restrictions in the **System Settings**.
+After completing the initial setup, Orpius opens in the Organisation view, 
+where you can see a list of the Spaces you belong to. 
+Each user begins with a default Space that is created automatically. 
+For more details on creating and managing Spaces, see [`Spaces`](#spaces).
 
-Key areas include:
+### Understanding Spaces
 
-* **Email Server** - Change the settings you configured when first setting up the system.
-
-* **SMTP Event Server Port** – Specify the port used by the Orpius SMTP server for incoming email notification.
-
-* **Organisation** – Set the maximum number of users and administrator users allowed in an organisation.
-
-* **Application** - Restrict new users to those from within your organisation. Set limits for cache item lifespan, refresh token lifespan, and timeouts.
-
-* **Inferencing** – Manage limits on inferencing operations.
-
-* **Workflow** – Control limits related to workflow execution and activity processing.
-
-# First Launch
-
-After completing the initial setup, Orpius opens in the Organisation view, where you can see a list of the Spaces you belong to. Each user begins with a default Space that is created automatically. For more details on creating and managing Spaces, see [`Spaces`](#spaces).
-
-# Spaces
-
-A space is your working area inside the Orpius Console. Each space keeps everything related to a project or team in one place. You can also invite members (inside or outside your organization) to collaborate in a space. Members can be invited into a space and granted access through roles.
+A space is your working area inside the Orpius Console. 
+Each space keeps everything related to a project or team in one place. 
+You can also invite members (inside or outside your organization) to collaborate 
+in a space. Members can be invited into a space and granted access through roles.
 
 Your Spaces are listed on the Organization View page, where you can:
 
@@ -213,44 +284,57 @@ Within a Space, you can:
 * View and manage **scheduled tasks**
 * Upload and download **files** to and from your isolated storage
 * Invite and manage **members** for collaboration
-* Configure your Models, Agents, Tools, Operations, Secrets, and Events
-* Interact with LLMs via chat 
+* Configure your models, agents, tools, operations, secrets, and events
+* Interact with AI agents via chat 
 
-## Creating a Space
+#### Creating a Space
 
 To create a new Space:
 1.	From the **Organization View** page, select **Create a Space**.
 2.	Enter a name for the Space. 
 3.	Confirm to create.
 
-# Models
+### Working with Large Language Models (LLM)
 
-The system is designed to work with any AI model, whether hosted **on-premises** or in the **cloud**. Currently, OpenAI and Azure OpenAI are supported, with more providers to follow.
+The system is designed to work with any LLM, whether hosted **on-premises** or in the **cloud**.
+Currently, OpenAI and Azure OpenAI are supported, with more providers to follow.
 
-You can configure as many models as you need. For example, some agents might use GPT-5 for complex tasks, while others can run on a lower-cost model such as OpenAI gpt-5-mini. 
+You can configure as many models as you need, from different providers. 
+For example, some agents might use GPT-4o for complex tasks, while others can run on a lower-cost model such as OpenAI gpt-4o-mini. 
 
-## Configuring a New Model
+#### Configuring a New Model
 
 1. Open the **Models** view from the sidebar 
 2. Select **'+'** button in the toolbar of the **Models** view
 3. Enter the required information
 4. Save
 
-# Agents
+## Understanding Agents
 
-In Orpius, Agents are consider users, just like humans. Orpius includes two built-in agents: **Orpius** and **Phaedra**.
-* **Orpius** is the agent you interact with directly through chat.
-* **Phaedra** is the agent that orchestrates non-interactive conversations, such as scheduled tasks and background activity execution.
+In Orpius, agents are consider users, just like humans. 
+Orpius includes two built-in agents: **Orpius** and **Phaedra**.
+* **Orpius** is the agent you interact with directly through chat, and who orchestrates non-interactive activites.
+* **Phaedra** carries out non-interactive activities, such as scheduled tasks and event execution.
 
-Both Orpius and Phaedra are **organization-wide** agents available in every space. You can also configure **custom agents** dedicated to specific operations within a space.
+Both Orpius and Phaedra are **organization-wide** agents available in every space.
+In addition, you can create **custom agents** dedicated to specific operations within a space,
+allowing you to provide a custom persona and instructions to your agent.
 
-By default, Orpius and Phaedra use the first LLM you define, but you can assign them to any of your available LLMs.
+By default, Orpius and Phaedra use the first LLM you define, 
+but you can assign them to any of your available LLMs.
 
-Agents in Orpius do not have fixed tools or workflows of their own. Instead, they draw from a shared pool of tools.
+![Configuring agent models](Images/AgentModels1_raw.png)
 
-When integrating your application with Orpius, you configure a **Custom Agent**. This agent will handle all incoming requests from your application.
+Agents in Orpius do not have fixed tools or workflows of their own.
+Instead, they draw from a shared pool of tools.
+
+When integrating your application with Orpius, 
+you configure a **Custom Agent**. This agent will handle all incoming requests 
+from your application.
 
 ## Configuring a Custom Agent
+
+To create a custom agent, perform the following steps:
 
 1. Open the **Agents** view from the sidebar 
 2. Select **'+'** button in the toolbar of the **Agents** view
@@ -261,50 +345,70 @@ When integrating your application with Orpius, you configure a **Custom Agent**.
 7. Provide further **Instructions** that will assist the agent in carrying out its duties.
 8. Save.
 
-# Agent Tools
+![Configuring a custom agent](Images/AgentCustom_raw.png)
 
-Tools in Orpius are not tied to a single agent. They live in a shared pool that any agent can access if it has permission. Tools can be combined, triggered by events, and reused across different agents. Agents can autonomously select and combine the tools they need to complete a task.
+**Configuring a custom agent**
 
-## Build-in Tools
+## Agent Tools
+
+Tools are functions that your agent can call to perform specific tasks.
+Tools in Orpius are not tied to a single agent.
+They live in a shared pool that any agent can access if it has permission.
+Tools can be combined, triggered by events, and reused across different agents.
+Agents can autonomously select and combine the tools they need to complete a task.
+
+Tools can be either built-in or custom.
+
+### Reviewing the Built-in Tools
 
 Orpius includes the following set of built-in tools:
 
-* **Scheduler** – Allows an AI agent to add work items to be done at a future time. 
-    * Schedules can be of the type:
-        * **Daily** - to run at a specified time
-        * **Weekly** - to run on a specified day of the week and specified time
-        * **Monthly** – to run on a specified day of the month and time
-        * **Yearly** - to run on a specified day of the month and time
-        * **Interval** - to run after a specified period and may be set to repeat forever or loop for a specified number of times.
-    * **WebSearch** – Allows an AI agent to search in internet using Bing. An API key is required. Note that Bing Search APIs retired on August 11, 2025.
-    * **WebPageRetriever** – Retrieve the HTTP response for a specified URL. Allows for the use of web APIs.
-    * **Notifier** – send notifications to a user. A notification may also be sent by email to the user. The user's email is never provided to an agent.
-    * **CodeExecution** – compiles and runs managed code and passes the results back to the agent. This allows the assistant to complete tasks that require calculations and storing and retrieving data from files. The execution environment is sandboxed and hosted within WebAssembly (Wasm), isolating it from other processes or code execution.
-    * **ImageAnalysis** – Allows an agent to analyze an image, either from a specified image URL or by snapping a frame from a real-time video stream. 
-    * **VideoFeedMonitor** – Real Time Streaming Protocol (RTSP). Downloads a still image from a video feed which can be used for image analysis.
-    * **EventRegistry** – registers an event name that can be used by a remote API to trigger a task. The identifier can then be used with a web hook in the system.
-    * **Memory** – Allows an agent to add a record of an event or experience to the agents memory store, enabling it to track changes across multiple tasks.
-    * **EventTrigger** - triggers an event that was previously registered
+* **Scheduler** â€“ Allows an AI agent to add work items to be done at a future time. 
+  Schedules can be of the type:
+  * **Daily** - to run at a specified time
+  * **Weekly** - to run on a specified day of the week and specified time
+  * **Monthly** â€“ to run on a specified day of the month and time
+  * **Yearly** - to run on a specified day of the month and time
+  * **Interval** - to run after a specified period and may be set to repeat forever 
+    or loop for a specified number of times.
+* **WebPageRetriever** â€“ Retrieve the HTTP response for a specified URL. 
+  Allows for the use of web APIs.
+* **WebSearch** â€“ Allows an AI agent to search in internet using Bing. An API key is required.
+  Note that Bing Search APIs retired on August 11, 2025.
+* **Notifier** â€“ send notifications to a user. A notification may also be sent by email to the user. 
+  The user's email is never provided to an agent.
+* **CodeExecution** â€“ Compiles and runs managed code and passes the results back to the agent.
+  This allows the assistant to complete tasks that require calculations, 
+  storing and retrieving data from files, or calling third-party APIs.
+  The execution environment is sandboxed and hosted within WebAssembly (Wasm), 
+  isolating it from other processes or code execution.
+* **ImageAnalysis** â€“ Allows an agent to analyze an image, 
+  either from a specified image URL or by snapping a frame from a real-time video stream. 
+* **VideoFeedMonitor** â€“ Real Time Streaming Protocol (RTSP). 
+  Downloads a still image from a video feed which can be used for image analysis.
+* **EventRegistry** â€“ Registers an event name that can be used by a remote API to trigger a task. The identifier can then be used with a web hook in the system.
+* **Memory** â€“ Allows an agent to add a record of an event or experience to the agents memory store, enabling it to track changes across multiple tasks.
+* **EventTrigger** - Triggers an event that was previously registered.
 
-The following **example** shows how a simple instruction can lead the agent to **autonomously** combine **multiple tools** to complete the task.
+The following **example** shows how a simple instruction can lead 
+the agent to **autonomously** combine **multiple tools** to complete the task.
 
 **Prompt:**
 
->*Add a scheduled item for every 2 minutes to analyze rtsp://orpius:<%=Key:WebCam%>@CAMERA_IP:554/cam/realmonitor?channel=1&subtype=0. Please record the car colors and their position in the bays to a csv file named 'parking.csv' by appending to the file. If it doesn't exist, create it with the column headers. If it already exists then append the data to the file without the headers.
+>*Add a scheduled item for every 5 minutes to analyze rtsp://orpius:<%=Key:WebCam%>@CAMERA_IP:554/cam/realmonitor?channel=1&subtype=0. Please record the car colors and their position in the bays to a csv file named 'parking.csv' by appending to the file. If it doesn't exist, create it with the column headers. If it already exists then append the data to the file without the headers.
 Include a row for each car you see. Notify John if cars are parked in the restricted space.*
 
 **What the agent does:**
-1. Retrieves the video stream URL **(Secrets)**
-2. Connects to the video stream **(VideoFeedMonitor)**
-3. Captures a frame every two minutes **(Scheduler)**
+1. Attends to the task every five minutes **(Scheduler)**
+2. Retrieves the video stream URL **(Secrets)**
+3. Connects to the video stream **(VideoFeedMonitor)**
 4. Analyses the image to detect parked cars **(ImageAnalysis)**
 5. Writes the findings to a file **(CodeExecution)**
 6. Notifies the user if an issue is detected **(Notifier)**
 
+### Custom Tools
 
-# Custom Tools
-
-In addition to the built-in tools, you can register your own custom tools (plugins) located on your organization's network.
+In addition to the built-in tools, you can register your own custom tools located on your organization's network.
 These extend the system with domain-specific capabilities that your agents can use during inferencing.
 
 **Custom tools** can expose almost any functionality available within your environment. 
@@ -321,14 +425,14 @@ For example, you can create tools that:
 
 * Trigger automation tasks such as sending notifications, generating reports, or updating shared files.
 
-Each custom tool is registered in the system with a unique name and made available to AI Agents under your control. This allows agents to call your organisation’s existing code, libraries, or services securely—without exposing them externally.
+Each custom tool is registered in the system with a unique name and made available to AI Agents under your control. This allows agents to call your organisationâ€™s existing code, libraries, or services securelyâ€”without exposing them externally.
 
 ## How it works
 
-1. **Register a custom tool** – Open the **Agent Tools** view from the sidebar and select **Custom Tools** .
-2. **Integrate with your application** – Copy the **External ID** and **Access Key**, then paste them into **your application**.
-3. **Expose functionality to Orpius** – Decorate your code with the [Tool] and [ToolMethod] attributes.
-4. **Execute** – The Orpius SDK automatically receives and dispatches tool requests at runtime.
+1. **Register a custom tool** â€“ Open the **Agent Tools** view from the sidebar and select **Custom Tools** .
+2. **Integrate with your application** â€“ Copy the **External ID** and **Access Key**, then paste them into **your application**.
+3. **Expose functionality to Orpius** â€“ Decorate your code with the [Tool] and [ToolMethod] attributes.
+4. **Execute** â€“ The Orpius SDK automatically receives and dispatches tool requests at runtime.
 
 See the **SDK documentation** for more details on custom tools. Example implementations are included in the downloadable SDK.
 
@@ -452,10 +556,10 @@ Users with the **Administrator** or **Owner** permission level can invite member
 
 Each member is assigned a **role** that determines their permissions:
 
-* **Participant** – minimal access. Can receive notifications (email) and perform tasks.
-* **Editor** – includes all Participant privileges, plus the ability to modify content and manage tasks in the space.
-* **Administrator** – can manage members, configure settings, and oversee activity.
-* **Owner** – full control over the space, including deleting it or transferring ownership.
+* **Participant** â€“ minimal access. Can receive notifications (email) and perform tasks.
+* **Editor** â€“ includes all Participant privileges, plus the ability to modify content and manage tasks in the space.
+* **Administrator** â€“ can manage members, configure settings, and oversee activity.
+* **Owner** â€“ full control over the space, including deleting it or transferring ownership.
 
 **Adding a member to a space:**
 * Open the **Team** view from the sidebar
@@ -477,3 +581,20 @@ System owners can configure limits that control user access across the organisat
 * **Set the maximum number of administrators** in an organisation.
 * **Restrict new users** to having an email address within the organisation by configuring a regular expression. For example: ```^[A-Za-z0-9._%+-]+@yourcompany\.(com|org|net)$```
 
+### Managing System Settings and Limits (System Owners only)
+
+System Owners can manage key configuration options and restrictions in the **System Settings**.
+
+Key areas include:
+
+* **Email Server** - Change the settings you configured when first setting up the system.
+
+* **SMTP Event Server Port** â€“ Specify the port used by the Orpius SMTP server for incoming email notification.
+
+* **Organisation** â€“ Set the maximum number of users and administrator users allowed in an organisation.
+
+* **Application** - Restrict new users to those from within your organisation. Set limits for cache item lifespan, refresh token lifespan, and timeouts.
+
+* **Inferencing** â€“ Manage limits on inferencing operations.
+
+* **Workflow** â€“ Control limits related to workflow execution and activity processing.
