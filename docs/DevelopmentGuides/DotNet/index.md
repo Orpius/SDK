@@ -12,6 +12,7 @@
     - [Understanding Custom Tools](#understanding-custom-tools)
     - [Initializing the Tooling Subsystem](#initializing-the-tooling-subsystem)
     - [Sharing Data between Tools and Operations](#sharing-data-between-tools-and-operations)
+  - [Wrapping Up](#wrapping-up)
 <!--/TOC-->
 
 ## Getting Started with the Orpius SDK
