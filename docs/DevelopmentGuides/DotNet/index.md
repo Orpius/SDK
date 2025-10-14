@@ -826,8 +826,8 @@ secure, and extensible AI integrations directly into your own applications.
 Whether you're connecting an existing system, crafting new tools for your agents, 
 or experimenting with the sample projects, the SDK is designed 
 to stay out of your way while giving you complete control. 
-We encourage you to explore, extend, and make it your own 
-- and if you run into questions, the Orpius community and documentation 
+We encourage you to explore, extend, and make it your own - and if you run 
+into questions, the Orpius community and documentation 
 are there to help. We look forward to seeing what you build with Orpius!
 
 
