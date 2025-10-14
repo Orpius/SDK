@@ -408,8 +408,10 @@ Include a row for each car you see. Notify John if cars are parked in the restri
 
 ### Custom Tools
 
-In addition to the built-in tools, you can register your own custom tools located on your organization's network.
-These extend the system with domain-specific capabilities that your agents can use during inferencing.
+In addition to the built-in tools, you can register your own custom tools 
+located within your organization's network or on another external system.
+Custom tools extend Orpius with domain-specific capabilities 
+that your agents can use during inferencing.
 
 **Custom tools** can expose almost any functionality available within your environment. 
 
@@ -434,30 +436,119 @@ Each custom tool is registered in the system with a unique name and made availab
 3. **Expose functionality to Orpius** – Decorate your code with the [Tool] and [ToolMethod] attributes.
 4. **Execute** – The Orpius SDK automatically receives and dispatches tool requests at runtime.
 
-See the **SDK documentation** for more details on custom tools. Example implementations are included in the downloadable SDK.
+For a deep dive into custom tools, see the (SDK documentation)[../DevelopmentGuides/index.md] for more details on custom tools. 
+Example implementations are included in the downloadable SDK.
 
-# Events
+## Using Events to Trigger Activities
 
-Events provide a secure way to connect your systems with Orpius and perform activities in response to external triggers.
+Events provide a secure way to connect your systems with Orpius 
+and perform activities in response to external triggers.
 
-## How it Works
+### Creating an Event
 
-* In the Console, you register events that external systems can call through a remote API to trigger tasks. Each event has a unique identifier that can be used in a webhook or integrated system. 
-* After registering an event, you add the activities or follow-up events that should run when it is triggered. 
-* Orpius then orchestrates the response in real time.
+There are two ways to define an event in Orpius: manually or through chat.
+
+## Creating an Event through Chat
+
+Orpius understands what events are, and can be instructed through chat 
+to create new events with specific actions.
+
+* Start a new **Chat** 
+* For example, you could say: *"Create an event named 'FactoryUnitArrived' 
+  that notifies the user robertB with the order details."*
+* Orpius will then register the event and set up the event activity instructions accordingly, 
+  including your username for proper execution.
+* Open the **Events** view to review or modify the newly created event.
+
+![Creating an event](Images/Event1.png)
+
+**Creating an event**
+
+> **Tip:** When defining activities triggered by an event, 
+  avoid wording that suggests creating or scheduling an event in the task instruction.
+The agent may interpret this as a command to create a new event each time it runs.
+Instead, phrase the instruction as an immediate action, and review the event activity 
+after creation to ensure it aligns with your intent.
+
+### Manual Creation of an Event
+
+To create an event manually, follow these steps:
+
+1. **Register the Event**
+    * Open the **Events** view from the sidebar.
+    * Select the **'+'** button in the toolbar of the **Events** view
+    * In the **Event Configuration** view, enter the event name (for example, *FactoryUnitArrived*).
+2. **Define the Triggered Work (Activity)**
+    * In the **Event Triggered Work** view, select the **'+'** button 
+      in the toolbar of the **Event Triggered Work** view.
+    * Provide a **Title** and clear **Instructions** for the agent 
+      (for example, *"send a notification to the user with username robertB"*).
+    * You can define multiple activities for the same event.
+    * Allow the use of custom tools that the agent can use when executing the task.
+3. **Trigger and Execute**
+    * When an external system fires the *FactoryUnitArrived* event, 
+      an agent automatically executes the defined activity.
+
+### Triggering an Event
+
+Each event has a unique URL that can be used in an external system to trigger
+one or more activities. In addition, agents with access to the EventTrigger tool 
+can also trigger events, within the space, by name.
+
+### Editing Event Activities
+
+Upon registering an event, you add the activities or follow-up events 
+that should run when the event is triggered.
+When the event is triggered, an agent performs the associated activities.
+
+![Editing an event activity](Images/EventActivity.png)
+
+**Editing an event activity**
+
+Built-in agents as well as your custom agents can trigger events.
+You can instruct Orpius, in a chat, to trigger an event by name.
+You can instruct your custom agent to trigger an event as part of an operation.
+Events can be triggered in scheduled tasks, operations, directly via a chat, 
+or even conditionally during another event activity.
+
+By clicking and expanding the **URL for Access Key 1** or **URL for Access Key 2**,
+you can see the full URL to call the event.
+The purpose of having two access keys is to allow you to rotate one key
+without having downtime.
+
+For example, given a different base URL for an Orpius application you
+will see something like:
+```
+https://nyfqg7nhtfak2vj6kjslml4lrk.app.orpius.com/api/v1/event/raise?event-id=a1267fa8ce2a20734536920ebdffa262
+```
+When called with a HTTP GET or POST request, this will trigger the event whose ID is *a1267fa8ce2a20734536920ebdffa262*.
+
+The query string, which include the 'event-id' parameter,
+also allows you to pass additional parameters to the agent and to your tools.
 
 **Example of how events may flow in a Surveillance Application**
 * A camera sends a motion detected event. 
-* You configure this event to trigger a notification activity and an analysis activity.
-* Orpius then orchestrates the response: it notifies the right user, launches the analysis, and, depending on the outcome, can automatically trigger follow-up actions such as raising an alert, starting a recording, or handing off to another tool.
+* You configure this event to trigger an activity with instructions 
+  that are given to an agent.
+* Upon the event, the agent orchestrates the response: 
+  it launches the analysis, notifies the right user, and, 
+  depending on the outcome, can automatically trigger follow-up actions 
+  such as raising an alert, starting a recording, or handing off to another tool.
 
-(Note: In the current release, events are handled by the in-built Orpius agents.)
+> **Note:** Currently, events are handled by the built-in Orpius agents only.
+  We plan to extend this functionality to custom agents in a future release.
 
-## Security and Control
+### Events for Improving Security and Control
 
-Orpius is designed to be adaptive rather than follow rigid workflows. To keep this behaviour reliable, you can set **guardrails** by defining which **tools** and **constraints** an agent is allowed to use.
+Orpius is designed to be adaptive rather than follow rigid workflows. 
+To keep this behaviour reliable, you can set **guardrails** by defining 
+which **tools** and **constraints** an agent is allowed to use.
 
-The event system can also provide a built-in **security layer** based on the principle of Segregation of Duties (SoD). Customer-facing agents can trigger events to request actions from more privileged agents, without having direct access to sensitive capabilities such as scheduling, storage, or team information.
+The event system can also provide a built-in **security layer** based 
+on the principle of Segregation of Duties (SoD).
+Customer-facing agents can trigger events to request actions 
+from more privileged agents, without having direct access to sensitive capabilities 
+such as scheduling, storage, or team information.
 
 ## HTTP Parameters
 
@@ -467,38 +558,6 @@ The event system can also provide a built-in **security layer** based on the pri
 
 **POST**
 * Everything that comes in apart from the access key is sent in the context to your tool. To see more information on the context property see *[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
-
-## Setting up and event
-
-There are two ways to define an event in Orpius: manually or through chat.
-
-**Tip**: When defining activities that are triggered by an event, avoid using words such as schedule or references to the event itself in the task instruction. This can confuse the agent, leading it to interpret the instruction as a command to schedule itself or create a new event. Instead, phrase the instruction as an immediate action.
-
-
-**Manual setup**
-1. **Register the Event**
-    * Open the **Events** view from the sidebar.
-    * Select the **'+'** button in the toolbar of the **Events** view
-    * In the **Event Configuration** view, enter the event name (for example, *NewOrderReceived*).
-2. **Define the Triggered Work (Activity)**
-    * In the **Event Triggered Work** view, select the **'+'** button in the toolbar of the **Event Triggered Work** view.
-    * Provide a **Title** and clear **Instructions** for the agent (for example, *"send a notification to the user"*).
-    * You can define multiple activities for the same event.
-    * *(Upcoming feature)* Supply Custom Tools that the agent can use when executing the task.
-3. **Trigger and Execute**
-    * When an external system fires the *NewOrderReceived* event, Orpius automatically executes the defined activity.
-
-
-
-**Setup via Chat**
-
-Orpius understands events and can be instructed through chat to create new ones with specific actions.
-
-* Start a new **Chat** 
-* For example, you could say: *"Create an event named 'NewOrderReceived' that sends me a notification with the order details when triggered."*
-* Orpius will then register the event and set up the instructions accordingly, including your user ID for proper execution.
-* Open the **Events** view to review or modify the newly created event.
-
 
 # Isolated Storage
 
