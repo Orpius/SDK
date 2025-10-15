@@ -433,7 +433,7 @@ that your agents can use during inferencing.
 
 For example, you can create tools that:
 
-* **Connect to your organisation's database** 
+* **Connect to your organization's database** 
 
 * **Access internal APIs** 
 
@@ -443,7 +443,10 @@ For example, you can create tools that:
 
 * Trigger automation tasks such as sending notifications, generating reports, or updating shared files.
 
-Each custom tool is registered in the system with a unique name and made available to AI Agents under your control. This allows agents to call your organisation’s existing code, libraries, or services securely—without exposing them externally.
+Each custom tool is registered in the system with a unique name 
+and made available to AI Agents under your control. 
+This allows agents to call your organization's existing code, libraries, 
+or services securely—without exposing them externally.
 
 ## Custom Tool Integration Steps
 
@@ -667,7 +670,7 @@ occurs seamlessly, without the need for manual intervention.
 ## Adding Users to a Space
 
 Users with the space role of **Administrator** or **Owner** can invite other users
-to a space, either from within or outside the organisation.
+to a space, either from within or outside the organization.
 
 Each member is assigned a **role** within the space that determines that user's permissions:
 
@@ -694,11 +697,11 @@ Each member is assigned a **role** within the space that determines that user's 
 ### Managing User Limits (System Owners only)
 
 System owners can configure the following limits that control user access 
-across the organisation:
+across the organization:
 
-* **Set the maximum number of users** in an organisation.
-* **Set the maximum number of administrators** in an organisation.
-* **Restrict new users** to having an email address within the organisation
+* **Set the maximum number of users** in an organization.
+* **Set the maximum number of administrators** in an organization.
+* **Restrict new users** to having an email address within the organization
   by configuring a regular expression.
   For example, to restrict new users to email addresses within 
   the domain `yourcompany.com`, `yourcompany.org`, or `yourcompany.net`, 
@@ -720,10 +723,10 @@ Key areas include:
 * **SMTP Event Server Port** – Specify the port used by the Orpius system SMTP 
   server for incoming email notification.
 
-* **Organisation** – Set the maximum number of users and administrators 
-  allowed in an organisation.
+* **Organization** – Set the maximum number of users and administrators 
+  allowed in an organization.
 
-* **Application** - Restrict new users to those from within your organisation.
+* **Application** - Restrict new users to those from within your organization.
   Set limits for cache item lifespan, refresh token lifespan, and timeouts.
 
 * **Inferencing** – Manage limits on inferencing operations.
