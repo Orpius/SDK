@@ -39,12 +39,15 @@
       - [Using HTTP GET to Trigger an Event](#using-http-get-to-trigger-an-event)
       - [Using HTTP POST to Trigger an Event](#using-http-post-to-trigger-an-event)
   - [Working with Isolated Storage](#working-with-isolated-storage)
-  - [Uploading files](#uploading-files)
-  - [Downloading files](#downloading-files)
-  - [Creating files using chat](#creating-files-using-chat)
-- [Team Awareness and Management](#team-awareness-and-management)
-  - [How it works](#how-it-works)
-  - [Adding Members to a Space](#adding-members-to-a-space)
+    - [Uploading files](#uploading-files)
+    - [Downloading files](#downloading-files)
+    - [Creating files using chat](#creating-files-using-chat)
+  - [Using Team Collaboration and Management](#using-team-collaboration-and-management)
+    - [Leveraging Team Awareness in an Interactive Chat](#leveraging-team-awareness-in-an-interactive-chat)
+    - [Applying Team Awareness in Agent Activities](#applying-team-awareness-in-agent-activities)
+  - [Adding Users to a Space](#adding-users-to-a-space)
+    - [Steps to Add a User to a Space](#steps-to-add-a-user-to-a-space)
+    - [Accepting an Invitation to Join a Space](#accepting-an-invitation-to-join-a-space)
     - [Managing User Limits (System Owners only)](#managing-user-limits-system-owners-only)
     - [Managing System Settings and Limits (System Owners only)](#managing-system-settings-and-limits-system-owners-only)
 <!--/TOC-->
@@ -682,24 +685,38 @@ Each member is assigned a **role** within the space that determines that user's 
 
 ### Managing User Limits (System Owners only)
 
-System owners can configure limits that control user access across the organisation:
+System owners can configure the following limits that control user access 
+across the organisation:
+
 * **Set the maximum number of users** in an organisation.
 * **Set the maximum number of administrators** in an organisation.
-* **Restrict new users** to having an email address within the organisation by configuring a regular expression. For example: ```^[A-Za-z0-9._%+-]+@yourcompany\.(com|org|net)$```
+* **Restrict new users** to having an email address within the organisation
+  by configuring a regular expression.
+  For example, to restrict new users to email addresses within 
+  the domain `yourcompany.com`, `yourcompany.org`, or `yourcompany.net`, 
+  you could use the following regular expression:
+  ```
+  ^[A-Za-z0-9._%+-]+@yourcompany\.(com|org|net)$
+  ```
 
 ### Managing System Settings and Limits (System Owners only)
 
-System Owners can manage key configuration options and restrictions in the **System Settings**.
+System Owners can manage key configuration options and restrictions 
+in the **System Settings** view within the Orpius Console.
 
 Key areas include:
 
-* **Email Server** - Change the settings you configured when first setting up the system.
+* **Email Server** - Change the settings you configured 
+  when first setting up the system.
 
-* **SMTP Event Server Port** – Specify the port used by the Orpius SMTP server for incoming email notification.
+* **SMTP Event Server Port** – Specify the port used by the Orpius system SMTP 
+  server for incoming email notification.
 
-* **Organisation** – Set the maximum number of users and administrator users allowed in an organisation.
+* **Organisation** – Set the maximum number of users and administrators 
+  allowed in an organisation.
 
-* **Application** - Restrict new users to those from within your organisation. Set limits for cache item lifespan, refresh token lifespan, and timeouts.
+* **Application** - Restrict new users to those from within your organisation.
+  Set limits for cache item lifespan, refresh token lifespan, and timeouts.
 
 * **Inferencing** – Manage limits on inferencing operations.
 
