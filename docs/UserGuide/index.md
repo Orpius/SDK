@@ -141,7 +141,7 @@ For example, you can use chat in the Console to instruct Orpius to:
 The Orpius platform is deployed as a single-tenant cloud service.
 Support for on-premises deployments is planned.
 
-> **Note**: A multitenant environment is provided for evaluation 
+> **Note:** A multitenant environment is provided for evaluation 
 and proof-of-concept testing.
 
 ## Getting started with Orpius
@@ -200,7 +200,7 @@ mindmap
 
 *The Orpius system contains organizations, which contain spaces*
 
-> **Note**: When a user registers with Orpius, a default organization 
+> **Note:** When a user registers with Orpius, a default organization 
 and space are created automatically for that user. 
 You may invite other users to join your organization and collaborate in the same space.
 
@@ -265,7 +265,7 @@ During the first time setup, you will be prompted to create your account.
 * Enter your account **Username**, **Email**, **Given Name**,
   **Surname** and **Password** into the fields provided.
 
-> **Note**: At present, account information can't be changed after your account is created. 
+> **Note:** At present, account information can't be changed after your account is created. 
   Options to update these details will be available in an upcoming version.
 
 You will receive a confirmation email from the system address you configured 
@@ -485,7 +485,7 @@ to create new events with specific actions.
 
 **Creating an event**
 
-> **Tip**: When defining activities triggered by an event, 
+> **Tip:** When defining activities triggered by an event, 
   avoid wording that suggests creating or scheduling an event in the task instruction.
 The agent may interpret this as a command to create a new event each time it runs.
 Instead, phrase the instruction as an immediate action, and review the event activity 
@@ -556,7 +556,7 @@ also allows you to pass additional parameters to the agent and to your tools.
   depending on the outcome, can automatically trigger follow-up actions 
   such as raising an alert, starting a recording, or handing off to another tool.
 
-> **Note**: Currently, events are handled by the built-in Orpius agents only.
+> **Note:** Currently, events are handled by the built-in Orpius agents only.
   We plan to extend this functionality to custom agents in a future release.
 
 ### Events for Improving Security and Control
@@ -734,3 +734,16 @@ Key areas include:
 * **Inferencing** – Manage limits on inferencing operations.
 
 * **Workflow** – Control limits related to workflow execution and activity processing.
+
+## Next Steps and Further Resources
+
+You are now ready to begin working with Orpius in your own environment.
+
+For more information on extending Orpius, developing custom tools, 
+or integrating it into your applications, refer to the [Development Guides](../DevelopmentGuides/index.md).  
+If you have questions, ideas, or wish to discuss your implementation with others, 
+visit the [Orpius SDK Discussions](https://github.com/Orpius/SDK/discussions).
+
+> **Tip:** Treat each new agent or integration as an iterative experiment;
+adjust its persona, tools, and model configuration until it performs tasks 
+reliably and efficiently.
