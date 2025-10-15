@@ -70,7 +70,8 @@ and data protection.
 ### For Developers
 
 Orpius provides a complete, **secure AI infrastructure** for adding 
-intelligence to your applications — without building or maintaining it yourself.
+intelligence to your applications — without engineering or maintaining 
+the infrastructure yourself.
 
 Use Orpius as a:
 
