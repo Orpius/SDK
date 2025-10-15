@@ -565,20 +565,26 @@ In addition, for **POST** requests, raw JSON can also be passed directly to the 
 in the body of the request.
 
 #### Using HTTP GET to Trigger an Event
-* Query string keys that are prefixed with an underscore ( _ ) are passed to your tools only.
-* Query string keys that are not prefixed with an underscore are passed to both your tools and the agent.
+* Query string keys that are prefixed with an underscore ( _ ) 
+  are passed to your tools only.
+* Query string keys that are not prefixed with an underscore 
+  are passed to both your tools and the agent.
 
 #### Using HTTP POST to Trigger an Event
-* When using POST all key/value pairs (apart from the **event-id**) is supplied in the context object of your tools.
+
+When using POST all key/value pairs (apart from the **event-id**) is supplied in the context object of your tools.
 
 To see more information on the context property see 
 *[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
 
 ## Working with Isolated Storage
 
-Each organisation has an allocated shared storage area that can be used across its spaces.
+Each space has its own isolated storage area.
 
-Files uploaded here can be accessed directly by agents within the same space. This allows you to provide data, documents, or other resources for your agents to use while keeping everything securely contained.
+Files uploaded to isolated storage are available exclusively 
+to users and agents operating within the same space. 
+This provides a secure way to share data, documents, and other resources
+with agents and users on your team.
 
 Agents can read, write, and modify files within this storage.
 
@@ -586,67 +592,93 @@ For example, you could upload a sales report and ask Orpius:
 
 *"Summarise the key trends from last quarter's sales and write the summary to a file called SalesSummary.txt. If the file already exists, append to it."*
 
-Access to files within a space is controlled by permission levels. Members with roles above Participant have access to files in that space.
+Access to files within a space is controlled by permission levels. 
+Users with a space role above **Editor** have access to files in that space.
 
-## Uploading files
+### Uploading files
 
 * Open the **Files** view from the sidebar
-* Click the **Upload** button in the toolbar of the **Files** view and select the files you want to upload
+* Click the **Upload** button in the toolbar of the **Files** view 
+  and select the files you want to upload
 * Click **Open**
 
-
-## Downloading files
+### Downloading files
 
 * Open the **Files** view from the sidebar
-* Select the file(s) you wish to download and click the **Download** butoon in the toolbar of the **Files** view
+* Select the file(s) you wish to download and click the **Download** button in the toolbar of the **Files** view
 * Choose the folder where you want the files saved
 
-**Please note**: in the pre-release version, files downloaded locally are not being managed. This means they may overwrite an existing file in the chosen folder without warning.
+**Please note**: Files downloaded locally are not being managed. This means they may overwrite an existing file in the chosen folder without warning.
 
-## Creating files using chat
+### Creating files using chat
 
-Orpius can create a wide variety of file types depending on your needs. Common examples include text files (e.g. .txt, .csv), code files (e.g. .cs, .py, .js), document files (e.g. .md, .html), and data files (e.g. .json, .xml).
-* Start a new **Chat**
-* For example, you could say: *"Create a file called test.txt and insert 10 city names."*
-* Orpius will create a new file named test.txt containing the 10 city names and save it in your isolated storage directory.
+Orpius can create a wide variety of file types.
+Common examples include:
 
-# Team Awareness and Management
+* text files (e.g. .txt, .csv)
+* code files (e.g. .cs, .py, .js)
+* document files (e.g. .md, .html)
+* data files (e.g. .json, .xml)
 
-Each organization can contain multiple spaces, and each space can have as many members as needed. 
+Start a new **Chat**. Then, for example, you might enter:
+*"Create a file called test.txt and insert 10 city names."*
+Orpius will create a new file named *test.txt* containing 
+the 10 city names and save it in your isolated storage directory.
 
-Orpius has built-in team awareness across time zones and can plan or take actions based on that.
+## Using Team Collaboration and Management
 
-## How it works
+An organization can contain multiple spaces, and each space can have 
+as many users as needed.
 
-* For example, you can use the chat and ask *"Who is on my team?"*
-* Orpius will respond with a list of team members. 
-* Or you might ask *"Please thank John for the lovely flowers"*
-* Orpius will send John both an email and a notification on your behalf.
+Orpius provides team collaboration across time zones;
+agents are aware of the time zone of each team member.
+This allows agents to coordinate activities based on expected working hours for example.
+Agents with access to the Notifier tool gain this team awareness - allowing them to notify other team members during an activity.
 
+### Leveraging Team Awareness in an Interactive Chat
 
-## Adding Members to a Space
+You can use team awareness within the chat interface by asking, "Who is on my team?"
+Orpius will respond with an up-to-date list of your team members.
 
-Users with the **Administrator** or **Owner** permission level can invite members to a space, either from within or outside the organisation.
+Alternatively, you might say, "Please thank John for completing the quarterly report."
+Orpius will automatically send John both an email and an in-app notification on your behalf.
 
-Each member is assigned a **role** that determines their permissions:
+### Applying Team Awareness in Agent Activities
 
-* **Participant** – minimal access. Can receive notifications (email) and perform tasks.
+Team awareness is not limited to interactive chat. It can also be applied 
+in non-interactive scenarios such as scheduled activities, event activities, or in operations (where the Notifier tool is enabled).
+For example, when an event activity is created or updated, Orpius can automatically 
+identify relevant team members-based on predefined rules or business logic-and notify 
+them through email or in-app messages.
+This ensures that key stakeholders remain informed and that operational communication 
+occurs seamlessly, without the need for manual intervention.
+
+## Adding Users to a Space
+
+Users with the space role of **Administrator** or **Owner** can invite other users
+to a space, either from within or outside the organisation.
+
+Each member is assigned a **role** within the space that determines that user's permissions:
+
+* **Participant** – minimal access. The user can receive notifications and perform tasks.
 * **Editor** – includes all Participant privileges, plus the ability to modify content and manage tasks in the space.
-* **Administrator** – can manage members, configure settings, and oversee activity.
-* **Owner** – full control over the space, including deleting it or transferring ownership.
+* **Administrator** – can add and remove non-administrator members, and configure space settings.
+* **Owner** – full control over the space, including deleting it or transferring ownership (a planned feature).
 
-**Adding a member to a space:**
-* Open the **Team** view from the sidebar
-* Select the **'+ Add New Team Member'** button in the toolbar of the **Team** view
-* Search for the team memebr you wish to add
-* Select the desired permission, optionally enter a message for the team memeber
-* Send Invitation
+### Steps to Add a User to a Space
 
-**Accepting invitation:**
-* Sign in to the Orpius Console and select any Space (invitations are visible in all your spaces).
-* Open the **Notification** View - You'll see an invitation notification to a Space you've been invited to join.
-* Accept the invitation
-* Sign in again to access the Organization View, where you can see your new Space.
+1. Open the **Team** view from the sidebar
+2. Select the **'+ Add New Team Member'** button in the toolbar of the **Team** view
+3. Search for the team memebr you wish to add
+4. Select the desired permission, optionally enter a message for the user
+5. Send Invitation
+
+### Accepting an Invitation to Join a Space
+
+1. Sign in to the Orpius Console and select any Space (invitations are visible in all your spaces).
+2. Open the **Notification** View - You'll see an invitation notification to a Space you've been invited to join.
+3. Accept the invitation
+4. Sign in again to access the Organization View, where you can see the new Space.
 
 ### Managing User Limits (System Owners only)
 
