@@ -6,18 +6,18 @@
     - [For Productivity and Operations Users](#for-productivity-and-operations-users)
     - [What Orpius Provides](#what-orpius-provides)
     - [Built-in Productivity Features](#built-in-productivity-features)
-    - [Orpius System Deployment](#orpius-system-deployment)
+  - [Orpius System Deployment](#orpius-system-deployment)
   - [Getting started with Orpius](#getting-started-with-orpius)
-    - [How it works](#how-it-works)
+    - [From Configuration to Execution](#from-configuration-to-execution)
   - [Understanding the Orpius System Structure](#understanding-the-orpius-system-structure)
   - [Understanding User Roles](#understanding-user-roles)
     - [Space Roles](#space-roles)
     - [Organization Roles](#organization-roles)
-  - [Installing the Client Application](#installing-the-client-application)
-  - [Setting up Orpius for the first time](#setting-up-orpius-for-the-first-time)
-    - [Setting up an email server (System owners only)](#setting-up-an-email-server-system-owners-only)
-    - [Creating a user account](#creating-a-user-account)
-  - [First Launch](#first-launch)
+  - [Installing the Orpius Console](#installing-the-orpius-console)
+  - [Setting up Orpius for the First Time](#setting-up-orpius-for-the-first-time)
+    - [Setting up an Email Server (system owners only)](#setting-up-an-email-server-system-owners-only)
+    - [Creating a User Account](#creating-a-user-account)
+  - [Using the Orpius Console After Setup is Complete](#using-the-orpius-console-after-setup-is-complete)
     - [Understanding Spaces](#understanding-spaces)
       - [Creating a Space](#creating-a-space)
     - [Working with Large Language Models (LLM)](#working-with-large-language-models-llm)
@@ -27,10 +27,10 @@
   - [Agent Tools](#agent-tools)
     - [Reviewing the Built-in Tools](#reviewing-the-built-in-tools)
     - [Custom Tools](#custom-tools)
-  - [How it works](#how-it-works)
+  - [Custom Tool Integration Steps](#custom-tool-integration-steps)
   - [Using Events to Trigger Activities](#using-events-to-trigger-activities)
     - [Creating an Event](#creating-an-event)
-  - [Creating an Event through Chat](#creating-an-event-through-chat)
+      - [Creating an Event via Chat](#creating-an-event-via-chat)
     - [Manual Creation of an Event](#manual-creation-of-an-event)
     - [Triggering an Event](#triggering-an-event)
     - [Editing Event Activities](#editing-event-activities)
@@ -134,7 +134,7 @@ For example, you can use chat in the Console to instruct Orpius to:
 * Send emails and notifications to team members
 * Organize meetings that suit everyone's time zone
 
-### Orpius System Deployment
+## Orpius System Deployment
 
 The Orpius platform is deployed as a single-tenant cloud service.
 Support for on-premises deployments is planned.
@@ -146,15 +146,15 @@ and proof-of-concept testing.
 
 Before you can start working with Orpius, you will need:
 
-* **Orpius Client Application (Orpius Console)** – A lightweight desktop client for configuring everything from models to agents and tools.
+* **Orpius Console** – A lightweight desktop client for configuring everything from models to agents and tools.
 * **Access to your own LLM provider** – Orpius connects to AI models you choose (hosted on-premises or in the cloud). It currently supports OpenAI and Azure OpenAI, with more providers to follow.
-* **Access to an Email server (System owners only)**  
+* **Access to an Email Server (System Owners only)**  
   Because Orpius runs in your own private cloud, email handling is not provided 
   as a shared service. An email server is required during initial setup so new users 
   can verify their email addresses (a sending-only server is sufficient).
   It will also be used to send notifications or messages to team members. 
 
-### How it works
+### From Configuration to Execution
 
 1. **Configure** – Define your Models, Agents, Events, Tools, and Operations 
    in the Orpius Console. (You can think of Operations as the integration mechanism
@@ -198,7 +198,7 @@ mindmap
 
 *The Orpius system contains organizations, which contain spaces*
 
-> **NOTE:** When a user registers with Orpius, a default organization 
+> **Note**: When a user registers with Orpius, a default organization 
 and space are created automatically for that user. 
 You may invite other users to join your organization and collaborate in the same space.
 
@@ -218,16 +218,16 @@ A user may have different roles across different organizations and spaces.
 * **Owner** – Able to delete the organization or assign administrator privileges.
   Able to manage language models.
 
-## Installing the Client Application
+## Installing the Orpius Console
 
 The Orpius Console is a lightweight desktop application 
 that connects directly to the Orpius infrastructure.
 
-To get started, you'll receive a message from us containing:
+To get started, you will receive a message from us containing:
 
 1. A link to download the **Orpius Console**.
 2. The Orpius Server URL.
-3. Your Access Key (System owners only).
+3. Your Access Key (system owners only).
 
 Follow these steps:
 
@@ -235,16 +235,16 @@ Follow these steps:
 2. Run the installer after the file finishes downloading.
 3. Once installation is complete, launch the Orpius Console.
 4. Enter the **Server URL** into the field provided.
-5. Enter the **Access Key** (System owners only).
+5. Enter the **Access Key** (system owners only).
 
-## Setting up Orpius for the first time
+## Setting up Orpius for the First Time
 
 If you are the system owner of an Orpius installation,
 you will be prompted to set up the system the first time you launch the Orpius Console.
 
-### Setting up an email server (System owners only)
+### Setting up an Email Server (system owners only)
 
-During the first-time setup of the Orpius server, you'll be prompted 
+During the first-time setup of the Orpius server, you will be prompted 
 to enter your email server details.
 The email server is used by Orpius to handle email requests 
 such as sending messages to team members. 
@@ -254,25 +254,25 @@ new users to verify an email address.
 Enter your email server details. 
 You can update this information later in **System Settings** within the application.
 
-### Creating a user account
+### Creating a User Account
 
 Every Orpius user creates and signs into a user account.
 
-During the first time setup, you'll be prompted to create your account.
+During the first time setup, you will be prompted to create your account.
 
 * Enter your account **Username**, **Email**, **Given Name**,
   **Surname** and **Password** into the fields provided.
 
-> **Note:** At present, account information can't be changed after your account is created. 
+> **Note**: At present, account information can't be changed after your account is created. 
   Options to update these details will be available in an upcoming version.
 
-You'll receive a confirmation email from the system address you configured 
+You will receive a confirmation email from the system address you configured 
 during email server setup (e.g. noreply@yourdomain.com) containing a code.
 
 If you see an error message, click **Previous** and check that your email address 
 and email server information are correct.
 
-## First Launch
+## Using the Orpius Console After Setup is Complete
 
 After completing the initial setup, Orpius opens in the **Space Selector** view, 
 where you can see a list of the Spaces you belong to. 
@@ -329,7 +329,7 @@ while others can run on a lower-cost model such as OpenAI gpt-4o-mini.
 
 In Orpius, agents are considered users, just like humans. 
 Orpius includes two built-in agents: **Orpius** and **Phaedra**.
-* **Orpius** is the agent you interact with directly through chat, and who orchestrates non-interactive activites.
+* **Orpius** is the agent you interact with directly through chat, and who orchestrates non-interactive activities.
 * **Phaedra** carries out non-interactive activities, such as scheduled tasks and event execution.
 
 Both Orpius and Phaedra are **organization-wide** agents available in every space.
@@ -445,14 +445,14 @@ For example, you can create tools that:
 
 Each custom tool is registered in the system with a unique name and made available to AI Agents under your control. This allows agents to call your organisation’s existing code, libraries, or services securely—without exposing them externally.
 
-## How it works
+## Custom Tool Integration Steps
 
 1. **Register a custom tool** – Open the **Agent Tools** view from the sidebar and select **Custom Tools** .
 2. **Integrate with your application** – Copy the **External ID** and **Access Key**, then paste them into **your application**.
 3. **Expose functionality to Orpius** – Decorate your code with the [Tool] and [ToolMethod] attributes.
 4. **Execute** – The Orpius SDK automatically receives and dispatches tool requests at runtime.
 
-For a deep dive into custom tools, see the (SDK documentation)[../DevelopmentGuides/index.md] for more details on custom tools. 
+For a deep dive into custom tools, see the [SDK documentation](../DevelopmentGuides/index.md) for more details on custom tools. 
 Example implementations are included in the downloadable SDK.
 
 ## Using Events to Trigger Activities
@@ -464,7 +464,7 @@ and perform activities in response to external triggers.
 
 There are two ways to define an event in Orpius: manually or through chat.
 
-## Creating an Event through Chat
+#### Creating an Event via Chat
 
 Orpius understands what events are, and can be instructed through chat 
 to create new events with specific actions.
@@ -480,7 +480,7 @@ to create new events with specific actions.
 
 **Creating an event**
 
-> **Tip:** When defining activities triggered by an event, 
+> **Tip**: When defining activities triggered by an event, 
   avoid wording that suggests creating or scheduling an event in the task instruction.
 The agent may interpret this as a command to create a new event each time it runs.
 Instead, phrase the instruction as an immediate action, and review the event activity 
@@ -539,7 +539,7 @@ https://nyfqg7nhtfak2vj6kjslml4lrk.app.orpius.com/api/v1/event/raise?event-id=a1
 ```
 When called with a HTTP GET or POST request, this will trigger the event whose ID is *a1267fa8ce2a20734536920ebdffa262*.
 
-The query string, which include the 'event-id' parameter,
+The query string, which includes the 'event-id' parameter,
 also allows you to pass additional parameters to the agent and to your tools.
 
 **Example of how events may flow in a Surveillance Application**
@@ -551,7 +551,7 @@ also allows you to pass additional parameters to the agent and to your tools.
   depending on the outcome, can automatically trigger follow-up actions 
   such as raising an alert, starting a recording, or handing off to another tool.
 
-> **Note:** Currently, events are handled by the built-in Orpius agents only.
+> **Note**: Currently, events are handled by the built-in Orpius agents only.
   We plan to extend this functionality to custom agents in a future release.
 
 ### Events for Improving Security and Control
@@ -583,7 +583,8 @@ in the body of the request.
 
 #### Using HTTP POST to Trigger an Event
 
-When using POST all key/value pairs (apart from the **event-id**) is supplied in the context object of your tools.
+When using POST all key/value pairs (apart from the **event-id**) are supplied 
+in the context object of your tools.
 
 To see more information on the context property see 
 *[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
@@ -619,8 +620,6 @@ Users with a space role above **Editor** have access to files in that space.
 * Select the file(s) you wish to download and click the **Download** button in the toolbar of the **Files** view
 * Choose the folder where you want the files saved
 
-**Please note**: Files downloaded locally are not being managed. This means they may overwrite an existing file in the chosen folder without warning.
-
 ### Creating files using chat
 
 Orpius can create a wide variety of file types.
@@ -644,7 +643,8 @@ as many users as needed.
 Orpius provides team collaboration across time zones;
 agents are aware of the time zone of each team member.
 This allows agents to coordinate activities based on expected working hours for example.
-Agents with access to the Notifier tool gain this team awareness - allowing them to notify other team members during an activity.
+Agents with access to the Notifier tool gain this team awareness;
+allowing them to notify other team members during an activity.
 
 ### Leveraging Team Awareness in an Interactive Chat
 
@@ -656,8 +656,8 @@ Orpius will automatically send John both an email and an in-app notification on 
 
 ### Applying Team Awareness in Agent Activities
 
-Team awareness is not limited to interactive chat. It can also be applied 
-in non-interactive scenarios such as scheduled activities, event activities, or in operations (where the Notifier tool is enabled).
+Team awareness also applies in non-interactive scenarios such as scheduled activities, 
+event activities, or in operations (where the Notifier tool is enabled).
 For example, when an event activity is created or updated, Orpius can automatically 
 identify relevant team members-based on predefined rules or business logic-and notify 
 them through email or in-app messages.
@@ -680,14 +680,14 @@ Each member is assigned a **role** within the space that determines that user's 
 
 1. Open the **Team** view from the sidebar
 2. Select the **'+ Add New Team Member'** button in the toolbar of the **Team** view
-3. Search for the team memebr you wish to add
+3. Search for the team member you wish to add
 4. Select the desired permission, optionally enter a message for the user
 5. Send Invitation
 
 ### Accepting an Invitation to Join a Space
 
 1. Sign in to the Orpius Console and select any Space (invitations are visible in all your spaces).
-2. Open the **Notification** View - You'll see an invitation notification to a Space you've been invited to join.
+2. Open the **Notification** View - You will see an invitation notification to a Space you've been invited to join.
 3. Accept the invitation
 4. Sign in again to access the Organization View, where you can see the new Space.
 
