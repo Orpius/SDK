@@ -59,7 +59,7 @@
 
 Welcome to **Orpius** — the secure AI platform that gives you everything 
 you need to integrate, build, and use generative AI 
-without the complexity of managing the underlying technology.
+without the complexity of building and managing the underlying technology.
 
 Security and privacy are built into Orpius from the ground up.
 Data is secured both **at rest and in transit**, secrets are managed safely 
