@@ -95,29 +95,31 @@ Orpius provides a complete foundation for building AI applications.
 
 It includes:
 
-* **Integration with external systems** via API-driven events or customer-facing AI agents
-* **Isolated Code execution environment**  
-  Agents can write compilable code and run it in a secure sandboxed environment.
-* **Events**  
-  Agents are called into action by external systems or internal processes.
-* **Notifications, messaging, and team awareness**  
-  Agents communicate via notifications or email, and are time zone aware;
-  enabling team collaboration.
-* **Scheduling** a flexible system for performing activities at predefined times or intervals.
-* **Memory**  
-  Agents manage their own memory, deciding what to keep and when to use it.
-* **Video feed image analysis**
-* **Web page retrieval**
-* **Custom agent creation**
-* **Support for multiple LLM providers and formats** allowing you 
-  to use different models for different agents.
-* **Shared team storage** for sharing files and data with agents and team members.
-* **Permissions and security** to control what agents and users can do.
-* **Secrets system** for managing sensitive information securely without exposing 
-  it to language model providers.
-* **Orchestration** for managing complex workflows and interactions between agents.
-* **Tools integration** with Built-in tools that provide core capabilities 
-  out of the box and powerful support for custom tooling.
+* **Integration with external systems** through API-driven events 
+  or customer-facing AI agents.
+* **Isolated code execution environment** – agents can write compilable code 
+  and run it securely in a sandboxed environment.
+* **Events** – agents are triggered by external systems or internal processes.
+* **Notifications, messaging, and team awareness** – agents communicate 
+  via notifications and email, and are time-zone aware, 
+  enabling collaboration across teams.
+* **Scheduling** – a flexible system for performing activities 
+  at predefined times or intervals.
+* **Memory** – agents manage their own memory, deciding what to retain 
+  and when to use it.
+* **Video feed image analysis** – analyze video streams in real time.
+* **Web page retrieval** – extract information from web pages or APIs.
+* **Custom agent creation** – define agents with specific personas 
+  and instructions, targeting different language models.
+* **Support for multiple LLM providers and formats** – use different models 
+  for different agents.
+* **Shared team storage** – share files and data between agents and team members.
+* **Permissions and security** – control what agents and users can access or perform.
+* **Secrets management** – handle sensitive information securely 
+  without exposing it to language-model providers.
+* **Orchestration** – manage complex workflows and interactions between agents.
+* **Tool integration** – use built-in tools that provide core capabilities 
+  out of the box, with powerful support for custom tooling.
 
 ### Built-in Productivity Features
 
@@ -418,7 +420,7 @@ Include a row for each car you see. Notify John if cars are parked in the restri
 1. Attends to the task every five minutes **(Scheduler)**
 2. Retrieves the video stream URL **(Secrets)**
 3. Connects to the video stream **(VideoFeedMonitor)**
-4. Analyses the image to detect parked cars **(ImageAnalysis)**
+4. Analyzes the image to detect parked cars **(ImageAnalysis)**
 5. Writes the findings to a file **(CodeExecution)**
 6. Notifies the user if an issue is detected **(Notifier)**
 
