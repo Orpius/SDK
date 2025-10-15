@@ -4,12 +4,12 @@
   - [Introducing Orpius](#introducing-orpius)
     - [For Developers](#for-developers)
     - [For Productivity and Operations Users](#for-productivity-and-operations-users)
-  - [What Orpius Provides](#what-orpius-provides)
-  - [Built-in Productivity Features](#built-in-productivity-features)
-- [Deployment](#deployment)
-- [Getting started](#getting-started)
-  - [How it works](#how-it-works)
-- [Understanding the Orpius System Structure](#understanding-the-orpius-system-structure)
+    - [What Orpius Provides](#what-orpius-provides)
+    - [Built-in Productivity Features](#built-in-productivity-features)
+    - [Orpius System Deployment](#orpius-system-deployment)
+  - [Getting started with Orpius](#getting-started-with-orpius)
+    - [How it works](#how-it-works)
+  - [Understanding the Orpius System Structure](#understanding-the-orpius-system-structure)
   - [Understanding User Roles](#understanding-user-roles)
     - [Space Roles](#space-roles)
     - [Organization Roles](#organization-roles)
@@ -89,7 +89,7 @@ The Console provides an interactive, chat-based interface that understands
 the system itself — allowing you to set up and manage AI agents, models,
 schedules, events, and even your team without writing code.
 
-## What Orpius Provides
+### What Orpius Provides
 
 Orpius provides a complete foundation for building AI applications.
 
@@ -99,46 +99,50 @@ It includes:
 * **Isolated Code execution environment**  
   Agents can write compilable code and run it in a secure sandboxed environment.
 * **Events**  
-  Agents are called into action by external systems through registered events.
+  Agents are called into action by external systems or internal processes.
 * **Notifications, messaging, and team awareness**  
   Agents communicate via notifications or email, and are time zone aware;
   enabling team collaboration.
-* **Scheduling** for running tasks at defined times or intervals.
+* **Scheduling** a flexible system for performing activities at predefined times or intervals.
 * **Memory**  
   Agents manage their own memory, deciding what to keep and when to use it.
 * **Video feed image analysis**
 * **Web page retrieval**
-* **Custom Agent creation**
-* **Multi-model support** 
-* **Shared team storage**
-* **Permissions and Security**
-* **Secrets system**
-* **Orchestration** 
-* **Tools Integration** with Built-in tools that provide core capabilities 
-  out of the box and powerful support for custom tooling
+* **Custom agent creation**
+* **Support for multiple LLM providers and formats** allowing you 
+  to use different models for different agents.
+* **Shared team storage** for sharing files and data with agents and team members.
+* **Permissions and security** to control what agents and users can do.
+* **Secrets system** for managing sensitive information securely without exposing 
+  it to language model providers.
+* **Orchestration** for managing complex workflows and interactions between agents.
+* **Tools integration** with Built-in tools that provide core capabilities 
+  out of the box and powerful support for custom tooling.
 
-## Built-in Productivity Features
+### Built-in Productivity Features
 
 The following examples show some of the productivity features available directly 
-in the Console. These may give you some sense of what you can achieve 
-in your own applications, though with custom tooling you can expand 
-the capabilities much further. 
+in the Console. They offer a glimpse of what you can accomplish 
+in your own applications, though with custom tooling you can extend 
+these capabilities much further.
 
 For example, you can use chat in the Console to instruct Orpius to:
 
-* Schedule and carry out tasks
+* Schedule and perform tasks
 * Read, analyze, and write files
 * Apply image analysis to video streams in real time
-* Send emails and notifications to members of your team
-* Organize meeting that suit everyone's time zone
+* Send emails and notifications to team members
+* Organize meetings that suit everyone's time zone
 
-# Deployment
+### Orpius System Deployment
 
-The Orpius platform is deployed as a single-tenant cloud service. Support for on-premises deployments is planned.
+The Orpius platform is deployed as a single-tenant cloud service.
+Support for on-premises deployments is planned.
 
-**Note**: A multitenant environment is provided for evaluation and proof-of-concept testing.
+> **Note**: A multitenant environment is provided for evaluation 
+and proof-of-concept testing.
 
-# Getting started
+## Getting started with Orpius
 
 Before you can start working with Orpius, you will need:
 
@@ -150,7 +154,7 @@ Before you can start working with Orpius, you will need:
   can verify their email addresses (a sending-only server is sufficient).
   It will also be used to send notifications or messages to team members. 
 
-## How it works
+### How it works
 
 1. **Configure** – Define your Models, Agents, Events, Tools, and Operations 
    in the Orpius Console. (You can think of Operations as the integration mechanism
@@ -159,9 +163,10 @@ Before you can start working with Orpius, you will need:
    the Orpius SDK libraries, allowing you to embed your AI assistant directly 
    into your application.
 3. **Execute** – The AI assistant can now call your server-side tools.
-   The Orpius Server runs them and manages orchestration, integration, state, storage, and security.
+   The Orpius Server runs them and manages orchestration, integration, 
+   state, storage, and security.
 
-# Understanding the Orpius System Structure
+## Understanding the Orpius System Structure
 
 Orpius is organized around organizations and spaces. 
 
@@ -255,7 +260,8 @@ Every Orpius user creates and signs into a user account.
 
 During the first time setup, you'll be prompted to create your account.
 
-* Enter your account **Username**, **Email**, **Given Name**, **Surname** and **Password** into the fields provided.
+* Enter your account **Username**, **Email**, **Given Name**,
+  **Surname** and **Password** into the fields provided.
 
 > **Note:** At present, account information can't be changed after your account is created. 
   Options to update these details will be available in an upcoming version.
@@ -268,7 +274,7 @@ and email server information are correct.
 
 ## First Launch
 
-After completing the initial setup, Orpius opens in the Organisation view, 
+After completing the initial setup, Orpius opens in the **Space Selector** view, 
 where you can see a list of the Spaces you belong to. 
 Each user begins with a default Space that is created automatically. 
 For more details on creating and managing Spaces, see [`Spaces`](#spaces).
@@ -280,7 +286,7 @@ Each space keeps everything related to a project or team in one place.
 You can also invite members (inside or outside your organization) to collaborate 
 in a space. Members can be invited into a space and granted access through roles.
 
-Your Spaces are listed on the Organization View page, where you can:
+Your Spaces are listed on the Space Selector view, where you can:
 
 * **Open** an existing space
 * **Create** a new space
@@ -298,17 +304,19 @@ Within a Space, you can:
 #### Creating a Space
 
 To create a new Space:
-1.	From the **Organization View** page, select **Create a Space**.
-2.	Enter a name for the Space. 
-3.	Confirm to create.
+1. From the **Organization View** page, select **Create a Space**.
+2. Enter a name for the Space. 
+3. Confirm to create.
 
 ### Working with Large Language Models (LLM)
 
-The system is designed to work with any LLM, whether hosted **on-premises** or in the **cloud**.
+The system is designed to work with any LLM, whether hosted **on-premises** 
+or in the **cloud**.
 Currently, OpenAI and Azure OpenAI are supported, with more providers to follow.
 
 You can configure as many models as you need, from different providers. 
-For example, some agents might use GPT-4o for complex tasks, while others can run on a lower-cost model such as OpenAI gpt-4o-mini. 
+For example, some agents might use GPT-4o for complex tasks, 
+while others can run on a lower-cost model such as OpenAI gpt-4o-mini. 
 
 #### Configuring a New Model
 
@@ -319,7 +327,7 @@ For example, some agents might use GPT-4o for complex tasks, while others can ru
 
 ## Understanding Agents
 
-In Orpius, agents are consider users, just like humans. 
+In Orpius, agents are considered users, just like humans. 
 Orpius includes two built-in agents: **Orpius** and **Phaedra**.
 * **Orpius** is the agent you interact with directly through chat, and who orchestrates non-interactive activites.
 * **Phaedra** carries out non-interactive activities, such as scheduled tasks and event execution.
