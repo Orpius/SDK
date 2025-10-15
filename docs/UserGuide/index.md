@@ -28,6 +28,8 @@
     - [Reviewing the Built-in Tools](#reviewing-the-built-in-tools)
     - [Custom Tools](#custom-tools)
   - [Custom Tool Integration Steps](#custom-tool-integration-steps)
+  - [Using Operations to Connect Your Application to AI Agents](#using-operations-to-connect-your-application-to-ai-agents)
+    - [Creating Custom Tools for Operations](#creating-custom-tools-for-operations)
   - [Using Events to Trigger Activities](#using-events-to-trigger-activities)
     - [Creating an Event](#creating-an-event)
       - [Creating an Event via Chat](#creating-an-event-via-chat)
@@ -48,8 +50,11 @@
   - [Adding Users to a Space](#adding-users-to-a-space)
     - [Steps to Add a User to a Space](#steps-to-add-a-user-to-a-space)
     - [Accepting an Invitation to Join a Space](#accepting-an-invitation-to-join-a-space)
+  - [Using Operations to connect your application to AI Agents](#using-operations-to-connect-your-application-to-ai-agents)
+- [Creating your own Custom Tools](#creating-your-own-custom-tools)
     - [Managing User Limits (System Owners only)](#managing-user-limits-system-owners-only)
     - [Managing System Settings and Limits (System Owners only)](#managing-system-settings-and-limits-system-owners-only)
+  - [Next Steps and Further Resources](#next-steps-and-further-resources)
 <!--/TOC-->
 
 ## Introducing Orpius
