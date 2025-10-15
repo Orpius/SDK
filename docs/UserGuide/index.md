@@ -370,7 +370,7 @@ To create a custom agent, perform the following steps:
 
 ![Configuring a custom agent](Images/AgentCustom_raw.png)
 
-**Configuring a custom agent**
+*Configuring a custom agent*
 
 ## Agent Tools
 
@@ -480,6 +480,8 @@ To create a new Operation:
 
 ![Define an Operation](Images/Operations/DefineOperation.png)
 
+*Define an Operation*
+
 The **Agent Tools** section lists the built-in tools available to the selected Agent.
 You can enable or disable individual tools depending on the purpose of the Operation.
 
@@ -515,7 +517,8 @@ Connecting to an Orpius Operation is covered in detail in the **Development Guid
 
 *Fields become available once the operation is saved*
 
-With an Operation in place, your application can communicate directly with an AI Agent through the Orpius platform.
+With an Operation in place, your application can communicate directly 
+with an AI Agent through the Orpius platform.
 
 ![Sample Application](Images/Operations/SampleApp.png)
 
@@ -524,17 +527,14 @@ With an Operation in place, your application can communicate directly with an AI
 ### Creating Custom Tools for Operations
 
 In addition to the built-in tools provided by Orpius, you can register 
-your own custom tools hosted within your organisation’s network.
+your own custom tools hosted within your organisation's network.
 
 To allow Orpius to call your tools, the system must know the **publicly reachable URL** of your server.
 Because development environments often run on `localhost`, we recommend creating a secure tunnel.
 
 [Learn how to create a secure channel](CreatingAChannel/index.md)
 
-Programming-language-specific development guides are available:
-
-* [Developer Guide for .NET](../DevelopmentGuides/DotNet/index.md)
-* Developer Guide for Java *(coming soon)*
+> For language-specific setup and APIs, visit the [Development Guides](../DevelopmentGuides/index.md).
 
 ## Using Events to Trigger Activities
 
