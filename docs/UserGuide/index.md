@@ -36,6 +36,7 @@
     - [Manual Creation of an Event](#manual-creation-of-an-event)
     - [Triggering an Event](#triggering-an-event)
     - [Editing Event Activities](#editing-event-activities)
+      - [Example of Event Handling in an Orpius Powered Monitoring System](#example-of-event-handling-in-an-orpius-powered-monitoring-system)
     - [Events for Improving Security and Control](#events-for-improving-security-and-control)
     - [Passing HTTP Parameters to Events](#passing-http-parameters-to-events)
       - [Using HTTP GET to Trigger an Event](#using-http-get-to-trigger-an-event)
@@ -623,7 +624,8 @@ When called with a HTTP GET or POST request, this will trigger the event whose I
 The query string, which includes the 'event-id' parameter,
 also allows you to pass additional parameters to the agent and to your tools.
 
-**Example of how events may flow in a Surveillance Application**
+#### Example of Event Handling in an Orpius Powered Monitoring System
+
 * A camera sends a motion detected event. 
 * You configure this event to trigger an activity with instructions 
   that are given to an agent.
