@@ -1,13 +1,17 @@
-# SDK
-Software developer kit for the Orpius platform
+![Orpius Logo](docs/Images/Wide1Inverted.png)
 
-The Orpius SDK makes it simple to integrate your own tools for use by **Orpius** AI Agents.  
-This guide will help you get started quickly, using a local development setup that allows Orpius to securely call your web application.
+# Orpius SDK
+Software Development Kit for the Orpius Platform
+
+Please see the documentation for more details:
+
+* [Orpius User Guide](docs/UserGuide/index.md) (for new users)
+* Orpius SDK Software Development Guides
+  * [Developer Guide for .NET](docs/DevelopmentGuides/DotNet/index.md)
+  * Developer Guide for Java (coming soon)
+  * [Creating a Secure Channel to Orpius](docs/UserGuide/CreatingAChannel/index.md)
 
 ---
-
-
-
 
 ## NuGet Packages
 
