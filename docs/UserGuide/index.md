@@ -59,7 +59,7 @@
 ## Introducing Orpius
 
 Welcome to **Orpius** — the secure AI platform that gives you everything 
-you need to integrate, build, and use generative AI 
+you need to integrate, build, and use generative AI in your systems
 without the complexity of building and managing the underlying technology.
 
 Security and privacy are built into Orpius from the ground up.
@@ -232,7 +232,8 @@ that connects directly to the Orpius infrastructure.
 
 To get started, you will receive a message from us containing:
 
-1. A link to download the **Orpius Console**.
+1. A link to download the **Orpius Console**, resembling:
+   `https://<YourAppName>.app.orpius.com/console/`
 2. The Orpius Server URL.
 3. Your Access Key (system owners only).
 
