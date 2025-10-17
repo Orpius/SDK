@@ -466,6 +466,25 @@ or services securely—without exposing them externally.
 For a deep dive into custom tools, see the [SDK documentation](../DevelopmentGuides/index.md) for more details on custom tools. 
 Example implementations are included in the downloadable SDK.
 
+## Understanding Secrets
+
+Secrets are used to securely store sensitive information such as API keys, tokens, or passwords. These secrets can then be referenced in chat, code, or API calls without exposing their actual values. They are never sent to the LLM service. For example, when making API calls or executing code, you can use placeholders like <%=Key:SecretName%> to inject secret values securely at runtime. This ensures that sensitive data is never hardcoded or exposed in scripts or requests.
+
+### Configuring a Secret
+1. Open the Secrets view from the sidebar
+2. Select '+' button in the toolbar of the Secrets view
+3. Enter the Token, the Secret Value and a Description
+4. Save
+
+![Define a Secret](Images//DefineSecret.png)
+
+### Using a Secret
+
+Suppose you have an API key stored as a Secret named WeatherKey. In your code, you reference it like this: <%=Key:WeatherKey%>.
+
+This way, the actual API key value is securely injected at runtime, and you don't expose it in your code.
+
+
 ## Using Operations to Connect Your Application to AI Agents
 
 Operations allow your own application to communicate directly 
