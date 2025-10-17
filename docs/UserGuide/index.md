@@ -480,7 +480,7 @@ Secrets are used to securely store sensitive information such as API keys, token
 
 ### Using a Secret
 
-Suppose you have an API key stored as a Secret named WeatherKey. In your code, you reference it like this: <%=Key:WeatherKey%>.
+Suppose you have an API key stored as a Secret named WeatherKey. In your code, you would reference it like this: <%=Key:WeatherKey%>.
 
 This way, the actual API key value is securely injected at runtime, and you don't expose it in your code.
 
