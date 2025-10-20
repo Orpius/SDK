@@ -510,8 +510,8 @@ Fetch the current weather
 from https://www.weatherserviceexample.com?apikey=<%=Key:WeatherKey%>
 ```
 
-When the agent executes this instruction, the Orpius system 
-replaces the secret reference with the actual API key value. 
+When the agent executes this instruction by calling a tool,
+the Orpius system replaces the secret reference with the actual API key value. 
 This allows the API key to be securely injected
 at runtime without being exposed to the LLM provider.
 
