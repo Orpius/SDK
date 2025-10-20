@@ -28,7 +28,7 @@
     - [Reviewing the Built-in Tools](#reviewing-the-built-in-tools)
     - [Custom Tools](#custom-tools)
   - [Custom Tool Integration Steps](#custom-tool-integration-steps)
-  - [Understanding Secrets](#understanding-secrets)
+  - [Using Secrets to Store Sensitive Information](#using-secrets-to-store-sensitive-information)
     - [Configuring a Secret](#configuring-a-secret)
     - [Using a Secret](#using-a-secret)
   - [Using Operations to Connect Your Application to AI Agents](#using-operations-to-connect-your-application-to-ai-agents)
@@ -469,24 +469,51 @@ or services securely—without exposing them externally.
 For a deep dive into custom tools, see the [SDK documentation](../DevelopmentGuides/index.md) for more details on custom tools. 
 Example implementations are included in the downloadable SDK.
 
-## Understanding Secrets
+## Using Secrets to Store Sensitive Information
 
-Secrets are used to securely store sensitive information such as API keys, tokens, or passwords. These secrets can then be referenced in chat, code, or API calls without exposing their actual values. They are **never sent to the LLM service**. For example, when making API calls or executing code, you can use placeholders like **<%=Key:SecretName%>** to inject secret values securely at runtime. This ensures that **sensitive data** is **never** hardcoded or **exposed** in scripts or requests.
+Secrets are used to securely store sensitive information such as API keys,
+tokens, or passwords. These secrets can then be referenced in chat, code,
+or tool calls without exposing their actual values.
+
+When interacting with an LLM provider, the system sends the **secret reference**
+(e.g., **<%=Key:SecretName%>**) rather than the actual value.
+The value itself is only resolved at runtime by the system when needed
+for a tool call.
+
+> **Note:** If a secret value is returned from an API or other external service
+as part of the agent's output, it may become visible to the LLM provider.
+Avoid exposing secret values in responses or messages wherever possible.
+
+This mechanism helps ensure that **sensitive data** is **not hardcoded**
+and remains protected throughout normal operation.
 
 ### Configuring a Secret
-1. Open the **Secrets** view from the sidebar
-2. Select '+' button in the toolbar of the Secrets view
-3. Enter the **Token**, the **Secret Value** and a **Description**
-4. Save
 
-![Define a Secret](Images//DefineSecret.png)
+To create a new **Secret**:
+
+1. Open the **Secrets** view from the sidebar
+2. Select **+** button in the toolbar of the Secrets view
+3. Enter the **Token**, the **Secret Value** and a **Description**
+4. Save your changes
+
+![Define a Secret](Images/DefineSecret.png)
 
 ### Using a Secret
 
-Suppose you have an API key stored as a **Secret** named **WeatherKey**. In your code, you would reference it like this: **<%=Key:WeatherKey%>**.
+Suppose you have an API key stored as a **Secret** named **WeatherKey**. 
+In your instructions to an agent, you would reference it 
+like this: **<%=Key:WeatherKey%>**.
 
-This way, the actual API key value is securely injected at runtime, and you don't expose it in your code.
+For example, you might instruct the agent to:
+```
+Fetch the current weather 
+from https://www.weatherserviceexample.com?apikey=<%=Key:WeatherKey%>
+```
 
+When the agent executes this instruction, the Orpius system 
+replaces the secret reference with the actual API key value. 
+This allows the API key to be securely injected
+at runtime without being exposed to the LLM provider.
 
 ## Using Operations to Connect Your Application to AI Agents
 
