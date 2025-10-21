@@ -433,6 +433,15 @@ Include a row for each car you see. Notify John if cars are parked in the restri
 5. Writes the findings to a file **(CodeExecution)**
 6. Notifies the user if an issue is detected **(Notifier)**
 
+> **Tip:** When scheduling an activity, be specific about the number of times 
+  you want the activity to run, or whether it should repeat indefinitely. 
+  The repition count and the maximum number of repitions is shown in the **Schedule** view.
+  If not present, it indicates that the activity will run indefinitely.
+
+  ![Schedule repetitions](Images/ScheduleRepetitions.png)
+
+  **Schedule repetitions**
+
 ### Custom Tools
 
 In addition to the built-in tools, you can register your own custom tools 
