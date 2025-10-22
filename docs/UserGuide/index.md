@@ -45,6 +45,8 @@
     - [Passing HTTP Parameters to Events](#passing-http-parameters-to-events)
       - [Using HTTP GET to Trigger an Event](#using-http-get-to-trigger-an-event)
       - [Using HTTP POST to Trigger an Event](#using-http-post-to-trigger-an-event)
+  - [Triggering Activities on a Schedule](#triggering-activities-on-a-schedule)
+    - [Creating a Schedule](#creating-a-schedule)
   - [Working with Isolated Storage](#working-with-isolated-storage)
     - [Uploading files](#uploading-files)
     - [Downloading files](#downloading-files)
@@ -736,6 +738,26 @@ in the context object of your tools.
 
 To see more information on the context property see 
 *[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
+
+## Triggering Activities on a Schedule
+
+**Schedules** allow you to define **when** an activity should occur.
+
+They trigger workflows automatically according to defined schedules, which can be set to run once or repeat over time.
+
+Note that workflows are also triggered by Events, which are covered in the previous section.
+
+### Creating a Schedule
+
+You can create a schedule directly in chat.
+
+* Start a new **Chat** 
+* For example, you could say: *"Please schedule an item to send me a joke every 2 minutes."*
+* Orpius will create a **scheduled task**, which you can then review, edit, or delete in the **Schedule** view.
+* Open the **Schedule** view to review or modify the newly created schedule.
+
+> **Tip:** Be wary that running a task at very short intervals (such as every 2 minutes) can increase resource usage and cost. You should specify how many times the activity should repeat; otherwise, it will run indefinitely.
+
 
 ## Working with Isolated Storage
 
