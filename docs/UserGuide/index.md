@@ -20,6 +20,7 @@
   - [Using the Orpius Console After Setup is Complete](#using-the-orpius-console-after-setup-is-complete)
     - [Understanding Spaces](#understanding-spaces)
       - [Creating a Space](#creating-a-space)
+    - [Swtiching between your Spaces](#swtiching-between-your-spaces)
     - [Working with Large Language Models (LLM)](#working-with-large-language-models-llm)
       - [Configuring a New Model](#configuring-a-new-model)
   - [Understanding Agents](#understanding-agents)
@@ -288,7 +289,6 @@ and email server information are correct.
 After completing the initial setup, Orpius opens in the **Space Selector** view, 
 where you can see a list of the Spaces you belong to. 
 Each user begins with a default Space that is created automatically. 
-For more details on creating and managing Spaces, see [`Spaces`](#spaces).
 
 ### Understanding Spaces
 
@@ -318,6 +318,12 @@ To create a new Space:
 1. From the **Organization View** page, select **Create a Space**.
 2. Enter a name for the Space. 
 3. Confirm to create.
+
+
+### Swtiching between your Spaces
+
+To switch to another Space, first sign out of your current Space.
+When you sign back in, you’ll return to the Organization View, where you can select a different Space to enter.
 
 ### Working with Large Language Models (LLM)
 
