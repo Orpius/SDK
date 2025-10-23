@@ -410,9 +410,8 @@ Orpius includes the following set of built-in tools:
     or loop for a specified number of times.
 * **WebPageRetriever** – Retrieve the HTTP response for a specified URL. 
   Allows for the use of web APIs.
-* **WebSearch** – Allows an AI agent to search in internet using Bing. An API key is required.
-  Note that Bing Search APIs retired on August 11, 2025.
-* **Notifier** – send notifications to a user. A notification may also be sent by email to the user. 
+* **WebSearch** – Allows an AI agent to search the internet. A search provider API key is required.
+  * **Notifier** – send notifications to a user. A notification may also be sent by email to the user. 
   The user's email is never provided to an agent.
 * **CodeExecution** – Compiles and runs managed code and passes the results back to the agent.
   This allows the assistant to complete tasks that require calculations, 
