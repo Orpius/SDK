@@ -31,6 +31,7 @@
 		<Folder Include="CopiedFrom\Platform.Server\" />
 		<Folder Include="CopiedFrom\Platform\" />
 		<Folder Include="RpcServices\" />
+		<Folder Include="Tooling\ToolRegistration\SdkOnlyMessagesParts\" />
 	</ItemGroup>
 
 	<!-- NuGet -->

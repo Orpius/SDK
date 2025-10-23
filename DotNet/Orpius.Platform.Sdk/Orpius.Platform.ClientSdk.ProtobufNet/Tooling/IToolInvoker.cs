@@ -8,9 +8,6 @@ namespace Orpius.Platform.Tooling
 {
 	public interface IToolInvoker
 	{
-		//bool IsInvokerForTool(string toolName);
-
-		//bool RemoveTool(string toolName);
 		IReadOnlyCollection<string> ToolNames { get; }
 
 		Task<UseToolResponse> InvokeToolAsync(UseToolRequest request,

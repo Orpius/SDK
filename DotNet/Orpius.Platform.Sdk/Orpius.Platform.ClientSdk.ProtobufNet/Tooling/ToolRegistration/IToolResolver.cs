@@ -9,19 +9,4 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		bool TryGetTool<T>([NotNullWhen(true)] out T? tool)
 			where T : class;
 	}
-
-	//public class LambdaResolver : IToolResolver
-	//{
-	//	Func<TInterface, TClass> getItemFromContainer;
-
-	//	public LambdaResolver(Func<TInterface, TClass> getItemFromContainer)
-	//	{
-	//		this.getItemFromContainer = getItemFromContainer;
-	//	}
-		
-	//	public bool TryGetTool<T>([NotNullWhen(true)] out T tool)
-	//	{
-	//		getItemFromContainer<T>();
-	//	}
-	//}
 }

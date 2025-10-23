@@ -10,10 +10,9 @@ namespace Orpius.Platform.Collections
 		readonly Func<TValue, TKey> keySelector;
 		readonly IEqualityComparer<TKey> comparer;
 
-		public MutableKeyIndex(
-			IDictionary<TKey, TValue> map,
-			Func<TValue, TKey> keySelector,
-			IEqualityComparer<TKey>? comparer = null)
+		public MutableKeyIndex(IDictionary<TKey, TValue> map,
+							   Func<TValue, TKey> keySelector,
+							   IEqualityComparer<TKey>? comparer = null)
 		{
 			this.map         = map         ?? throw new ArgumentNullException(nameof(map));
 			this.keySelector = keySelector ?? throw new ArgumentNullException(nameof(keySelector));
