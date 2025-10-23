@@ -325,7 +325,7 @@ To create a new Space:
 #### Swtiching between your Spaces
 
 To switch to another Space, first sign out of your current Space.
-When you sign back in, you’ll return to the Organization View, where you can select a different Space to enter.
+When you sign back in, you'll return to the Organization View, where you can select a different Space to enter.
 
 ### Working with Large Language Models (LLM)
 
@@ -335,7 +335,9 @@ Currently, OpenAI and Azure OpenAI are supported, with more providers to follow.
 
 You can configure as many models as you need, from different providers. 
 For example, some agents might use GPT-4o for complex tasks, 
-while others can run on a lower-cost model such as OpenAI gpt-4o-mini. 
+while others can run on a lower-cost model such as OpenAI gpt-4o-mini.
+
+> **Caution:** When your system is configured for unattended execution, such as for scheduled events, operations, or background tasks, it may continue to consume resources and incur costs even when no users are actively connected.
 
 #### Configuring a New Model
 
