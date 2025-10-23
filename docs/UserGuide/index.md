@@ -337,7 +337,7 @@ You can configure as many models as you need, from different providers.
 For example, some agents might use GPT-4o for complex tasks, 
 while others can run on a lower-cost model such as OpenAI gpt-4o-mini.
 
-> **Caution:** When your system is configured for unattended execution, such as for scheduled events, operations, or background tasks, it may continue to consume resources and incur costs even when no users are actively connected.
+> **Caution:** When your system is configured for unattended execution, such as for scheduled tasks, events or operations, it may continue to consume resources and incur costs even when no users are actively connected.
 
 #### Configuring a New Model
 
