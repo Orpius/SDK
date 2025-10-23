@@ -1,8 +1,6 @@
 ﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 
-using Orpius.Platform.OperationsModel.RpcOperationsService;
-
 namespace Orpius.Platform.RpcServiceModel
 {
 	public abstract class InterceptorForHeadersBase : Interceptor

@@ -13,7 +13,8 @@ namespace Orpius.Platform.OperationsModel.ServiceCollectionExtensions
 	{
 		public static IServiceCollection AddOrpiusOperations(
 			this IServiceCollection services,
-			Func<Uri> getOrpiusServerAddress, bool dangerousAcceptAnyCertificate)
+			Func<Uri> getOrpiusServerAddress,
+			bool dangerousAcceptAnyCertificate)
 		{
 			services.AddOperationsGrpcClient(getOrpiusServerAddress, dangerousAcceptAnyCertificate);
 			services.AddSingleton<OperationsInterceptor>();
