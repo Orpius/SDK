@@ -411,7 +411,7 @@ Orpius includes the following set of built-in tools:
 * **WebPageRetriever** – Retrieve the HTTP response for a specified URL. 
   Allows for the use of web APIs.
 * **WebSearch** – Allows an AI agent to search the internet. A search provider API key is required.
-  * **Notifier** – send notifications to a user. A notification may also be sent by email to the user. 
+* **Notifier** – Send notifications to a user. A notification may also be sent by email to the user.
   The user's email is never provided to an agent.
 * **CodeExecution** – Compiles and runs managed code and passes the results back to the agent.
   This allows the assistant to complete tasks that require calculations, 
