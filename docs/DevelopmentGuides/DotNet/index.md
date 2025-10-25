@@ -33,7 +33,7 @@
 
 ---
 
-If you haven't already, please read the [Operations section](../../UserGuide/using-operations-to-connect-your-application-to-ai-agents/)
+If you haven't already, please read the [Operations section](../../UserGuide/index.md#using-operations-to-connect-your-application-to-ai-agents/)
 of the user guide.
 
 The [Orpius SDK repository](https://github.com/Orpius/SDK) contains various sample projects.
