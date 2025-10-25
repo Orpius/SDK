@@ -72,7 +72,7 @@ middle-tier application, such as a web application, to communicate with an Orpiu
 they allow you incorporate your custom AI agents into your own applications.
 
 If you haven't done so already, create a new operation in the Orpius client app.
-See [Operations](../../../../UserGuide/index.md#using-operations-to-connect-your-application-to-ai-agents) 
+See [Operations](../../UserGuide/index.md#using-operations-to-connect-your-application-to-ai-agents) 
 for details on creating and managing your operation credentials.
 
 You'll need the *External ID* and *Access Key 1* to connect your application to Orpius.
