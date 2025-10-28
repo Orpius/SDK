@@ -1,4 +1,4 @@
-# Orpius SDK Developer Guide for .NET
+﻿# Orpius SDK Developer Guide for .NET
 
 <!--TOC-->
   - [Getting Started with the Orpius SDK](#getting-started-with-the-orpius-sdk)
@@ -49,6 +49,26 @@ communication from Orpius.
 
 *Communication from Mobile App to Web API to Orpius*
 
+The sequence below shows how a user prompt flows through the sample apps 
+to Orpius and streams back.
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant M as Mobile App (Avalonia)
+    participant W as ASP.NET Core Middleware
+    participant O as Orpius Operations
+
+    U->>M: Enter prompt
+    M->>W: gRPC Chat(request)
+    W->>O: IOperationsService.Chat(ChatRequest)
+    O-->>W: stream ChatResponse (System/Assistant)
+    W-->>M: stream ChatResponse
+    M-->>U: Render messages as they arrive
+```
+
+*End-to-end request/streaming response path from the mobile app to Orpius and back.*
+
 ## Overview of the Orpius SDK Libraries
 
 The Orpius SDK for .NET consists of a class library, 
@@ -58,6 +78,34 @@ and an Analyzer project, *Orpius.Platform.ClientSdk.ProtobufNet.Generators*
 that makes it easy to automatically generate 
 nearly everything you need to provide your own custom APIs (tools) 
 for your AI agents to use.
+
+The SDK components, sample apps, and Orpius endpoints at a glance:
+
+```mermaid
+flowchart LR
+    subgraph NuGet["NuGet Packages"]
+        ClientSdk["Orpius.Platform.ClientSdk.ProtobufNet"]
+        Generators["Orpius.Platform.ClientSdk.ProtobufNet.Generators"]
+    end
+
+    subgraph Samples["Sample Projects"]
+        WebApi["Sample_AspNetCore_ProtobufNet (Middleware)"]
+        Mobile["Sample_MobileApp_ProtobufNet (Client)"]
+    end
+
+    subgraph Orpius["Orpius Server"]
+        Ops["Operations API"]
+        ToolsReg["Tools Registry"]
+    end
+
+    ClientSdk --> WebApi
+    Generators --> WebApi
+    Mobile -->|gRPC calls| WebApi
+    WebApi -->|Operations client| Ops
+    WebApi -->|Tool registration| ToolsReg
+```
+
+*How the NuGet packages, sample projects, and Orpius endpoints relate.*
 
 The aforementioned libraries are both available as the following NuGet packages:
 
@@ -112,6 +160,23 @@ The first thing you may notice, is at the top of the file we have:
 This assembly level attribute `Orpius.Platform.Tooling.GenerateToolRegistryItemAttribute` instructs
 the incremental code generator, located in the *Orpius.Platform.ClientSdk.ProtobufNet.Generators*
 project, to generate the code representing the API surface of your custom tools. 
+
+The code generator inspects your annotated tool classes and emits a registry Orpius can consume:
+
+```mermaid
+flowchart TB
+    Attr["[assembly: GenerateToolRegistryItem(...)]"]
+    Src["Your Tool Classes<br/>[Tool]/[ToolMethod]"]
+    Gen["Incremental Code Generator"]
+    Out["Generated Registry + Contracts"]
+
+    Attr --> Gen
+    Src --> Gen
+    Gen --> Out
+```
+
+*From [GenerateToolRegistryItem] and [Tool]/[ToolMethod] to a generated registry.*
+
 We explore custom tools later in the document.
 
 Communication with Orpius uses Google's [Protocol Buffers](https://protobuf.dev/) (protobuf)
@@ -282,6 +347,19 @@ an RpcException is thrown.
 The conversation ID, which can be used to resume a previous conversation,
 is returned in the `ChatResponse.ConversationId` property.
 
+Conversation lifetime and when a new or existing ConversationId is used:
+
+```mermaid
+stateDiagram-v2
+    [*] --> NewChat
+    NewChat: ConversationId = null/empty
+    NewChat --> ActiveConversation: first ChatResponse contains ConversationId
+    ActiveConversation --> ActiveConversation: subsequent Chat() with same ConversationId
+    ActiveConversation --> [*]: client ends session
+```
+
+*Conversation lifecycle and reuse of ConversationId.*
+
 In the sample `MyMobileAppService` we simply relay the received `ChatResponse`
 objects back to the mobile app consumer.
 
@@ -319,6 +397,23 @@ public class MyMobileAppService : IMyMobileAppService
 }
 ```
 
+```mermaid
+sequenceDiagram
+    participant M as Mobile App
+    participant W as Middleware (IMyMobileAppService)
+    participant O as Orpius
+
+    M->>W: Chat(UserMessage, ConversationId?)
+    W->>O: ChatRequest (ExternalId, Tools[], ConversationId?)
+    loop streaming
+        O-->>W: ChatResponse (SystemMessage | AssistantMessage)
+        W-->>M: ChatResponse
+        Note right of M: UI appends messages in sequence
+    end
+```
+
+*Streaming responses: SystemMessage and AssistantMessage flow.*
+
 ## Including Call-Specific Information in a Chat
 
 How do we pass user or application-specific information to an AI agent?
@@ -340,6 +435,26 @@ and can be modified as tools run. For example, one tool might update
 the context, and those changes will be visible to others 
 for the lifetime of the conversation.
 Importantly, the AI agent does *not* have access to the `Context` contents.
+
+What the agent sees versus what only tools can read/write during a conversation:
+
+```mermaid
+flowchart LR
+    subgraph Request["ChatRequest"]
+        JSON["JsonProvidedToAgent<br/>(visible to agent)"]
+        CTX["Context: Dictionary<string,string><br/>(tool-only, persists)"]
+    end
+    Agent["Agent (LLM)"]
+    Tools["Custom Tools"]
+
+    JSON --> Agent
+    CTX -.not visible.-> Agent
+    CTX --> Tools
+    Tools --> CTX:::mut
+    classDef mut stroke-dasharray: 5 5;
+```
+
+*Agent-visible JSON vs tool-only Context shared across tool calls.*
 
 ## Exploring the Mobile App Sample
 
@@ -534,7 +649,7 @@ a different technology.
 In this section we looked at how the sample app sends
 and receives messages to the Orpius server via a middleware
 application. In the next section you see how to extend 
-your agents capabilities by bringing in custom tools.
+your agent's capabilities by bringing in custom tools.
 
 ## Connecting Your Code to Orpius
 
@@ -564,6 +679,21 @@ of the sample middleware application. See below.
 
 The URL field needs to be populated with a URL that Orpius can use
 to call back to the middleware application.
+
+When you register, Orpius stores your tool API surface and knows where to call you back:
+
+```mermaid
+sequenceDiagram
+    participant Dev as Middleware (Your Server)
+    participant O as Orpius Tools Registry
+
+    Dev->>O: Register Tools (ExternalId, AccessKey, Callback URL, Headers)
+    O-->>Dev: Acknowledge & store API surface
+    Note over O: Agents now discover your tool names, params, and shapes
+```
+
+*Tool registration: sending API surface, callback URL, and secure headers.*
+
 Please see the guidance on how to [Create a Secure Channel](../../UserGuide/CreatingAChannel/index.md)
 Once you have set up the secure channel to your machine,
 insert the Cloudflare URL into the text box.
@@ -658,10 +788,37 @@ public class FlightStatusChecker
 }
 ```
 
+The sample tool's request/response types and method surface as the agent sees them:
+
+```mermaid
+classDiagram
+    class FlightStatusChecker {
+        <<Tool>>
+        +Task~GetStatusResponse~ GetStatus(GetStatusRequest, ICombinedContext)
+    }
+
+    class GetStatusRequest {
+        <<DTO>>
+        +int FlightNumber
+    }
+
+    class GetStatusResponse {
+        <<DTO>>
+        +DateTime DepartureTime
+        +FlightStatus FlightStatus
+        +string ExtraInformation
+    }
+
+    FlightStatusChecker --> GetStatusRequest : parameter
+    FlightStatusChecker --> GetStatusResponse : returns
+```
+
+*FlightStatusChecker request/response types and callable method.*
+
 The `FlightStatusChecker` sample tool receives a `GetStatusRequest` argument,
 and returns a `GetStatusResponse` object.
 `GetStatusRequest` is shown below. Its `FlightNumber` property
-is decorate with the third attribute you need to know about; the `[ToolProperty]` attribute.
+is decorated with the third attribute you need to know about; the `[ToolProperty]` attribute.
 
 `ToolProperty` also includes a `Description` property that can
 assist your agent in understanding the purpose of the property.
@@ -712,7 +869,24 @@ public class GetStatusResponse
 also be used if you supply an IoC container.
 
 The SDK contains an ASP.NET Core specific extension method
-`AddOrpiusToolRegistration`. 
+`AddOrpiusToolRegistration`.
+
+Each tool call returns to your server with the stored headers so you can authenticate the caller:
+
+```mermaid
+sequenceDiagram
+    participant O as Orpius
+    participant W as Your Middleware
+    participant T as ToolMethod
+
+    O->>W: UseTool(GetStatus, request)<br/>+ Stored Headers (e.g., MySecretHeader)
+    W->>T: Invoke with ICombinedContext (NativeContext + SharedContext)
+    T-->>W: GetStatusResponse
+    W-->>O: Response
+```
+
+*Orpius calling back your tool with stored headers and combined context.*
+
 When you call this method the `IServiceCollection` is used
 as the container for resolving tool types; whether they be
 interfaces or classes. Under the covers the extension method
@@ -783,6 +957,32 @@ Before the `ICombinedContext` is passed to your tool method,
 it is populated with data from the originating operation call,
 or from the event or schedule that triggered the agent's activity.
 
+`SharedContext` is tool-only state that persists across all tool 
+calls in the same conversation:
+
+```mermaid
+flowchart TB
+    subgraph Conversation
+        C["SharedContext (Dictionary)"]
+        A["Tool Call A"]
+        B["Tool Call B"]
+        C1["Tool Call C"]
+    end
+
+    A -->|read/write| C
+    B -->|read/write| C
+    C1 -->|read/write| C
+
+    Note["Agent cannot read SharedContext (tool-only)"]:::note
+    C -. context .- Note
+
+    classDef note fill:#fff3cd,stroke:#f0ad4e,stroke-width:1px,stroke-dasharray: 5 5,color:#000;
+```
+
+*Multiple tool calls in a conversation reading/writing the same `SharedContext`.*
+
+The agent does not see `SharedContext`; it can only influence it indirectly by choosing which tools to call.
+
 The `ICombinedContext` interface is located in the SDK library project,
 and is shown below.
 
@@ -830,3 +1030,15 @@ We encourage you to explore, extend, and make it your own;
 and if you have questions, ideas, or wish to discuss your implementation with others, 
 visit the [Orpius SDK Discussions](https://github.com/Orpius/SDK/discussions).
 We look forward to seeing what you build with Orpius!
+
+```mermaid
+flowchart LR
+    User --> App["Mobile/Desktop App"]
+    App -->|gRPC| Mid["ASP.NET Core Middleware"]
+    Mid -->|Operations| Orpius["Orpius Server"]
+    Orpius -->|Tools discovery| Mid
+    Mid -->|Callbacks| Tools["[Tool] classes / [ToolMethod] endpoints"]
+    Orpius -->|Streaming responses| Mid --> App
+```
+
+*The end-to-end path in one diagram: client to middleware, to Orpius, to tools, and back again.*
