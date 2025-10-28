@@ -182,13 +182,13 @@ to the Orpius Server, which manages authentication, scheduling, event handling,
 and access to encrypted storage.
 All sensitive operations—such as code execution, tool calls, and secret retrieval—occur
 within this private environment.
-Where a model provider is used (for example, OpenAI or Azure OpenAI),
+Where a model provider is used (for example, OpenAI, Google Gemini, Azure OpenAI, on-prem),
 Orpius connects through secure TLS channels while enforcing your chosen
 data-handling policies.
 
 ```mermaid
 flowchart LR
-    subgraph Tenant["Single-Tenant Orpius Deployment"]
+    subgraph Tenant["Orpius Deployment"]
         Console["Orpius Console (Desktop)"]
         Server["Orpius Server"]
 
@@ -717,7 +717,7 @@ Include a row for each car you see. Notify John if cars are parked in the restri
 
   ![Schedule repetitions](Images/ScheduleRepetitions.png)
 
-  **Schedule repetitions**
+  *Schedule Repetitions*
 
 ### Custom Tools
 
@@ -730,13 +730,13 @@ that your agents can use during inferencing.
 
 For example, you can create tools that:
 
-* **Connect to your organization's database** 
+* Connect to your organization's database 
 
-* **Access internal APIs** 
+* Access internal APIs 
 
 * Perform domain-specific calculations or lookups, such as pricing estimates, scheduling logic, or engineering models.
 
-* **Interface with third-party systems** (e.g., ERP, CRM, or ticketing platforms) through secure API calls.
+* Interface with third-party systems (e.g., ERP, CRM, or ticketing platforms) through secure API calls.
 
 * Trigger automation tasks such as sending notifications, generating reports, or updating shared files.
 
@@ -759,7 +759,7 @@ Example implementations are included in the downloadable SDK.
 
 Secrets are used to securely store sensitive information such as API keys,
 tokens, or passwords. These secrets can then be referenced in chat, code,
-or tool calls without exposing their actual values.
+or tool calls without exposing their actual values to language model providers.
 
 When interacting with an LLM provider, the system sends the **secret reference**
 (e.g., **<%=Key:SecretName%>**) rather than the actual value.
@@ -959,7 +959,7 @@ An event in Orpius can be triggered in two distinct ways:
 
 ```mermaid
 flowchart TB
-  subgraph External["External System or Application"]
+  subgraph External["External System"]
     ext["App / Sensor / API"]
   end
 
