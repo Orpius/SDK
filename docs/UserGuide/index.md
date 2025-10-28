@@ -328,7 +328,9 @@ flowchart LR
 Before you can start working with Orpius, you will need:
 
 * **Orpius Console** – A lightweight desktop client for configuring everything from models to agents and tools.
-* **Access to your own LLM provider** – Orpius connects to AI models you choose (hosted on-premises or in the cloud). It currently supports OpenAI and Azure OpenAI, with more providers to follow.
+* **Access to your own LLM provider** – Orpius connects to the AI models you choose, whether hosted on-premises or in the cloud.
+  It currently supports Google Gemini, OpenAI, Azure OpenAI, with more providers to follow.
+  Many third-party providers also use the OpenAI Chat Completions format, making them compatible with Orpius.
 * **Access to an Email Server (System Owners only)**  
   Because Orpius runs in your own private cloud, email handling is not provided 
   as a shared service. An email server is required during initial setup so new users 
