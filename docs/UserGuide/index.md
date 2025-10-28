@@ -6,32 +6,7 @@
     - [For Productivity and Operations Users](#for-productivity-and-operations-users)
     - [What Orpius Provides](#what-orpius-provides)
     - [Built-in Productivity Features](#built-in-productivity-features)
-  - [Orpius System Deployment](#orpius-system-deployment)
-  - [Getting started with Orpius](#getting-started-with-orpius)
-    - [From Configuration to Execution](#from-configuration-to-execution)
-  - [Understanding the Orpius System Structure](#understanding-the-orpius-system-structure)
-  - [Understanding User Roles](#understanding-user-roles)
-    - [Space Roles](#space-roles)
-    - [Organization Roles](#organization-roles)
-  - [Installing the Orpius Console](#installing-the-orpius-console)
-  - [Setting up Orpius for the First Time](#setting-up-orpius-for-the-first-time)
-    - [Setting up an Email Server (system owners only)](#setting-up-an-email-server-system-owners-only)
-    - [Creating a User Account](#creating-a-user-account)
-  - [Using the Orpius Console After Setup is Complete](#using-the-orpius-console-after-setup-is-complete)
-    - [Understanding Spaces](#understanding-spaces)
-      - [Creating a Space](#creating-a-space)
-      - [Switching Between Spaces](#switching-between-spaces)
-    - [Working with Large Language Models (LLM)](#working-with-large-language-models-llm)
-      - [Configuring a New Model](#configuring-a-new-model)
-  - [Understanding Agents](#understanding-agents)
-  - [Configuring a Custom Agent](#configuring-a-custom-agent)
-  - [Agent Tools](#agent-tools)
-    - [Reviewing the Built-in Tools](#reviewing-the-built-in-tools)
-    - [Custom Tools](#custom-tools)
-  - [Custom Tool Integration Steps](#custom-tool-integration-steps)
-  - [Using Secrets to Store Sensitive Information](#using-secrets-to-store-sensitive-information)
-    - [Configuring a Secret](#configuring-a-secret)
-    - [Using a Secret](#using-a-secret)
+  - [Orpius Architectural Overview](#orpius-architectural-overview)
   - [How Orpius Protects Your Data](#how-orpius-protects-your-data)
     - [Tenancy and Isolation](#tenancy-and-isolation)
     - [Encryption at Rest](#encryption-at-rest)
@@ -46,6 +21,31 @@
     - [Data Retention and Deletion](#data-retention-and-deletion)
     - [Compliance and Assurance (deployment-dependent)](#compliance-and-assurance-deployment-dependent)
     - [Security Quick Summary](#security-quick-summary)
+  - [Getting started with Orpius](#getting-started-with-orpius)
+    - [From Configuration to Execution](#from-configuration-to-execution)
+  - [Installing the Orpius Console](#installing-the-orpius-console)
+  - [Setting up Orpius for the First Time](#setting-up-orpius-for-the-first-time)
+    - [Setting up an Email Server (system owners only)](#setting-up-an-email-server-system-owners-only)
+    - [Creating a User Account](#creating-a-user-account)
+  - [Understanding the Orpius System Structure](#understanding-the-orpius-system-structure)
+  - [Understanding User Roles](#understanding-user-roles)
+    - [Space Roles](#space-roles)
+    - [Organization Roles](#organization-roles)
+  - [Navigating with the Orpius Console](#navigating-with-the-orpius-console)
+    - [Understanding Spaces](#understanding-spaces)
+      - [Creating a Space](#creating-a-space)
+      - [Switching Between Spaces](#switching-between-spaces)
+    - [Working with Large Language Models (LLM)](#working-with-large-language-models-llm)
+      - [Configuring a New Model](#configuring-a-new-model)
+  - [Understanding Agents](#understanding-agents)
+  - [Configuring a Custom Agent](#configuring-a-custom-agent)
+  - [Agent Tools](#agent-tools)
+    - [Reviewing the Built-in Tools](#reviewing-the-built-in-tools)
+    - [Custom Tools](#custom-tools)
+      - [Custom Tool Integration Steps](#custom-tool-integration-steps)
+  - [Using Secrets to Store Sensitive Information](#using-secrets-to-store-sensitive-information)
+    - [Configuring a Secret](#configuring-a-secret)
+    - [Using a Secret](#using-a-secret)
   - [Using Operations to Connect Your Application to AI Agents](#using-operations-to-connect-your-application-to-ai-agents)
     - [Creating Custom Tools for Operations](#creating-custom-tools-for-operations)
   - [Using Events to Trigger Activities](#using-events-to-trigger-activities)
@@ -61,6 +61,10 @@
       - [Using HTTP POST to Trigger an Event](#using-http-post-to-trigger-an-event)
   - [Triggering Activities on a Schedule](#triggering-activities-on-a-schedule)
     - [Creating a Schedule](#creating-a-schedule)
+  - [Understanding the Workflow and Activity Lifecycle](#understanding-the-workflow-and-activity-lifecycle)
+    - [Activity Selection and Assignment](#activity-selection-and-assignment)
+    - [Supervision and Tracking](#supervision-and-tracking)
+    - [Automatic Verification](#automatic-verification)
   - [Agent Activity Auditing and Verification](#agent-activity-auditing-and-verification)
     - [How the Audit Works](#how-the-audit-works)
     - [Purpose of the Audit Step](#purpose-of-the-audit-step)
@@ -166,7 +170,7 @@ For example, you can use chat in the Console to instruct Orpius to:
 * Send emails and notifications to team members
 * Organize meetings that suit everyone's time zone
 
-## Orpius System Deployment
+## Orpius Architectural Overview
 
 The Orpius platform is deployed as a single-tenant cloud service.
 Support for on-premises deployments is planned.
@@ -187,30 +191,137 @@ flowchart LR
     subgraph Tenant["Single-Tenant Orpius Deployment"]
         Console["Orpius Console (Desktop)"]
         Server["Orpius Server"]
-        subgraph Services["Core Services"]
+
+        subgraph Core["Core Services"]
             Auth["Auth / Roles"]
             Storage["Encrypted ZFS Datasets"]
-            Schedules["Scheduler"]
-            Events["Events Engine"]
-            Tools["Tool Runner (Wasm)"]
             Secrets["Secrets Vault / KMS"]
+            Events["Events Engine"]
+            Schedules["Scheduler"]
+            Tools["Tool Runner"]
+            Orchestrator["Workflow Orchestrator"]
+            CodeExec["Code Execution (wasm)"]
         end
-        Providers["LLM Providers (OpenAI / Azure OpenAI / On-prem)"]
+
+        Providers["LLM Providers (OpenAI / Azure OpenAI / Gemini / On-prem)"]
     end
 
     Console <--> Server
-    Server <--> Services
+    Server <--> Core
     Server --> Providers
-    Secrets -.-> Tools
-    Storage <--> Tools
-    Events <--> Tools
-    Schedules <--> Tools
 ```
 
-*Orpius High-Level Architecture*
+*Orpius groups everything you need—security, storage, tools, workflow, and optional LLM connectivity—inside a single-tenant boundary. The Console configures; the Server brokers; Core Services execute.*
 
 > **Note:** A multitenant environment may be provided for evaluation 
 and proof-of-concept testing.
+
+## How Orpius Protects Your Data
+
+Orpius is built with a defence-in-depth approach covering tenancy isolation, encryption, key management, access control, and operational safeguards. This section explains what happens to your data at rest, in transit, and while agents are running.
+
+### Tenancy and Isolation
+
+* **Single-tenant by design.** Each customer gets a dedicated Orpius deployment. No compute, storage, secrets, or configuration are shared across tenants.
+* **Storage isolation.** Each tenant is provisioned with its own encrypted ZFS datasets. Files, models, logs, and cached artefacts for one tenant are not visible to others.
+* **Process isolation.** Code execution (for tools and sandboxes) is confined to WebAssembly (Wasm) sandboxes with no access to other tenants' processes or storage.
+
+### Encryption at Rest
+
+* **ZFS native encryption.** All tenant datasets are encrypted using AES-256 (ZFS native encryption). Keys are unique per dataset and never reused across tenants.
+* **Backups and snapshots.** Snapshots and off-box backups are encrypted before leaving the tenant host. Restores can only be performed with the tenant's keys.
+* **Key rotation.** Dataset Encryption Keys (DEKs) are wrapped by a Key-Encryption Key (KEK). KEKs can be rotated without re-encrypting stored data.
+
+### Encryption in Transit
+
+* **TLS everywhere.** All network traffic between Console, Server, and internal services is protected with TLS (TLS 1.2+; TLS 1.3 preferred).
+* **Strict ciphers and HSTS.** Strong cipher suites are enforced and HTTP is redirected to HTTPS with HSTS.
+* **Mutual trust internally.** Internal service-to-service calls use authenticated channels and scoped service identities.
+
+### Key Management
+
+* **Per-tenant keys.** Every tenant has distinct KEKs; DEKs are generated per dataset/resource. Keys are never shared between tenants.
+* **Hardware or cloud KMS.** Keys are stored in a secure keystore ([HSM/KMS, e.g. Azure Key Vault, AWS KMS]—configure per deployment).
+* **Rotation and revocation.** KEKs can be rotated on a schedule or on demand. Access to retired keys is revoked immediately.
+
+### Secrets and Sensitive Values
+
+* **Secret references, not values.** When an agent speaks to a model, Orpius substitutes **secret references** (e.g. `<%=Key:WeatherKey%>`) in prompts. The real values are only resolved at tool-execution time inside Orpius, never in the model prompt.
+* **Scoped retrieval.** Secrets are decrypted only when a permitted tool call requires them, and only for the duration of that call.
+* **Auditability.** All secret access is logged with timestamp, requesting agent/tool, and outcome (without logging the secret value).
+
+### Data Sent to Model Providers
+
+* **Minimised prompt payloads.** Orpius strips secret values and any fields explicitly marked sensitive before sending prompts to model providers.
+* **Provider controls.** You choose the model provider (e.g. OpenAI, Azure OpenAI, on-prem). Where supported, Orpius enforces provider settings to **disable training on your data** and uses private endpoints when available.
+* **Regional routing.** Requests can be pinned to a region to help meet data-residency expectations ([set in System Settings → Inferencing]).
+
+### Access Control and Identity
+
+* **Role-based access.** Space and Organisation roles constrain who can view, configure, or execute agents, tools, events, operations, files, and logs.
+* **Least privilege by default.** All built-in tools are disabled for customer-facing Operations until explicitly enabled.
+* **Strong auth.** Support for email-verified accounts; SSO and MFA are planned/available depending on deployment ([SSO/MFA options here]).
+
+### Auditing, Logging, and Monitoring
+
+* **Tamper-evident logs.** Security-relevant events (auth, key use, secret access, tool execution, data export) are recorded with integrity protection.
+* **Alerting.** Abnormal access patterns and repeated failures raise alerts to system owners.
+* **Retention.** Log retention is configurable per tenant ([default N days]).
+
+### Backups, DR, and Availability
+
+* **Encrypted backups.** Backups inherit tenant encryption; keys never leave the keystore.
+* **Restore testing.** Periodic test-restores validate that encrypted backups are recoverable.
+* **High availability.** Core services run behind health-checked load balancers; background workers are horizontally scalable.
+
+### Secure Code Execution
+
+* **Wasm sandbox.** The CodeExecution tool runs user code inside a Wasm sandbox 
+  with constrained CPU, memory, filesystem, and network policies.
+* **No lateral movement.** Sandboxes cannot access other tenants' storage, processes, 
+  or secrets unless a secret is explicitly granted to the tool call.
+* **Egress control.** Outbound network access from sandboxes can be disabled or restricted to allow-lists.
+
+### Data Retention and Deletion
+
+* **System-wide retention controls.** **System Settings** include configurable data-retention periods that apply to spaces, files, logs, caches, and other artefacts.
+* **LLM interaction retention.** Messages sent to and from model providers are retained **for 30 days by default** and **only** to let users resume conversations. They are **not** used for model training. You can shorten or extend this period (including retention-off) in **System Settings**.
+* **You control retention.** Per-space policies can purge files, chat transcripts, tool outputs, and model caches after a defined period.
+* **Right to delete.** When you delete a space or organisation, Orpius schedules a secure erase of the tenant datasets and removes all wrapped keys after the retention window closes.
+* **Search indices and caches.** Derived artefacts (indexes, embeddings, caches) follow the same retention and deletion policies as the source data.
+* **GDPR support.** Configurable retention, export on request, and secure deletion workflows support GDPR principles (purpose limitation, storage limitation, data minimisation) and user rights (access/erasure) for deployments that require them.
+
+```mermaid
+flowchart LR
+    subgraph Settings["System Settings: Retention"]
+        Files["Files / Storage"]
+        Logs["Logs"]
+        LLM["LLM Interactions (30 days default)"]
+        Caches["Caches / Indexes"]
+    end
+
+    Files --> Policy["Retention Policies"]
+    Logs --> Policy
+    LLM --> Policy
+    Caches --> Policy
+    Policy --> Purge["Auto Purge / Secure Erase"]
+    Purge --> Deletion["Key Removal & Dataset Erase"]
+```
+
+### Compliance and Assurance (deployment-dependent)
+
+* **Change management.** Infrastructure and application changes are reviewed and tracked.
+* **Vulnerability management.** Regular dependency scanning, OS patching, and penetration testing.
+* **Compliance mappings.** Controls map to common frameworks (e.g. ISO 27001, SOC 2); attestations available on request for managed deployments.
+
+### Security Quick Summary
+
+* Separate, encrypted storage per tenant (AES-256 on ZFS).
+* Distinct keys per tenant; secrets never sent to models.
+* TLS in transit; Wasm sandbox for code.
+* Least-privilege defaults; full audit trail.
+* **LLM interactions kept 30 days by default for conversation continuity only. (deployment-dependent)**
+* Encrypted backups; tested restores; configurable retention; **supports GDPR compliance**.
 
 ## Getting started with Orpius
 
@@ -258,58 +369,6 @@ sequenceDiagram
 ```
 
 *Configuration to Execution (end-to-end flow)*
-
-## Understanding the Orpius System Structure
-
-Orpius is organized around organizations and spaces. 
-
-At the top level is the **System**, which represents the Orpius installation itself.
-Within the system, there are multiple organizations.
-
-The **Organization** represents your company or organization.
-Each organization has its own storage allocation, and set of members.
-
-Each Organization contains one or more **Spaces**.
-A Space is a dedicated workspace for a specific project or team.
-Each Space contains all the resources for that project, 
-such as agents, tools, models, operations, and events,
-and has its own isolated storage area.
-
-```mermaid
-mindmap
-  root((Orpius System))
-    Organization A
-      Space A1
-      Space A2
-    Organization B
-      Space B1
-      Space B2
-    Organization C
-      Space C1
-      Space C2
-```
-
-*The Orpius system contains organizations, which contain spaces*
-
-> **Note:** When a user registers with Orpius, a default organization 
-and space are created automatically for that user. 
-You may invite other users to join your organization and collaborate in the same space.
-
-## Understanding User Roles
-
-A user may have different roles across different organizations and spaces.
-
-### Space Roles
-* **Participant** - Can receive notifications and perform tasks.
-* **Editor** – Able to create and modify content and manage schedules and events in the space. 
-* **Administrator** – Able to add new members and manage space settings.
-* **Owner** – Able to delete the space or assign administrator privileges.
-
-### Organization Roles
-* **Participant** - A member of a space within the organization.
-* **Administrator** – Able to add or remove members and manage organization settings.
-* **Owner** – Able to delete the organization or assign administrator privileges.
-  Able to manage language models.
 
 ## Installing the Orpius Console
 
@@ -366,7 +425,61 @@ during email server setup (e.g. noreply@yourdomain.com) containing a code.
 If you see an error message, click **Previous** and check that your email address 
 and email server information are correct.
 
-## Using the Orpius Console After Setup is Complete
+## Understanding the Orpius System Structure
+
+Orpius is organized around organizations and spaces. 
+
+At the top level is the **System**, which represents the Orpius installation itself.
+Within the system, there are multiple organizations.
+
+The **Organization** represents your company or organization.
+Each organization has its own storage allocation, and set of members.
+
+Each Organization contains one or more **Spaces**.
+A Space is a dedicated workspace for a specific project or team.
+Each Space contains all the resources for that project, 
+such as agents, tools, models, operations, and events,
+and has its own isolated storage area.
+
+```mermaid
+mindmap
+  root((Orpius System))
+    Organization A
+      Space A1
+      Space A2
+    Organization B
+      Space B1
+      Space B2
+    Organization C
+      Space C1
+      Space C2
+```
+
+*The Orpius system contains organizations, which contain spaces*
+
+For guidance on working within a **Space** in the Console, see [Understanding Spaces](#understanding-spaces)
+
+> **Note:** When a user registers with Orpius, a default organization 
+and space are created automatically for that user. 
+You may invite other users to join your organization and collaborate in the same space.
+
+## Understanding User Roles
+
+A user may have different roles across different organizations and spaces.
+
+### Space Roles
+* **Participant** - Can receive notifications and perform tasks.
+* **Editor** – Able to create and modify content and manage schedules and events in the space. 
+* **Administrator** – Able to add new members and manage space settings.
+* **Owner** – Able to delete the space or assign administrator privileges.
+
+### Organization Roles
+* **Participant** - A member of a space within the organization.
+* **Administrator** – Able to add or remove members and manage organization settings.
+* **Owner** – Able to delete the organization or assign administrator privileges.
+  Able to manage language models.
+
+## Navigating with the Orpius Console
 
 After completing the initial setup, Orpius opens in the **Space Selector** view, 
 where you can see a list of the Spaces you belong to. 
@@ -401,11 +514,10 @@ To create a new Space:
 2. Enter a name for the Space. 
 3. Confirm to create.
 
-
 #### Switching Between Spaces
 
-To switch to another **Space**, sign out of your current **Space**.
-Signing back in returns you to the **Organization View**, where you can open a different **Space**.
+To switch to another **Space**, sign out of your current session.
+When you sign back in, the **Organisation View** opens and lets you choose a different **Space**.
 
 ### Working with Large Language Models (LLM)
 
@@ -443,7 +555,7 @@ flowchart LR
 #### Configuring a New Model
 
 1. Open the **Models** view from the sidebar 
-2. Select **'+'** button in the toolbar of the **Models** view
+2. Select the **Add** (**+**) button in the toolbar of the **Models** view
 3. Enter the required information
 4. Save
 
@@ -575,8 +687,7 @@ Orpius includes the following set of built-in tools:
   isolating it from other processes or code execution.
 * **ImageAnalysis** – Allows an agent to analyze an image, 
   either from a specified image URL or by snapping a frame from a real-time video stream. 
-* **VideoFeedMonitor** – Real Time Streaming Protocol (RTSP). 
-  Downloads a still image from a video feed which can be used for image analysis.
+* **VideoFeedMonitor** – Connects to a real-time streaming protocol (RTSP) feed and captures a still image for analysis.
 * **EventRegistry** – Registers an event name that can be used by a remote API to trigger a task. The identifier can then be used with a web hook in the system.
 * **Memory** – Allows an agent to add a record of an event or experience to the agents memory store, enabling it to track changes across multiple tasks.
 * **EventTrigger** - Triggers an event that was previously registered.
@@ -599,7 +710,7 @@ Include a row for each car you see. Notify John if cars are parked in the restri
 
 > **Tip:** When scheduling an activity, be specific about the number of times 
   you want the activity to run, or whether it should repeat indefinitely. 
-  The repition count and the maximum number of repitions is shown in the **Schedule** view.
+  The repetition count and the maximum number of repetitions is shown in the **Schedule** view.
   If not present, it indicates that the activity will run indefinitely.
 
   ![Schedule repetitions](Images/ScheduleRepetitions.png)
@@ -632,7 +743,7 @@ and made available to AI Agents under your control.
 This allows agents to call your organization's existing code, libraries, 
 or services securely—without exposing them externally.
 
-## Custom Tool Integration Steps
+#### Custom Tool Integration Steps
 
 1. **Register a custom tool** – Open the **Agent Tools** view from the sidebar and select **Custom Tools** .
 2. **Integrate with your application** – Copy the **External ID** and **Access Key**, then paste them into **your application**.
@@ -683,7 +794,7 @@ sequenceDiagram
 To create a new **Secret**:
 
 1. Open the **Secrets** view from the sidebar
-2. Select **+** button in the toolbar of the Secrets view
+2. Select the **Add** (**+**) button in the toolbar of the Secrets view
 3. Enter the **Token**, the **Secret Value** and a **Description**
 4. Save your changes
 
@@ -705,113 +816,6 @@ When the agent executes this instruction by calling a tool,
 the Orpius system replaces the secret reference with the actual API key value. 
 This allows the API key to be securely injected
 at runtime without being exposed to the LLM provider.
-
-## How Orpius Protects Your Data
-
-Orpius is built with a defence-in-depth approach covering tenancy isolation, encryption, key management, access control, and operational safeguards. This section explains what happens to your data at rest, in transit, and while agents are running.
-
-### Tenancy and Isolation
-
-* **Single-tenant by design.** Each customer gets a dedicated Orpius deployment. No compute, storage, secrets, or configuration are shared across tenants.
-* **Storage isolation.** Each tenant is provisioned with its own encrypted ZFS datasets. Files, models, logs, and cached artefacts for one tenant are not visible to others.
-* **Process isolation.** Code execution (for tools and sandboxes) is confined to WebAssembly (Wasm) sandboxes with no access to other tenants' processes or storage.
-
-### Encryption at Rest
-
-* **ZFS native encryption.** All tenant datasets are encrypted using AES-256 (ZFS native encryption). Keys are unique per dataset and never reused across tenants.
-* **Backups and snapshots.** Snapshots and off-box backups are encrypted before leaving the tenant host. Restores can only be performed with the tenant's keys.
-* **Key rotation.** Dataset Encryption Keys (DEKs) are wrapped by a Key-Encryption Key (KEK). KEKs can be rotated without re-encrypting stored data.
-
-### Encryption in Transit
-
-* **TLS everywhere.** All network traffic between Console, Server, and internal services is protected with TLS (TLS 1.2+; TLS 1.3 preferred).
-* **Strict ciphers and HSTS.** Strong cipher suites are enforced and HTTP is redirected to HTTPS with HSTS.
-* **Mutual trust internally.** Internal service-to-service calls use authenticated channels and scoped service identities.
-
-### Key Management
-
-* **Per-tenant keys.** Every tenant has distinct KEKs; DEKs are generated per dataset/resource. Keys are never shared between tenants.
-* **Hardware or cloud KMS.** Keys are stored in a secure keystore ([HSM/KMS, e.g. Azure Key Vault, AWS KMS]—configure per deployment).
-* **Rotation and revocation.** KEKs can be rotated on a schedule or on demand. Access to retired keys is revoked immediately.
-
-### Secrets and Sensitive Values
-
-* **Secret references, not values.** When an agent speaks to a model, Orpius substitutes **secret references** (e.g. `<%=Key:WeatherKey%>`) in prompts. The real values are only resolved at tool-execution time inside Orpius, never in the model prompt.
-* **Scoped retrieval.** Secrets are decrypted only when a permitted tool call requires them, and only for the duration of that call.
-* **Auditability.** All secret access is logged with timestamp, requesting agent/tool, and outcome (without logging the secret value).
-
-### Data Sent to Model Providers
-
-* **Minimised prompt payloads.** Orpius strips secret values and any fields explicitly marked sensitive before sending prompts to model providers.
-* **Provider controls.** You choose the model provider (e.g. OpenAI, Azure OpenAI, on-prem). Where supported, Orpius enforces provider settings to **disable training on your data** and uses private endpoints when available.
-* **Regional routing.** Requests can be pinned to a region to help meet data-residency expectations ([set in System Settings → Inferencing]).
-
-### Access Control and Identity
-
-* **Role-based access.** Space and Organisation roles constrain who can view, configure, or execute agents, tools, events, operations, files, and logs.
-* **Least privilege by default.** All built-in tools are disabled for customer-facing Operations until explicitly enabled.
-* **Strong auth.** Support for email-verified accounts; SSO and MFA are planned/available depending on deployment ([SSO/MFA options here]).
-
-### Auditing, Logging, and Monitoring
-
-* **Tamper-evident logs.** Security-relevant events (auth, key use, secret access, tool execution, data export) are recorded with integrity protection.
-* **Alerting.** Abnormal access patterns and repeated failures raise alerts to system owners.
-* **Retention.** Log retention is configurable per tenant ([default N days]).
-
-### Backups, DR, and Availability
-
-* **Encrypted backups.** Backups inherit tenant encryption; keys never leave the keystore.
-* **Restore testing.** Periodic test-restores validate that encrypted backups are recoverable.
-* **High availability.** Core services run behind health-checked load balancers; background workers are horizontally scalable.
-
-### Secure Code Execution
-
-* **Wasm sandbox.** The CodeExecution tool runs user code inside a Wasm sandbox 
-  with constrained CPU, memory, filesystem, and network policies.
-* **No lateral movement.** Sandboxes cannot access other tenants' storage, processes, 
-  or secrets unless a secret is explicitly granted to the tool call.
-* **Egress control.** Outbound network access from sandboxes can be disabled or restricted to allow-lists.
-
-### Data Retention and Deletion
-
-* **System-wide retention controls.** **System Settings** include configurable data-retention periods that apply to spaces, files, logs, caches, and other artefacts.
-* **LLM interaction retention.** Messages sent to and from model providers are retained **for 30 days by default** and **only** to let users resume conversations. They are **not** used for model training. You can shorten or extend this period (including retention-off) in **System Settings**.
-* **You control retention.** Per-space policies can purge files, chat transcripts, tool outputs, and model caches after a defined period.
-* **Right to delete.** When you delete a space or organisation, Orpius schedules a secure erase of the tenant datasets and removes all wrapped keys after the retention window closes.
-* **Search indices and caches.** Derived artefacts (indexes, embeddings, caches) follow the same retention and deletion policies as the source data.
-* **GDPR support.** Configurable retention, export on request, and secure deletion workflows support GDPR principles (purpose limitation, storage limitation, data minimisation) and user rights (access/erasure) for deployments that require them.
-
-```mermaid
-flowchart LR
-    subgraph Settings["System Settings: Retention"]
-        Files["Files / Storage"]
-        Logs["Logs"]
-        LLM["LLM Interactions (30 days default)"]
-        Caches["Caches / Indexes"]
-    end
-
-    Files --> Policy["Retention Policies"]
-    Logs --> Policy
-    LLM --> Policy
-    Caches --> Policy
-    Policy --> Purge["Auto Purge / Secure Erase"]
-    Purge --> Deletion["Key Removal & Dataset Erase"]
-```
-
-### Compliance and Assurance (deployment-dependent)
-
-* **Change management.** Infrastructure and application changes are reviewed and tracked.
-* **Vulnerability management.** Regular dependency scanning, OS patching, and penetration testing.
-* **Compliance mappings.** Controls map to common frameworks (e.g. ISO 27001, SOC 2); attestations available on request for managed deployments.
-
-### Security Quick Summary
-
-* Separate, encrypted storage per tenant (AES-256 on ZFS).
-* Distinct keys per tenant; secrets never sent to models.
-* TLS in transit; Wasm sandbox for code.
-* Least-privilege defaults; full audit trail.
-* **LLM interactions kept 30 days by default for conversation continuity only.**
-* Encrypted backups; tested restores; configurable retention; **supports GDPR compliance**.
 
 ## Using Operations to Connect Your Application to AI Agents
 
@@ -895,7 +899,7 @@ When triggered, an event causes one or more **activities** to run automatically 
 Events can therefore be used to:
 
 * React to real-world or system events (for example, an incoming webhook or sensor signal)
-* Allow agents to chain actions together (for example, *“if this happens, trigger that event”*)
+* Allow agents to chain actions together (for example, *"if this happens, trigger that event"*)
 * Safely delegate actions to another agent or system with different permissions
 
 ### Creating an Event
@@ -1055,7 +1059,7 @@ When using POST all key/value pairs (apart from the **event-id**) are supplied
 in the context object of your tools.
 
 To see more information on the context property see 
-*[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#Including Call Specific Information in a Chat)* in the Developer Guide.
+*[Including Call Specific Information in a Chat](../DevelopmentGuides/DotNet/index.md#including-call-specific-information-in-a-chat)* in the Developer Guide.
 
 ## Triggering Activities on a Schedule
 
@@ -1100,6 +1104,64 @@ You can create a schedule directly in chat.
 
 > **Tip:** Be wary that running a task at very short intervals (such as every 2 minutes) can increase resource usage and cost. You should specify how many times the activity should repeat; otherwise, it will run indefinitely.
 
+## Understanding the Workflow and Activity Lifecycle
+
+Every activity in Orpius—whether triggered by an **event** or a **schedule**, 
+is managed by a dynamic **workflow orchestration system**.
+This system determines *what work must be done*, *who should do it*, 
+and *how the result is verified*.
+
+When a new task arrives, Orpius places it into an **internal activity queue**.
+From there, the **Workflow Orchestrator** analyses the task requirements, 
+evaluates which agents have the necessary tools and permissions, and selects 
+the most suitable agent to perform it.
+Once selected, that agent executes the activity under supervision, 
+and the outcome is recorded for audit and review.
+
+```mermaid
+flowchart TB
+    Events["Events"] --> Q["Activity Queue"]
+    Schedules["Schedules"] --> Q
+
+    Q --> Selector["Agent Selector"]
+    Selector --> Exec["Assigned Agent"]
+    Exec --> Super["Supervisor"]
+    Super --> Audit["Audit / Verdict"]
+```
+
+*Workflow orchestration and activity lifecycle.*
+
+### Activity Selection and Assignment
+
+* **Event-triggered activities** – generated by named events within a space.
+* **Scheduled activities** – queued by the Scheduler to run at defined times or intervals.
+
+The **Agent Selector** determines which agent is most appropriate to handle each activity.
+Selection is based on:
+
+* the agent's **assigned permissions** and accessible tools
+* its **availability** and current workload
+* any **role or profile constraints** defined in the space configuration
+
+Once selected, the activity is handed to the agent for execution.
+
+### Supervision and Tracking
+
+During execution, a **Supervisor** process tracks progress, timeouts, 
+and runtime limits.
+If an agent encounters an error, exceeds policy limits, or becomes unresponsive, 
+the Supervisor terminates the task and records the state for later analysis.
+All results—successful or not—are logged with the initiating context, 
+timestamps, and any generated artefacts.
+
+### Automatic Verification
+
+After completion, the activity and its output are passed 
+to the internal **Audit Agent**, which reviews whether the outcome appears 
+to satisfy the stated objective.
+The audit verdict ("Yes" or "No") and all related artefacts are stored 
+in the system's immutable audit log.
+
 ## Agent Activity Auditing and Verification
 
 To ensure that every automated activity in Orpius performs as intended, 
@@ -1127,7 +1189,7 @@ sequenceDiagram
 1. When an agent finishes an activity, Orpius records the **original instructions** (objective) and the **observed outcome**.
 2. A separate internal **audit agent** then examines these artefacts.
 3. The audit agent independently evaluates whether the outcome appears to meet 
-   the stated objective and records a simple verdict of **“Yes”** or **“No.”**
+   the stated objective and records a simple verdict of **"Yes"** or **"No."**
 
 ### Purpose of the Audit Step
 
@@ -1145,8 +1207,11 @@ sequenceDiagram
 
 ### Benefits
 
-This built-in verification mechanism ensures that AI agents in Orpius remain **accountable, observable, and auditable**.
-It strengthens confidence in autonomous operations, supports internal governance processes, and contributes to compliance assurance frameworks such as **GDPR**, **ISO 27001**, and **SOC 2**.
+This built-in verification mechanism ensures that AI agents in Orpius 
+remain **accountable, observable, and auditable**.
+It strengthens confidence in autonomous operations, supports internal 
+governance processes, and contributes to compliance assurance frameworks 
+such as **GDPR**, **ISO 27001**, and **SOC 2**.
 
 ## Working with Isolated Storage
 
