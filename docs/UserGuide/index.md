@@ -21,7 +21,7 @@
     - [Data Retention and Deletion](#data-retention-and-deletion)
     - [Compliance and Assurance (deployment-dependent)](#compliance-and-assurance-deployment-dependent)
     - [Security Quick Summary](#security-quick-summary)
-  - [Getting started with Orpius](#getting-started-with-orpius)
+  - [Getting Started with Orpius](#getting-started-with-orpius)
     - [From Configuration to Execution](#from-configuration-to-execution)
   - [Installing the Orpius Console](#installing-the-orpius-console)
   - [Setting up Orpius for the First Time](#setting-up-orpius-for-the-first-time)
@@ -323,7 +323,7 @@ flowchart LR
 * **LLM interactions kept 30 days by default for conversation continuity only. (deployment-dependent)**
 * Encrypted backups; tested restores; configurable retention; **supports GDPR compliance**.
 
-## Getting started with Orpius
+## Getting Started with Orpius
 
 Before you can start working with Orpius, you will need:
 
