@@ -8,6 +8,7 @@
     - [Built-in Productivity Features](#built-in-productivity-features)
   - [Orpius Architectural Overview](#orpius-architectural-overview)
   - [How Orpius Protects Your Data](#how-orpius-protects-your-data)
+    - [Default Hosting Location (managed service)](#default-hosting-location-managed-service)
     - [Tenancy and Isolation](#tenancy-and-isolation)
     - [Encryption at Rest](#encryption-at-rest)
     - [Encryption in Transit](#encryption-in-transit)
@@ -175,6 +176,8 @@ For example, you can use chat in the Console to instruct Orpius to:
 The Orpius platform is deployed as a single-tenant cloud service.
 Support for on-premises deployments is planned.
 
+The managed deployment is provisioned by default in Switzerland.
+
 The following diagram illustrates the high-level architecture of an Orpius deployment.
 Each customer runs within a single-tenant environment, ensuring full isolation of compute,
 storage, and secrets. The Orpius Console (desktop application) connects securely
@@ -219,6 +222,16 @@ and proof-of-concept testing.
 ## How Orpius Protects Your Data
 
 Orpius is built with a defence-in-depth approach covering tenancy isolation, encryption, key management, access control, and operational safeguards. This section explains what happens to your data at rest, in transit, and while agents are running.
+
+### Default Hosting Location (managed service)
+
+Unless otherwise agreed, each managed Orpius tenant is deployed in **Switzerland**. 
+Tenant compute, encrypted storage (ZFS), snapshots and off-box backups 
+are created and retained in our Swiss region by default.
+
+**Model providers.** You choose your model endpoints (e.g., Azure OpenAI, OpenAI, Gemini, on-prem).
+
+**Alternatives.** On-premises and other regional deployments are available on request.
 
 ### Tenancy and Isolation
 
