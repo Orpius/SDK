@@ -9,6 +9,7 @@
   - [Exploring the Mobile App Sample](#exploring-the-mobile-app-sample)
   - [Connecting Your Code to Orpius](#connecting-your-code-to-orpius)
     - [Registering Your Middleware Server](#registering-your-middleware-server)
+    - [Calling Operations from within Orpius (OperationRelay)](#calling-operations-from-within-orpius-operationrelay)
     - [Understanding Custom Tools](#understanding-custom-tools)
     - [Initializing the Tooling Subsystem](#initializing-the-tooling-subsystem)
     - [Sharing Data between Tools and Operations](#sharing-data-between-tools-and-operations)

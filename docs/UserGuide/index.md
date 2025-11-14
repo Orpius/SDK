@@ -37,6 +37,7 @@
       - [Creating a Space](#creating-a-space)
       - [Switching Between Spaces](#switching-between-spaces)
     - [Working with Large Language Models (LLM)](#working-with-large-language-models-llm)
+      - [How Orpius Orchestrates LLM Calls and Tools](#how-orpius-orchestrates-llm-calls-and-tools)
       - [Configuring a New Model](#configuring-a-new-model)
   - [Understanding Agents](#understanding-agents)
   - [Configuring a Custom Agent](#configuring-a-custom-agent)
@@ -570,6 +571,51 @@ flowchart LR
     Models -->|Request| Provider3["Gemini"]
     Models -->|Request| Provider4["On-prem LLM"]
     Policy -.applied to.-> Models
+```
+
+#### How Orpius Orchestrates LLM Calls and Tools
+
+When Orpius talks to a model, it follows a structured loop that lets the model both reply and call tools:
+
+1. A **Prompt Originator** (for example, a user chat, an agent running a task, an event, a schedule, or an Operation) sends a text prompt to Orpius.
+2. Orpius calls the configured **LLM**, supplying the prompt, conversation context, and the set of tools the model is allowed to use.
+3. The LLM returns a JSON response that can contain:
+   * **0 or 1 messages** for the Prompt Originator, and  
+   * **0 or more tool call requests** (API/tool invocations).
+4. If there is a message, Orpius delivers it back to the Prompt Originator.  
+   In parallel, Orpius executes any requested **tool calls**. Each tool call either returns a normal result payload or an error payload.
+5. As tool results become available, Orpius sends them back to the LLM. The model can then:
+   * send an updated message to the Prompt Originator, and/or  
+   * request further tool calls.
+6. This cycle repeats until the LLM stops requesting tools. At that point, Orpius delivers the final message to the Prompt Originator and the interaction completes.
+
+```mermaid
+sequenceDiagram
+    participant PO as Prompt Originator<br/>(chat/agent/event/schedule/operation)
+    participant OS as Orpius Server
+    participant LLM as LLM Provider
+    participant TL as Tools / APIs
+
+    PO->>OS: Send prompt and context
+    OS->>LLM: Call model<br/>with tools + history
+
+    loop Tool-calling loop
+        LLM-->>OS: JSON: message (0..1)<br/>+ 0..n tool calls
+
+        opt Deliver message
+            OS-->>PO: Assistant message (if present)
+        end
+
+        alt One or more tool calls
+            par Execute each tool
+                OS->>TL: Execute tool/API
+                TL-->>OS: Tool result or error
+            end
+            OS->>LLM: Send tool results<br/>as follow-up
+        else No tool calls
+            OS-->>PO: Final message (if any)
+        end
+    end
 ```
 
 #### Configuring a New Model
