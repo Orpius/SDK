@@ -20,7 +20,7 @@
 1. **Clone this repository**  
 	```powershell
 	git clone https://github.com/Orpius/SDK.git
-	````
+	```
 
 2. **Open the solution** in **Visual Studio 2022** (or later).
 
@@ -479,7 +479,7 @@ with a `MainWindowViewModel` class providing its behaviour.
 
 The `MainWindow.axaml` has databinding to the `Messages` property of the viewmodel.
 
-```
+```xml
 <ItemsControl ItemsSource="{Binding Messages}">
 ...
 </ItemsControl>

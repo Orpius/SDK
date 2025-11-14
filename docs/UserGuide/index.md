@@ -40,7 +40,7 @@
       - [Configuring a New Model](#configuring-a-new-model)
   - [Understanding Agents](#understanding-agents)
   - [Configuring a Custom Agent](#configuring-a-custom-agent)
-  - [Agent Tools](#agent-tools)
+  - [Empowering Agents with Tools](#empowering-agents-with-tools)
     - [Reviewing the Built-in Tools](#reviewing-the-built-in-tools)
     - [Custom Tools](#custom-tools)
       - [Custom Tool Integration Steps](#custom-tool-integration-steps)
@@ -49,6 +49,11 @@
     - [Using a Secret](#using-a-secret)
   - [Using Operations to Connect Your Application to AI Agents](#using-operations-to-connect-your-application-to-ai-agents)
     - [Creating Custom Tools for Operations](#creating-custom-tools-for-operations)
+    - [Calling Operations from Chats, Events, Schedules, and other Operations](#calling-operations-from-chats-events-schedules-and-other-operations)
+      - [Same-Space versus Cross-Space / Cross-System Calls](#same-space-versus-cross-space-cross-system-calls)
+      - [What OperationRelay Makes Possible](#what-operationrelay-makes-possible)
+      - [Conversation Continuity](#conversation-continuity)
+      - [Conceptual Flow](#conceptual-flow)
   - [Using Events to Trigger Activities](#using-events-to-trigger-activities)
     - [Creating an Event](#creating-an-event)
       - [Creating an Event via Chat](#creating-an-event-via-chat)
@@ -614,13 +619,9 @@ To create a custom agent, perform the following steps:
 
 *Configuring a custom agent*
 
-## Agent Tools
+## Empowering Agents with Tools
 
-Tools are functions that your agent can call to perform specific tasks.
-Tools in Orpius are not tied to a single agent.
-They live in a shared pool that any agent can access if it has permission.
-Tools can be combined, triggered by events, and reused across different agents.
-Agents can autonomously select and combine the tools they need to complete a task.
+Tools are functions that your agent can call to perform specific tasks. Tools in Orpius are not tied to a single agent. They live in a shared pool that any agent can access if it has permission. Tools can be combined, triggered by events, and reused across different agents. Agents can autonomously select and combine the tools they need to complete a task.
 
 Tools can be either built-in or custom.
 
@@ -706,6 +707,7 @@ Orpius includes the following set of built-in tools:
 * **EventRegistry** – Registers an event name that can be used by a remote API to trigger a task. The identifier can then be used with a web hook in the system.
 * **Memory** – Allows an agent to add a record of an event or experience to the agents memory store, enabling it to track changes across multiple tasks.
 * **EventTrigger** - Triggers an event that was previously registered.
+* **OperationRelay** - Allows an agent to call an Operation directly; enabling agent-to-agent communication, and facilitates the testing of Operations via the Orpius Console.
 
 The following **example** shows how a simple instruction can lead 
 the agent to **autonomously** combine **multiple tools** to complete the task.
@@ -903,6 +905,88 @@ often run on `localhost`, we recommend creating a secure tunnel.
 [Learn how to create a secure channel](CreatingAChannel/index.md)
 
 > For language-specific setup and APIs, visit the [Development Guides](../DevelopmentGuides/index.md).
+
+### Calling Operations from Chats, Events, Schedules, and other Operations
+
+The **OperationRelay** is a built-in tool that allows an *Agent* to call an **Operation**.
+
+It can be used when an Agent is invoked as part of:
+
+* a **scheduled item**
+* an **event activity**
+* another **operation**
+* an interactive **chat**
+
+Each of these is considered an **origin**. The OperationRelay decides what information is required based on the relationship between the origin and the target Operation.
+
+#### Same-Space versus Cross-Space / Cross-System Calls
+
+When calling an Operation, OperationRelay behaves as follows:
+
+* If the Operation being called is located in the **same Space** as the origin
+  (for example, a schedule, event, operation, or chat in that Space),
+  then **only the Operation's External ID is required**.
+
+* If the Operation being called is located **outside the Space of the origin**
+  (for example, the origin is in one Space and the Operation lives in another Space
+  or on a different Orpius server), then the following must be provided:
+
+  * the **URL** or server on which the Operation resides, and
+  * the **AccessKey** of the Operation.
+
+> **Tip:** It is best practice to provide the **AccessKey** to the agent as a **Secret**.  
+
+This allows you to control exactly which Operations can be called from which contexts, and under which credentials.
+
+#### What OperationRelay Makes Possible
+
+The ability to call an Operation directly from within Orpius opens up several important capabilities:
+
+* **Agents can call other Agents**
+  An agent associated with one Operation, Event, or Scheduled Item; can trigger another Operation that is handled by a different agent.
+
+* **Agents can communicate across servers and organisations**
+  Agents can communicate with other agents on a different Orpius server, potentially across company or organisational boundaries, enabling **federated reasoning** while each side keeps its own data local and private.
+
+* **Easier testing of Operations**
+  Because Operations can be called directly via OperationRelay, you can use the Orpius Console to trigger and inspect your Operations more easily and confirm that they behave correctly.
+
+* **Stronger least-privilege access**
+  You decide which target Operations may be called and which credentials are used.
+  OperationRelay does not grant any implicit access; cross-space or cross-system calls always require explicit URLs and AccessKeys.
+
+#### Conversation Continuity
+
+Just like when chatting with Orpius, or communicating with an AI user via an Operation, calls made through OperationRelay participate in the same conversation model.
+
+This means:
+
+* an origin (such as a chat, event, schedule, or operation) can call another Operation via OperationRelay
+* the resulting interaction can **resume and continue a conversation** using the ConversationId
+* context can be maintained over **multiple interactions**, even when work is delegated across Spaces or servers
+
+#### Conceptual Flow
+
+```mermaid
+sequenceDiagram
+    participant Origin as Origin<br/>(Chat/Event/Schedule/Operation)
+    participant OSrc as Orpius Server (Origin Space)
+    participant OR as OperationRelay
+    participant ODest as Orpius Server (Target Space/System)
+    participant Op as Target Operation
+
+    Origin->>OSrc: Request to call Operation (via OperationRelay)
+    OSrc->>OR: Invoke OperationRelay with<br/>ExternalId [+ URL + AccessKey if remote]
+    OR->>ODest: Call target Operation<br/>(URL, ExternalId, AccessKey, context)
+    ODest->>Op: Execute Operation
+    Op-->>ODest: Result
+    ODest-->>OR: Normalised response
+    OR-->>OSrc: Return tool result
+    OSrc-->>Origin: Continue conversation with updated context
+```
+
+From the user's perspective, this feels like a single, seamless operation;
+behind the scenes, OperationRelay is handling routing, credentials, and context for you.
 
 ## Using Events to Trigger Activities
 
