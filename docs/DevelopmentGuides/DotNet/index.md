@@ -730,9 +730,23 @@ server. It dutifully does so, and returns the information to you.
 
 *The Sarah AI agent using the local FlightStatusChecker tool*
 
-In the next section we take a closer look at how Orpius accomplishes this,
-and you'll see how, with next to no effort, you can create your own
-engaging AI experiences that are enriched by your custom tools.
+In the following sections we take a closer look at how Orpius handles this
+behind the scenes, and how you can enrich your AI experiences using both the
+built-in capabilities and your own custom tools.
+
+### Calling Operations from within Orpius (OperationRelay)
+
+In addition to being called by your application, an Operation may also be called
+from within Orpius using the built-in **OperationRelay** tool. This allows
+scheduled items, events, other operations, or interactive chats to invoke an
+Operation directly as part of a larger workflow. 
+
+When the target Operation is located in the same Space as the origin, only its
+External ID is required. If it resides in another Space or on another Orpius
+server, the caller must supply both the server URL and the Operation's AccessKey.
+
+OperationRelay is particularly useful for orchestrating multi-step workflows or
+for testing Operations directly through the Orpius Console.
 
 ### Understanding Custom Tools
 
