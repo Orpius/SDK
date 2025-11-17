@@ -94,7 +94,7 @@
 
 ## Introducing Orpius
 
-Welcome to **Orpius** — the secure AI platform that gives you everything 
+Welcome to **Orpius**, the secure AI platform that gives you everything 
 you need to integrate, build, and use generative AI in your systems
 without the complexity of building and managing the underlying technology.
 
@@ -107,7 +107,7 @@ and data protection.
 ### For Developers
 
 Orpius provides a complete, **secure AI infrastructure** for adding 
-intelligence to your applications — without engineering or maintaining 
+intelligence to your applications, without engineering or maintaining 
 the infrastructure yourself.
 
 Use Orpius as a:
@@ -122,12 +122,12 @@ Use Orpius as a:
 
 ### For Productivity and Operations Users
 
-Orpius isn't just for developers — it's also a powerful productivity platform.
+Orpius isn't just for developers, it's also a powerful productivity platform.
 
 All configuration and management are handled through the **Orpius Console**,
 a desktop client that runs on the same infrastructure as your applications.
 The Console provides an interactive, chat-based interface that understands 
-the system itself — allowing you to set up and manage AI agents, models,
+the system itself, allowing you to set up and manage AI agents, models,
 schedules, events, and even your team without writing code.
 
 ### What Orpius Provides
@@ -189,7 +189,7 @@ Each customer runs within a single-tenant environment, ensuring full isolation o
 storage, and secrets. The Orpius Console (desktop application) connects securely
 to the Orpius Server, which manages authentication, scheduling, event handling,
 and access to encrypted storage.
-All sensitive operations—such as code execution, tool calls, and secret retrieval—occur
+All sensitive operations such as code execution, tool calls, and secret retrieval, occur
 within this private environment.
 Where a model provider is used (for example, OpenAI, Google Gemini, Azure OpenAI, on-prem),
 Orpius connects through secure TLS channels while enforcing your chosen
@@ -220,7 +220,7 @@ flowchart LR
     Server --> Providers
 ```
 
-*Orpius groups everything you need—security, storage, tools, workflow, and optional LLM connectivity—inside a single-tenant boundary. The Console configures; the Server brokers; Core Services execute.*
+*Orpius groups everything you need; security, storage, tools, workflow, and optional LLM connectivity, inside a single-tenant boundary. The Console configures; the Server brokers; Core Services execute.*
 
 > **Note:** A multitenant environment may be provided for evaluation 
 and proof-of-concept testing.
@@ -260,7 +260,7 @@ are created and retained in our Swiss region by default.
 ### Key Management
 
 * **Per-tenant keys.** Every tenant has distinct KEKs; DEKs are generated per dataset/resource. Keys are never shared between tenants.
-* **Hardware or cloud KMS.** Keys are stored in a secure keystore ([HSM/KMS, e.g. Azure Key Vault, AWS KMS]—configure per deployment).
+* **Hardware or cloud KMS.** Keys are stored in a secure keystore.
 * **Rotation and revocation.** KEKs can be rotated on a schedule or on demand. Access to retired keys is revoked immediately.
 
 ### Secrets and Sensitive Values
@@ -672,7 +672,7 @@ Tools are functions that your agent can call to perform specific tasks. Tools in
 Tools can be either built-in or custom.
 
 The diagram below illustrates how Agent Tools operate within Orpius.
-All built-in tools—such as the Scheduler, Notifier, WebPageRetriever, and CodeExecution—are system-wide features that are configured at the organisation level.
+All built-in tools such as the Scheduler, Notifier, WebPageRetriever, and CodeExecution, are system-wide features that are configured at the organisation level.
 *Organization Administrators* can enable or disable specific built-in tools.
 When you create a **Operation**, you can selectively grant access to any of these built-in tools for that **Operation**.
 Your custom agent will then be given access to the built-in tool during the *Operation*.
@@ -703,7 +703,7 @@ flowchart TB
 *Built-in Tool Use*
 
 **Custom tools** are provided by **customer-hosted or third-party servers** that register with Orpius as **tool providers**.
-These tools are **ephemeral**—they are not stored or managed within a space—but can be **made available to built-in or custom agents** when they are online and registered.
+These tools are **ephemeral**; they are not stored or managed within a space, but can be **made available to built-in or custom agents** when they are online and registered.
 When your application calls an **Operation endpoint** in Orpius, it must **explicitly specify which custom tools are permitted** for that call.
 This ensures that only the declared tools can be invoked during the request, providing fine-grained control, isolation, and clear auditability for every interaction.
 For more information on registering tool providers and specifying tools in operation calls, see the [Orpius SDK Developer Guide](../DevelopmentGuides/index.md).
@@ -804,7 +804,7 @@ For example, you can create tools that:
 Each custom tool is registered in the system with a unique name 
 and made available to AI Agents under your control. 
 This allows agents to call your organization's existing code, libraries, 
-or services securely—without exposing them externally.
+or services securely, without exposing them externally.
 
 #### Custom Tool Integration Steps
 
@@ -1041,7 +1041,7 @@ behind the scenes, OperationRelay is handling routing, credentials, and context 
 ## Using Events to Trigger Activities
 
 Events provide a secure and flexible way to connect your systems with Orpius.
-An **event** represents something that has occurred — either **externally** 
+An **event** represents something that has occurred, either **externally** 
 (for example, from your application or a monitoring system) or **internally** (from an agent or activity inside Orpius).
 When triggered, an event causes one or more **activities** to run automatically within its space.
 
@@ -1100,8 +1100,8 @@ To create an event manually, follow these steps:
 
 An event in Orpius can be triggered in two distinct ways:
 
-1. **Externally** — by calling its unique **HTTP endpoint** from another system or application.
-2. **Internally** — by **name**, using the **EventTrigger tool** from within any activity,
+1. **Externally:** by calling its unique **HTTP endpoint** from another system or application.
+2. **Internally:** by **name**, using the **EventTrigger tool** from within any activity,
    schedule, or operation in the same space.
 
 ```mermaid
@@ -1125,7 +1125,7 @@ flowchart TB
 
 This dual triggering mechanism allows powerful, composable workflows.
 For example, an agent performing an analysis task might detect an anomaly 
-and then use the **EventTrigger tool** to raise an internal event — causing 
+and then use the **EventTrigger tool** to raise an internal event, causing 
 another agent to send alerts or collect data.
 
 You can also instruct an agent to trigger **external events** by using 
@@ -1215,8 +1215,8 @@ To see more information on the context property see
 **Schedules** allow you to define **when** an activity should occur.
 Once created, Orpius automatically manages the execution lifecycle:
 the **Scheduler** queues the task, and when the scheduled time arrives, 
-**Orpius selects the most suitable agent** — based on 
-its **profile, availability, and assigned permissions** — to carry out the work.
+**Orpius selects the most suitable agent**, based on 
+its **profile, availability, and assigned permissions**, to carry out the work.
 After execution, an internal **audit agent** independently verifies 
 that the task met its intended objective.
 
@@ -1255,7 +1255,7 @@ You can create a schedule directly in chat.
 
 ## Understanding the Workflow and Activity Lifecycle
 
-Every activity in Orpius—whether triggered by an **event** or a **schedule**, 
+Every activity in Orpius, whether triggered by an **event** or a **schedule**, 
 is managed by a dynamic **workflow orchestration system**.
 This system determines *what work must be done*, *who should do it*, 
 and *how the result is verified*.
@@ -1300,7 +1300,7 @@ During execution, a **Supervisor** process tracks progress, timeouts,
 and runtime limits.
 If an agent encounters an error, exceeds policy limits, or becomes unresponsive, 
 the Supervisor terminates the task and records the state for later analysis.
-All results—successful or not—are logged with the initiating context, 
+All results, successful or not, are logged with the initiating context, 
 timestamps, and any generated artefacts.
 
 ### Automatic Verification
@@ -1315,8 +1315,8 @@ in the system's immutable audit log.
 
 To ensure that every automated activity in Orpius performs as intended, 
 the platform includes an internal audit mechanism.
-After an agent completes a task—whether scheduled, triggered by an event, 
-or invoked through an operation—an internal audit step runs automatically 
+After an agent completes a task, whether scheduled, triggered by an event, 
+or invoked through an operation, an internal audit step runs automatically 
 to verify the outcome.
 
 ```mermaid
@@ -1420,7 +1420,7 @@ Agents with access to the Notifier tool gain this team awareness;
 allowing them to notify other team members during an activity.
 
 This same awareness also enables **Orpius to make informed decisions**
-about **who is best placed to action time-critical activities** — such as assigning
+about **who is best placed to action time-critical activities**, such as assigning
 urgent requests or service tasks to the most appropriate, available team member in a services-based environment.
 
 ```mermaid
