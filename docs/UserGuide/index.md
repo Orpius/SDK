@@ -94,19 +94,19 @@
 
 ## Introducing Orpius
 
-Welcome to **Orpius**, the secure AI platform that gives you everything 
+Welcome to Orpius, the secure AI platform that gives you everything 
 you need to integrate, build, and use generative AI in your systems
 without the complexity of building and managing the underlying technology.
 
 Security and privacy are built into Orpius from the ground up.
-Data is secured both **at rest and in transit**, secrets are managed safely 
+Data is secured both at rest and in transit, secrets are managed safely 
 through dedicated tools that never expose them to models, and all server 
 and internal components follow industry best practices for infrastructure 
 and data protection.
 
 ### For Developers
 
-Orpius provides a complete, **secure AI infrastructure** for adding 
+Orpius provides a complete, secure AI infrastructure for adding 
 intelligence to your applications, without engineering or maintaining 
 the infrastructure yourself.
 
@@ -124,7 +124,7 @@ Use Orpius as a:
 
 Orpius isn't just for developers, it's also a powerful productivity platform.
 
-All configuration and management are handled through the **Orpius Console**,
+All configuration and management are handled through the *Orpius Console*,
 a desktop client that runs on the same infrastructure as your applications.
 The Console provides an interactive, chat-based interface that understands 
 the system itself, allowing you to set up and manage AI agents, models,
@@ -231,13 +231,15 @@ Orpius is built with a defence-in-depth approach covering tenancy isolation, enc
 
 ### Default Hosting Location (managed service)
 
-Unless otherwise agreed, each managed Orpius tenant is deployed in **Switzerland**. 
+Unless otherwise agreed, each managed Orpius tenant is deployed in Switzerland. 
 Tenant compute, encrypted storage (ZFS), snapshots and off-box backups 
 are created and retained in our Swiss region by default.
 
-**Model providers.** You choose your model endpoints (e.g., Azure OpenAI, OpenAI, Gemini, on-prem).
+* **Model providers**
+  You choose your model endpoints (e.g., Azure OpenAI, OpenAI, Gemini, on-prem).
 
-**Alternatives.** On-premises and other regional deployments are available on request.
+* **Location Alternatives**
+  On-premises and other regional deployments are available on request.
 
 ### Tenancy and Isolation
 
@@ -265,15 +267,14 @@ are created and retained in our Swiss region by default.
 
 ### Secrets and Sensitive Values
 
-* **Secret references, not values.** When an agent speaks to a model, Orpius substitutes **secret references** (e.g. `<%=Key:WeatherKey%>`) in prompts. The real values are only resolved at tool-execution time inside Orpius, never in the model prompt.
+* **Secret references, not values.** When an agent speaks to a model, Orpius substitutes *secret references* (e.g. `<%=Key:WeatherKey%>`) in prompts. The real values are only resolved at tool-execution time inside Orpius, never in the model prompt.
 * **Scoped retrieval.** Secrets are decrypted only when a permitted tool call requires them, and only for the duration of that call.
 * **Auditability.** All secret access is logged with timestamp, requesting agent/tool, and outcome (without logging the secret value).
 
 ### Data Sent to Model Providers
 
 * **Minimised prompt payloads.** Orpius strips secret values and any fields explicitly marked sensitive before sending prompts to model providers.
-* **Provider controls.** You choose the model provider (e.g. OpenAI, Azure OpenAI, on-prem). Where supported, Orpius enforces provider settings to **disable training on your data** and uses private endpoints when available.
-* **Regional routing.** Requests can be pinned to a region to help meet data-residency expectations ([set in System Settings → Inferencing]).
+* **Provider controls.** You choose the model provider (e.g. OpenAI, Azure OpenAI, on-prem).
 
 ### Access Control and Identity
 
@@ -304,7 +305,7 @@ are created and retained in our Swiss region by default.
 ### Data Retention and Deletion
 
 * **System-wide retention controls.** **System Settings** include configurable data-retention periods that apply to spaces, files, logs, caches, and other artefacts.
-* **LLM interaction retention.** Messages sent to and from model providers are retained **for 30 days by default** and **only** to let users resume conversations. They are **not** used for model training. You can shorten or extend this period (including retention-off) in **System Settings**.
+* **LLM interaction retention.** Messages sent to and from model providers are retained for 30 days by default and only to let users resume conversations. They are **not** used for model training. You can shorten or extend this period (including retention-off) in **System Settings**.
 * **You control retention.** Per-space policies can purge files, chat transcripts, tool outputs, and model caches after a defined period.
 * **Right to delete.** When you delete a space or organisation, Orpius schedules a secure erase of the tenant datasets and removes all wrapped keys after the retention window closes.
 * **Search indices and caches.** Derived artefacts (indexes, embeddings, caches) follow the same retention and deletion policies as the source data.
@@ -577,8 +578,8 @@ flowchart LR
 
 When Orpius talks to a model, it follows a structured loop that lets the model both reply and call tools:
 
-1. A **Prompt Originator** (for example, a user chat, an agent running a task, an event, a schedule, or an Operation) sends a text prompt to Orpius.
-2. Orpius calls the configured **LLM**, supplying the prompt, conversation context, and the set of tools the model is allowed to use.
+1. A *Prompt Originator* (for example, a user chat, an agent running a task, an event, a schedule, or an Operation) sends a text prompt to Orpius.
+2. Orpius calls the configured LLM, supplying the prompt, conversation context, and the set of tools the model is allowed to use.
 3. The LLM returns a JSON response that can contain:
    * **0 or 1 messages** for the Prompt Originator, and  
    * **0 or more tool call requests** (API/tool invocations).
@@ -702,9 +703,9 @@ flowchart TB
 
 *Built-in Tool Use*
 
-**Custom tools** are provided by **customer-hosted or third-party servers** that register with Orpius as **tool providers**.
-These tools are **ephemeral**; they are not stored or managed within a space, but can be **made available to built-in or custom agents** when they are online and registered.
-When your application calls an **Operation endpoint** in Orpius, it must **explicitly specify which custom tools are permitted** for that call.
+**Custom tools** are provided by customer-hosted or third-party servers that register with Orpius as tool providers.
+These tools are ephemeral; they are not stored or managed within a space, but can be made available to built-in or custom agents when they are online and registered.
+When your application calls an Operation endpoint in Orpius, it must explicitly specify which custom tools are permitted for that call.
 This ensures that only the declared tools can be invoked during the request, providing fine-grained control, isolation, and clear auditability for every interaction.
 For more information on registering tool providers and specifying tools in operation calls, see the [Orpius SDK Developer Guide](../DevelopmentGuides/index.md).
 
@@ -755,8 +756,8 @@ Orpius includes the following set of built-in tools:
 * **EventTrigger** - Triggers an event that was previously registered.
 * **OperationRelay** - Allows an agent to call an Operation directly; enabling agent-to-agent communication, and facilitates the testing of Operations via the Orpius Console.
 
-The following **example** shows how a simple instruction can lead 
-the agent to **autonomously** combine **multiple tools** to complete the task.
+The following example shows how a simple instruction can lead 
+the agent to autonomously combine multiple tools to complete the task.
 
 **Prompt:**
 
@@ -787,7 +788,7 @@ located within your organization's network or on another external system.
 Custom tools extend Orpius with domain-specific capabilities 
 that your agents can use during inferencing.
 
-**Custom tools** can expose almost any functionality available within your environment. 
+Custom tools can expose almost any functionality available within your environment. 
 
 For example, you can create tools that:
 
@@ -808,10 +809,14 @@ or services securely, without exposing them externally.
 
 #### Custom Tool Integration Steps
 
-1. **Register a custom tool** – Open the **Agent Tools** view from the sidebar and select **Custom Tools** .
-2. **Integrate with your application** – Copy the **External ID** and **Access Key**, then paste them into **your application**.
-3. **Expose functionality to Orpius** – Decorate your code with the [Tool] and [ToolMethod] attributes.
-4. **Execute** – The Orpius SDK automatically receives and dispatches tool requests at runtime.
+1. **Register a custom tool:**
+   Open the **Agent Tools** view from the sidebar and select **Custom Tools**.
+2. **Integrate with your application:**
+   Copy the **External ID** and **Access Key**, then paste them into **your application**.
+3. **Expose functionality to Orpius:**
+   Decorate your code with the `[Tool]` and `[ToolMethod]` attributes.
+4. **Execute:**
+   The Orpius SDK automatically receives and dispatches tool requests at runtime.
 
 For a deep dive into custom tools, see the [SDK documentation](../DevelopmentGuides/index.md) for more details on custom tools. 
 Example implementations are included in the downloadable SDK.
@@ -822,17 +827,15 @@ Secrets are used to securely store sensitive information such as API keys,
 tokens, or passwords. These secrets can then be referenced in chat, code,
 or tool calls without exposing their actual values to language model providers.
 
-When interacting with an LLM provider, the system sends the **secret reference**
+When interacting with an LLM provider, the system sends the secret reference
 (e.g., **<%=Key:SecretName%>**) rather than the actual value.
 The value itself is only resolved at runtime by the system when needed
 for a tool call.
 
-> **Note:** If a secret value is returned from an API or other external service
-as part of the agent's output, it may become visible to the LLM provider.
+> **Note:** If a secret value is returned from an API or other external service as part of the agent's output, it may become visible to the LLM provider.
 Avoid exposing secret values in responses or messages wherever possible.
 
-This mechanism helps ensure that **sensitive data** is **not hardcoded**
-and remains protected throughout normal operation.
+This mechanism helps ensure that sensitive data is not hardcoded and remains protected throughout normal operation.
 
 ```mermaid
 sequenceDiagram
@@ -865,7 +868,7 @@ To create a new **Secret**:
 
 ### Using a Secret
 
-Suppose you have an API key stored as a **Secret** named **WeatherKey**. 
+Suppose you have an API key stored as a **Secret** named *WeatherKey*. 
 In your instructions to an agent, you would reference it 
 like this: **<%=Key:WeatherKey%>**.
 
@@ -900,14 +903,14 @@ To create a new Operation:
 The **Agent Tools** section lists the built-in tools available to the selected Agent.
 You can enable or disable individual tools depending on the purpose of the Operation.
 
-Some built-in tools, such as **Code Execution** or **Notifier**, 
+Some built-in tools, such as *Code Execution* or *Notifier*, 
 may expose capabilities that are not suitable for customer-facing Operations.
 For example, the Code Execution tool can write to isolated storage, 
 and the Notifier tool provides awareness of team members.
 For security reasons, all tools are disabled by default.
 
 > **Note:** If you plan to allow your agent to trigger events, 
-  enable the **EventTrigger** tool.
+  enable the *EventTrigger* tool.
 
 If the Operation is not externally facing, you may enable additional tools as required.
 Alternatively, you can instruct an agent to raise an **Event** 
@@ -969,11 +972,11 @@ Each of these is considered an **origin**. The OperationRelay decides what infor
 
 When calling an Operation, OperationRelay behaves as follows:
 
-* If the Operation being called is located in the **same Space** as the origin
+* If the Operation being called is located in the same Space as the origin
   (for example, a schedule, event, operation, or chat in that Space),
-  then **only the Operation's External ID is required**.
+  then only the Operation's External ID is required.
 
-* If the Operation being called is located **outside the Space of the origin**
+* If the Operation being called is located outside the Space of the origin
   (for example, the origin is in one Space and the Operation lives in another Space
   or on a different Orpius server), then the following must be provided:
 
@@ -992,7 +995,7 @@ The ability to call an Operation directly from within Orpius opens up several im
   An agent associated with one Operation, Event, or Scheduled Item; can trigger another Operation that is handled by a different agent.
 
 * **Agents can communicate across servers and organisations**
-  Agents can communicate with other agents on a different Orpius server, potentially across company or organisational boundaries, enabling **federated reasoning** while each side keeps its own data local and private.
+  Agents can communicate with other agents on a different Orpius server, potentially across company or organisational boundaries, enabling federated reasoning while each side keeps its own data local and private.
 
 * **Easier testing of Operations**
   Because Operations can be called directly via OperationRelay, you can use the Orpius Console to trigger and inspect your Operations more easily and confirm that they behave correctly.
@@ -1008,8 +1011,8 @@ Just like when chatting with Orpius, or communicating with an AI user via an Ope
 This means:
 
 * an origin (such as a chat, event, schedule, or operation) can call another Operation via OperationRelay
-* the resulting interaction can **resume and continue a conversation** using the ConversationId
-* context can be maintained over **multiple interactions**, even when work is delegated across Spaces or servers
+* the resulting interaction can resume and continue a conversation using the ConversationId
+* context can be maintained over multiple interactions, even when work is delegated across Spaces or servers
 
 #### Understanding OperationRelay Conceptual Flow
 
@@ -1041,9 +1044,8 @@ behind the scenes, OperationRelay is handling routing, credentials, and context 
 ## Using Events to Trigger Activities
 
 Events provide a secure and flexible way to connect your systems with Orpius.
-An **event** represents something that has occurred, either **externally** 
-(for example, from your application or a monitoring system) or **internally** (from an agent or activity inside Orpius).
-When triggered, an event causes one or more **activities** to run automatically within its space.
+An **Event** represents something that has occurred, either externally 
+(for example, from your application or a monitoring system) or internally (from an agent or activity inside Orpius). When triggered, an event causes one or more *activities* to run automatically within its space.
 
 Events can therefore be used to:
 
@@ -1100,8 +1102,8 @@ To create an event manually, follow these steps:
 
 An event in Orpius can be triggered in two distinct ways:
 
-1. **Externally:** by calling its unique **HTTP endpoint** from another system or application.
-2. **Internally:** by **name**, using the **EventTrigger tool** from within any activity,
+1. **Externally:** by calling its unique *HTTP endpoint* from another system or application.
+2. **Internally:** by *name*, using the *EventTrigger tool* from within any activity,
    schedule, or operation in the same space.
 
 ```mermaid
@@ -1125,11 +1127,11 @@ flowchart TB
 
 This dual triggering mechanism allows powerful, composable workflows.
 For example, an agent performing an analysis task might detect an anomaly 
-and then use the **EventTrigger tool** to raise an internal event, causing 
+and then use the *EventTrigger* tool to raise an internal event, causing 
 another agent to send alerts or collect data.
 
-You can also instruct an agent to trigger **external events** by using 
-the **full HTTP endpoint**, allowing cross-space, cross-organisation, or even cross-Orpius-system communication.
+You can also instruct an agent to trigger external events by using 
+the full HTTP endpoint, allowing cross-space, cross-organisation, or even cross-Orpius-system communication.
 
 Built-in agents as well as your custom agents can trigger events.
 You can instruct Orpius, in a chat, to trigger an event by name.
@@ -1178,10 +1180,10 @@ also allows you to pass additional parameters to the agent and to your tools.
 ### Events for Improving Security and Control
 
 Orpius is designed to be adaptive rather than follow rigid workflows. 
-To keep this behaviour reliable, you can set **guardrails** by defining 
-which **tools** and **constraints** an agent is allowed to use.
+To keep this behaviour reliable, you can set guardrails by defining 
+which tools and constraints an agent is allowed to use.
 
-The event system can also provide a built-in **security layer** based 
+The event system can also provide a built-in security layer based 
 on the principle of Segregation of Duties (SoD).
 Customer-facing agents can trigger events to request actions 
 from more privileged agents, without having direct access to sensitive capabilities 
@@ -1192,8 +1194,8 @@ such as scheduling, storage, or team information.
 When an event is triggered, you can pass additional parameters
 that are provided either to your tools only, or to your tools and your agent.
 
-Key value pairs are passed in the query string for both **GET** and **POST** requests.
-In addition, for **POST** requests, raw JSON can also be passed directly to the agent
+Key value pairs are passed in the query string for both *GET* and *POST* requests.
+In addition, for *POST* requests, raw JSON can also be passed directly to the agent
 in the body of the request.
 
 #### Using HTTP GET to Trigger an Event
@@ -1204,7 +1206,7 @@ in the body of the request.
 
 #### Using HTTP POST to Trigger an Event
 
-When using POST all key/value pairs (apart from the **event-id**) are supplied 
+When using POST all key/value pairs (apart from the *event-id*) are supplied 
 in the context object of your tools.
 
 To see more information on the context property see 
@@ -1212,12 +1214,12 @@ To see more information on the context property see
 
 ## Triggering Activities on a Schedule
 
-**Schedules** allow you to define **when** an activity should occur.
+**Schedules** allow you to define when an activity should occur.
 Once created, Orpius automatically manages the execution lifecycle:
 the **Scheduler** queues the task, and when the scheduled time arrives, 
-**Orpius selects the most suitable agent**, based on 
-its **profile, availability, and assigned permissions**, to carry out the work.
-After execution, an internal **audit agent** independently verifies 
+Orpius selects the most suitable agent, based on 
+its profile, availability, and assigned permissions, to carry out the work.
+After execution, an internal audit agent independently verifies 
 that the task met its intended objective.
 
 This automated orchestration ensures that work runs reliably, securely, 
@@ -1248,7 +1250,7 @@ You can create a schedule directly in chat.
 
 * Start a new **Chat** 
 * For example, you could say: *"Please schedule an item to send me a joke every 2 minutes."*
-* Orpius will create a **scheduled task**, which you can then review, edit, or delete in the **Schedule** view.
+* Orpius will create a *scheduled task*, which you can then review, edit, or delete in the **Schedule** view.
 * Open the **Schedule** view to review or modify the newly created schedule.
 
 > **Tip:** Be wary that running a task at very short intervals (such as every 2 minutes) can increase resource usage and cost. You should specify how many times the activity should repeat; otherwise, it will run indefinitely.
@@ -1256,12 +1258,12 @@ You can create a schedule directly in chat.
 ## Understanding the Workflow and Activity Lifecycle
 
 Every activity in Orpius, whether triggered by an **event** or a **schedule**, 
-is managed by a dynamic **workflow orchestration system**.
+is managed by a dynamic workflow orchestration system.
 This system determines *what work must be done*, *who should do it*, 
 and *how the result is verified*.
 
-When a new task arrives, Orpius places it into an **internal activity queue**.
-From there, the **Workflow Orchestrator** analyses the task requirements, 
+When a new task arrives, Orpius places it into an internal activity queue.
+From there, the *Workflow Orchestrator* analyses the task requirements, 
 evaluates which agents have the necessary tools and permissions, and selects 
 the most suitable agent to perform it.
 Once selected, that agent executes the activity under supervision, 
@@ -1282,15 +1284,14 @@ flowchart TB
 
 ### Activity Selection and Assignment
 
-* **Event-triggered activities** – generated by named events within a space.
-* **Scheduled activities** – queued by the Scheduler to run at defined times or intervals.
+* **Event-triggered activities** are generated by named events within a space.
+* **Scheduled activities** are queued by the Scheduler to run at defined times or intervals.
 
-The **Agent Selector** determines which agent is most appropriate to handle each activity.
+The Agent Selection process determines which agent is most appropriate to handle each activity.
 Selection is based on:
 
-* the agent's **assigned permissions** and accessible tools
-* its **availability** and current workload
-* any **role or profile constraints** defined in the space configuration
+* The agent's assigned permissions and accessible tools.
+* The agent's profile description.
 
 Once selected, the activity is handed to the agent for execution.
 
@@ -1298,10 +1299,7 @@ Once selected, the activity is handed to the agent for execution.
 
 During execution, a **Supervisor** process tracks progress, timeouts, 
 and runtime limits.
-If an agent encounters an error, exceeds policy limits, or becomes unresponsive, 
-the Supervisor terminates the task and records the state for later analysis.
-All results, successful or not, are logged with the initiating context, 
-timestamps, and any generated artefacts.
+If an agent encounters an error, exceeds policy limits, or becomes unresponsive, the Supervisor terminates the task and records the state for later analysis. All results, successful or not, are logged with the initiating context, timestamps, and any generated artefacts.
 
 ### Automatic Verification
 
@@ -1335,8 +1333,8 @@ sequenceDiagram
 
 ### How the Audit Works
 
-1. When an agent finishes an activity, Orpius records the **original instructions** (objective) and the **observed outcome**.
-2. A separate internal **audit agent** then examines these artefacts.
+1. When an agent finishes an activity, Orpius records the original instructions (objective) and the observed outcome.
+2. A separate internal **Audit Agent** then examines these artefacts.
 3. The audit agent independently evaluates whether the outcome appears to meet 
    the stated objective and records a simple verdict of **"Yes"** or **"No."**
 
@@ -1350,14 +1348,14 @@ sequenceDiagram
 
 ### Security and Privacy
 
-* The audit agent operates **entirely within your Orpius deployment** and uses the same encryption and isolation protections as other components.
+* The audit agent operates entirely within your Orpius deployment and uses the same encryption and isolation protections as other components.
 * No data from this process is shared externally or sent to language-model providers.
-* Audit results are **immutable** and form part of the tamper-evident log history used for compliance and diagnostics.
+* Audit results are immutable and form part of the tamper-evident log history used for compliance and diagnostics.
 
 ### Benefits
 
 This built-in verification mechanism ensures that AI agents in Orpius 
-remain **accountable, observable, and auditable**.
+remain accountable, observable, and auditable.
 It strengthens confidence in autonomous operations, supports internal 
 governance processes, and contributes to compliance assurance frameworks 
 such as **GDPR**, **ISO 27001**, and **SOC 2**.
@@ -1419,8 +1417,8 @@ This allows agents to coordinate activities based on expected working hours for 
 Agents with access to the Notifier tool gain this team awareness;
 allowing them to notify other team members during an activity.
 
-This same awareness also enables **Orpius to make informed decisions**
-about **who is best placed to action time-critical activities**, such as assigning
+This same awareness also enables Orpius to make informed decisions
+about who is best placed to action time-critical activities, such as assigning
 urgent requests or service tasks to the most appropriate, available team member in a services-based environment.
 
 ```mermaid
