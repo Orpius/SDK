@@ -23,7 +23,7 @@
     - [Compliance and Assurance (deployment-dependent)](#compliance-and-assurance-deployment-dependent)
     - [Security Quick Summary](#security-quick-summary)
   - [Getting Started with Orpius](#getting-started-with-orpius)
-    - [From Configuration to Execution](#from-configuration-to-execution)
+    - [From Configuration to Production](#from-configuration-to-production)
   - [Installing the Orpius Console](#installing-the-orpius-console)
   - [Setting up Orpius for the First Time](#setting-up-orpius-for-the-first-time)
     - [Setting up an Email Server (system owners only)](#setting-up-an-email-server-system-owners-only)
@@ -315,7 +315,7 @@ Before you can start working with Orpius, you will need:
 * **Access to an Email Server (System Owners only)**  
   Because Orpius runs in your own private cloud, email handling is not provided as a shared service. An email server is required during initial setup so new users can verify their email addresses (a sending-only server is sufficient). It will also be used to send notifications or messages to team members. 
 
-### From Configuration to Execution
+### From Configuration to Production
 
 1. **Configure**: Define your Models, Agents, Events, Tools, and Operations in the Orpius Console. (You can think of Operations as the integration mechanism that allows your application to communicate with your Orpius AI Agents.)
 2. **Integrate with your system** using events or with operations and tooling; using the Orpius SDK libraries, allowing you to embed your AI assistant directly into your application.
