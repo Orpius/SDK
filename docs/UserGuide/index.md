@@ -25,6 +25,7 @@
   - [Getting Started with Orpius](#getting-started-with-orpius)
     - [From Configuration to Production](#from-configuration-to-production)
   - [Installing the Orpius Console](#installing-the-orpius-console)
+    - [Trial Version](#trial-version)
   - [Setting up Orpius for the First Time](#setting-up-orpius-for-the-first-time)
     - [Setting up an Email Server (system owners only)](#setting-up-an-email-server-system-owners-only)
     - [Creating a User Account](#creating-a-user-account)
@@ -309,11 +310,14 @@ flowchart LR
 
 Before you can start working with Orpius, you will need:
 
-* **Orpius Console**: A lightweight desktop client for configuring everything from models to agents and tools.
+* **Orpius Console**: A lightweight desktop client for configuring everything from models to agents and tools. You can download a trial version of the Orpius Platform, see [Trial Version](#trial-version) section. If you would like a production instance, please [Contact Us](https://www.orpius.com/contact.html).
 * **Access to your own LLM provider**
   Orpius connects to the AI models you choose, whether hosted on-premises or in the cloud. It currently supports Google Gemini, OpenAI, Azure OpenAI, with more providers to follow. Many third-party providers also use the OpenAI Chat Completions format, making them compatible with Orpius.
 * **Access to an Email Server (System Owners only)**  
   Because Orpius runs in your own private cloud, email handling is not provided as a shared service. An email server is required during initial setup so new users can verify their email addresses (a sending-only server is sufficient). It will also be used to send notifications or messages to team members. 
+
+If you want to test drive Orpius, we provide a free trial version for evaluation.
+See the [Trial Version](#trial-version) section for details.
 
 ### From Configuration to Production
 
@@ -362,6 +366,14 @@ Follow these steps:
 3. Once installation is complete, launch the Orpius Console.
 4. Enter the **Server URL** into the field provided.
 5. Enter the **Access Key** (system owners only).
+
+### Trial Version
+If you would like to evaluate Orpius before requesting a dedicated single-tenant production instance, you can download the trial version from our website:
+<a href="https://orpius.com/contact.html">Download the Orpius Console (Trial)</a>
+
+The trial environment runs on a shared, capacity-limited multi-tenant instance.
+The trial stack may be reset or removed without notice.
+A launch link is provided on the website that opens the Console directly, bypassing the need to enter the Orpius Server URL.
 
 ## Setting up Orpius for the First Time
 
