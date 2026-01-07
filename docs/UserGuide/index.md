@@ -363,13 +363,13 @@ Follow these steps:
 
 1. Open the download link and click **Download Orpius Console**.
 2. Run the installer after the file finishes downloading.
-3. Once installation is complete, launch the Orpius Console.
+3. Once installation is complete, launch Orpius Console.
 4. Enter the **Server URL** into the field provided.
 5. Enter the **Access Key** (system owners only).
 
 ### Trial Version
 If you would like to evaluate Orpius before requesting a dedicated single-tenant production instance, you can download the trial version from our website:
-<a href="https://orpius.com/contact.html">Download the Orpius Console (Trial)</a>
+<a href="https://orpius.com/get-started.html">Download Orpius Console (Trial)</a>
 
 The trial environment runs on a shared, capacity-limited multi-tenant instance.
 The trial stack may be reset or removed without notice.

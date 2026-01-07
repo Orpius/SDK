@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../SupportingServices/SupportingServices.csproj" />
+  <Project Path="ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj" />
+</Solution>
