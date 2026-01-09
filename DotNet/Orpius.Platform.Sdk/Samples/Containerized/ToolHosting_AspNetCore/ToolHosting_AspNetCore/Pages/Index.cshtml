@@ -1,10 +1,42 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Quantum Simulator";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Quantum Simulator</h1>
 </div>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label" for="openQasmProgram">OpenQASM 3 program</label>
+        <textarea class="form-control" id="openQasmProgram" name="OpenQasmProgram" rows="14">@Model.OpenQasmProgram</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="shots">Shots</label>
+        <input class="form-control" id="shots" name="Shots" type="number" min="1" max="1000000" value="@Model.Shots" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Run</button>
+</form>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="mt-3">
+        <p style="color:red">@Model.ErrorMessage</p>
+    </div>
+}
+else if (Model.ResultCounts is not null)
+{
+    <div class="mt-3">
+        <h3>Result</h3>
+        <ul>
+            @foreach (var item in Model.ResultCounts.OrderBy(kvp => kvp.Key))
+            {
+                <li>@item.Key : @item.Value</li>
+            }
+        </ul>
+    </div>
+}

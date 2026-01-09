@@ -1,0 +1,18 @@
+services:
+  toolhosting_aspnetcore:
+    image: ${DOCKER_REGISTRY-}toolhostingaspnetcore
+    build:
+      context: .
+      dockerfile: ToolHosting_AspNetCore/Dockerfile
+
+  quantum-simulator:
+    build:
+      context: ../SupportingServices/Files/QuantumSimulator
+      dockerfile: Dockerfile
+    expose:
+      - "5000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health').read()"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
