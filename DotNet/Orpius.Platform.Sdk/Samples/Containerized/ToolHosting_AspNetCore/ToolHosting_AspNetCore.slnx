@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Sdk/">
+    <Project Path="../../../Orpius.Platform.ClientSdk.ProtobufNet.Generators/Orpius.Platform.ClientSdk.ProtobufNet.Generators.csproj" />
+    <Project Path="../../../Orpius.Platform.ClientSdk.ProtobufNet/Orpius.Platform.ClientSdk.ProtobufNet.csproj" />
+  </Folder>
   <Project Path="../SupportingServices/SupportingServices.csproj" />
   <Project Path="docker-compose.dcproj">
     <Build />
