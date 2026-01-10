@@ -9,7 +9,9 @@
 			this.httpClient = httpClient;
 		}
 
-		public async Task<Dictionary<string, int>> ExecuteAsync(string openQasm3Program, int shots, CancellationToken token)
+		public async Task<Dictionary<string, int>> ExecuteAsync(string openQasm3Program,
+																int shots,
+																CancellationToken token)
 		{
 			var response = await httpClient.PostAsJsonAsync(
 							   "/execute",
@@ -23,14 +25,16 @@
 			if (!response.IsSuccessStatusCode)
 			{
 				var errorText = await response.Content.ReadAsStringAsync(token);
-				throw new InvalidOperationException($"Quantum simulator call failed: {(int)response.StatusCode} {errorText}");
+				throw new InvalidOperationException(
+					$"Quantum simulator call failed: {(int)response.StatusCode} {errorText}");
 			}
 
 			var payload = await response.Content.ReadFromJsonAsync<ExecuteResponse>(cancellationToken: token);
 
 			if (payload?.Counts is null)
 			{
-				throw new InvalidOperationException("Quantum simulator response was empty or invalid.");
+				throw new InvalidOperationException(
+					"Quantum simulator response was empty or invalid.");
 			}
 
 			return payload.Counts;

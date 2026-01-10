@@ -14,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Orpius.Platform.ClientSdk.ProtobufNet.Generators\Orpius.Platform.ClientSdk.ProtobufNet.Generators.csproj" />
+    <ProjectReference Include="..\..\..\..\Orpius.Platform.ClientSdk.ProtobufNet.Generators\Orpius.Platform.ClientSdk.ProtobufNet.Generators.csproj" OutputItemType="Analyzer">
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Orpius.Platform.ClientSdk.ProtobufNet\Orpius.Platform.ClientSdk.ProtobufNet.csproj" />
   </ItemGroup>
 
