@@ -3,7 +3,7 @@
 	<!-- Centralized versioning -->
 	<PropertyGroup>
 		<!-- NuGet package version -->
-		<Version>1.0.7-alpha.1</Version>
+		<Version>1.0.7-beta.1</Version>
 
 		<Company Condition="'$(Company)' == ''">Orpius</Company>
 		<Authors Condition="'$(Authors)' == ''">Orpius</Authors>
