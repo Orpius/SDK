@@ -1,10 +1,15 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using ProtoBuf.Grpc.Configuration;
 
-namespace Sample_AspNetCore_ProtobufNet
+namespace Orpius.Platform.RpcServiceModel
 {
-	class BinderFromServices : ServiceBinder
+	public class BinderFromServices : ServiceBinder
 	{
 		readonly IServiceCollection services;
 
@@ -27,18 +32,6 @@ namespace Sample_AspNetCore_ProtobufNet
 			}
 
 			return base.GetMetadata(method, contractType, resolvedServiceType);
-		}
-	}
-
-	static class ServiceCollectionExtensions
-	{
-		internal static void AddAssociatedSingletons<TInterface, TImplementation>(
-			this IServiceCollection services)
-			where TInterface : class
-			where TImplementation : class, TInterface
-		{
-			services.AddSingleton<TImplementation>();
-			services.AddSingleton<TInterface>(sp => sp.GetRequiredService<TImplementation>());
 		}
 	}
 }

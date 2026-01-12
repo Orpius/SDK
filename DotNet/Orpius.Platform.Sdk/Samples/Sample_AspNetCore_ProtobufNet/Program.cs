@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 using Orpius.Platform.OperationsModel;
 using Orpius.Platform.OperationsModel.ServiceCollectionExtensions;
+using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling;
 using Orpius.Platform.Tooling.RpcToolsRegistrationService;

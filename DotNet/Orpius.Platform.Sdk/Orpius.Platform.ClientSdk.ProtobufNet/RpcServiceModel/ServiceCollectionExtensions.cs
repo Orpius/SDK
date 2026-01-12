@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Orpius.Platform.RpcServiceModel
 {
-	static class ServiceCollectionExtensions
+	public static class ServiceCollectionExtensions
 	{
-		internal static void AddAssociatedSingletons<TInterface, TImplementation>(
+		public static void AddAssociatedSingletons<TInterface, TImplementation>(
 			this IServiceCollection services)
 			where TInterface : class
 			where TImplementation : class, TInterface

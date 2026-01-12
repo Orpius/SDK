@@ -2,15 +2,14 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
+using Orpius.Platform.RpcServiceModel;
 using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling;
-using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 using Orpius.Platform.Tooling.ToolRegistration;
 
 using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Server;
 
-using ToolHosting_AspNetCore.RpcServiceModel;
 using ToolHosting_AspNetCore.ToolForOrpius;
 using ToolHosting_AspNetCore.ToolsForOrpius;
 
