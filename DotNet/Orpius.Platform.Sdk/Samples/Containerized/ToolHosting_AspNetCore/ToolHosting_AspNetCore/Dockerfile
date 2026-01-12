@@ -12,15 +12,23 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj", "ToolHosting_AspNetCore/"]
-RUN dotnet restore "./ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj"
+#COPY ["ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj", "ToolHosting_AspNetCore/"]
+COPY ["Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj", "Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore/"]
+COPY ["Orpius.Platform.ClientSdk.ProtobufNet/Orpius.Platform.ClientSdk.ProtobufNet.csproj", "Orpius.Platform.ClientSdk.ProtobufNet/"]
+COPY ["Orpius.Platform.ClientSdk.ProtobufNet.Generators/Orpius.Platform.ClientSdk.ProtobufNet.Generators.csproj", "Orpius.Platform.ClientSdk.ProtobufNet.Generators/"]
+
+RUN dotnet restore "Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj"
+#RUN dotnet restore "./ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj"
 COPY . .
-WORKDIR "/src/ToolHosting_AspNetCore"
-RUN dotnet build "./ToolHosting_AspNetCore.csproj" -c $BUILD_CONFIGURATION -o /app/build
+#WORKDIR "/src/ToolHosting_AspNetCore"
+#RUN dotnet build "./ToolHosting_AspNetCore.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore"
+RUN dotnet build "ToolHosting_AspNetCore.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+WORKDIR "/src/Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore"
 RUN dotnet publish "./ToolHosting_AspNetCore.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)

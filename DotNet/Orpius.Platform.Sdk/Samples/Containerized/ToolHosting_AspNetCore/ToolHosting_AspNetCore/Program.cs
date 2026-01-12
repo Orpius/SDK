@@ -1,9 +1,16 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+
+using Orpius.Platform.RpcServices;
 using Orpius.Platform.Tooling;
 using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 using Orpius.Platform.Tooling.ToolRegistration;
+
+using ProtoBuf.Grpc.Configuration;
+using ProtoBuf.Grpc.Server;
+
+using ToolHosting_AspNetCore.RpcServiceModel;
 using ToolHosting_AspNetCore.ToolForOrpius;
 using ToolHosting_AspNetCore.ToolsForOrpius;
 
@@ -18,6 +25,11 @@ namespace ToolHosting_AspNetCore
 			var builder = WebApplication.CreateBuilder(args);
 
 			var services = builder.Services;
+
+			services.AddGrpc();
+			services.AddCodeFirstGrpc();
+			services.AddSingleton(BinderConfiguration.Create(
+				binder: new BinderFromServices(builder.Services)));
 
 			/* Persist keys so cookies/tokens stay decryptable across restarts */
 			services.AddDataProtection()
@@ -56,14 +68,13 @@ namespace ToolHosting_AspNetCore
 			// NOTE: You can add multiple IToolRegistrationParameters instances.
 			//       All are registered.
 			FuncRegistrationParameters toolRegistrationParameters
-				= new(getLocalUrl: () => new Uri("https://alpine-remarkable-grown-possible.trycloudflare.com"),
+				= new(getLocalUrl: () => new Uri("https://host.docker.internal:7190/"),
 					getExternalId: () => Guid.Parse("ee2b90ff-a4c6-44bf-93a7-a25b7e3271b0"),
-					getApiKey: () => Guid.Parse("72e1b1f1-414b-46d9-bcb1-1a736d7e6027"))
-				{
-				};
+					getApiKey: () => Guid.Parse("72e1b1f1-414b-46d9-bcb1-1a736d7e6027"));
+
 			services.AddSingleton<IToolRegistrationParameters>(toolRegistrationParameters);
 
-			services.AddOrpiusToolRegistration(() => new Uri("https://localhost:32774"),
+			services.AddOrpiusToolRegistration(() => new Uri("https://host.docker.internal:32774"),
 						dangerousAcceptAnyCertificate: true)
 					.WithAutomaticProviderRegistration();
 
@@ -78,6 +89,14 @@ namespace ToolHosting_AspNetCore
 			// We must resolve the generated IToolsRegistryItem
 			// so that it adds itself to the IToolRegistry.
 			_ = app.Services.GetRequiredService<AllTools>();
+
+			// This allows Orpius to call your server to use tools.
+			// You may want to add authentication to this service.
+			// You can use the `IToolRegistrationParameters.Headers` property, 
+			// or the `RegisterAsProviderRequest.Headers` property directly,
+			// to provide headers that are stored securely on the Orpius server. 
+			// These are provided back to your server during an `IToolProviderService.UseTool` call.
+			app.MapGrpcService<IToolProviderService>();
 
 			if (!app.Environment.IsDevelopment())
 			{

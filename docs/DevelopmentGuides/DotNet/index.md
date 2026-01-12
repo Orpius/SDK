@@ -318,6 +318,8 @@ This allows us to then register the gRPC service, using its interface, like so:
 app.MapGrpcService<IMyMobileAppService>();
 ```
 
+> **Note:** The `MapGrpcService<T>` extension method is located in a protobuf-net library. To make it available, add a reference to `protobuf-net.Grpc.AspNetCore`.
+
 Now you've seen how to register the custom service, let's take a look at its implementation.
 
 The constructor for `MyMobileAppService` requires an instance of `IOperationsService`,

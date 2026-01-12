@@ -2,8 +2,8 @@ services:
   toolhosting_aspnetcore:
     image: ${DOCKER_REGISTRY-}toolhostingaspnetcore
     build:
-      context: .
-      dockerfile: ToolHosting_AspNetCore/Dockerfile
+      context: ../../..
+      dockerfile: Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore/Dockerfile
 
   quantum-simulator:
     build:
