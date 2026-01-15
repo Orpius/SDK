@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Orpius.Platform.Generators;
@@ -231,14 +232,14 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 					if (description is not null)
 					{
 						sb.Append($$"""
-													Description = "{{description.Replace("\"", "\\\"")}}", 
+													Description = {{ToCSharpStringLiteral(description)}},
 						
 						""");
 					}
 					if (format is not null)
 					{
 						sb.Append($$"""
-													OpenApiFormat = "{{format}}", 
+													OpenApiFormat = {{ToCSharpStringLiteral(format)}},
 						
 						""");
 					}
@@ -532,7 +533,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 				{
 					string descArg = mm.Description is null
 						? "description: null"
-						: $"description: \"{mm.Description.Replace("\"", "\\\"")}\"";
+						: $"description: {ToCSharpStringLiteral(mm.Description)}";
 
 					sb.Append($$"""
 								new ToolMethodMessage(
@@ -699,4 +700,14 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 		}
 	}
 	#endregion
+
+	static string ToCSharpStringLiteral(string value)
+	{
+		/* Normalise line endings so generated literals always use \n */
+		string normalised = value
+							.Replace("\r\n", "\n")
+							.Replace("\r",   "\n");
+
+		return SymbolDisplay.FormatLiteral(normalised, quote: true);
+	}
 }

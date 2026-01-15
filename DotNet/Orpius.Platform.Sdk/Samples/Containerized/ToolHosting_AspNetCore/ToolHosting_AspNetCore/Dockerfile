@@ -7,21 +7,18 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-#COPY ["ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj", "ToolHosting_AspNetCore/"]
+
 COPY ["Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj", "Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore/"]
 COPY ["Orpius.Platform.ClientSdk.ProtobufNet/Orpius.Platform.ClientSdk.ProtobufNet.csproj", "Orpius.Platform.ClientSdk.ProtobufNet/"]
 COPY ["Orpius.Platform.ClientSdk.ProtobufNet.Generators/Orpius.Platform.ClientSdk.ProtobufNet.Generators.csproj", "Orpius.Platform.ClientSdk.ProtobufNet.Generators/"]
 
 RUN dotnet restore "Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj"
-#RUN dotnet restore "./ToolHosting_AspNetCore/ToolHosting_AspNetCore.csproj"
 COPY . .
-#WORKDIR "/src/ToolHosting_AspNetCore"
-#RUN dotnet build "./ToolHosting_AspNetCore.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
 WORKDIR "/src/Samples/Containerized/ToolHosting_AspNetCore/ToolHosting_AspNetCore"
 RUN dotnet build "ToolHosting_AspNetCore.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

@@ -1,7 +1,9 @@
 import asyncio
 import multiprocessing as mp
+import re
 import signal
 import time
+import traceback
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
@@ -69,6 +71,75 @@ def install_signal_handlers() -> None:
 	except Exception:
 		pass
 
+QASM_LOCATION_PATTERN = re.compile(r"(?P<line>\d+)\s*,\s*(?P<col>\d+)\s*:\s*(?P<msg>.+)")
+
+def build_error_payload(ex: Exception) -> dict[str, Any]:
+	exception_type = type(ex).__name__
+
+	# str(ex) is sometimes empty, so fall back to repr(ex)
+	message = str(ex).strip()
+	if not message:
+		message = repr(ex)
+
+	location = None
+	match = QASM_LOCATION_PATTERN.match(message)
+	if match:
+		location = {
+			"line": int(match.group("line")),
+			"column": int(match.group("col")),
+		}
+		# keep only the human message part
+		message = match.group("msg").strip()
+
+	trace = "".join(traceback.format_exception(type(ex), ex, ex.__traceback__))
+
+	# avoid returning huge traces
+	max_trace_chars = 8_000
+	if len(trace) > max_trace_chars:
+		trace = trace[:max_trace_chars] + "\n... (truncated)"
+
+	return {
+		"type": exception_type,
+		"message": message,
+		"location": location,
+		"traceback": trace,
+	}
+
+def classify_http_status(error: dict[str, Any]) -> int:
+	# Map common failures to better HTTP status codes
+	message = (error.get("message") or "").lower()
+	exception_type = (error.get("type") or "").lower()
+
+	if "sigxcpu" in message or "sigterm" in message:
+		return 408
+
+	if "cpu time limit exceeded" in message or "time limit" in message or "timeout" in message:
+		return 408
+
+	if "memory" in message or "out of memory" in message or "killed" in message:
+		return 413
+
+	# Treat QASM parse/import issues as "unprocessable entity"
+	if "qasm" in exception_type or "import" in exception_type or "parse" in exception_type:
+		return 422
+
+	# Validation errors from validate_circuit are bad input
+	if exception_type in ("valueerror",):
+		return 422
+
+	return 400
+
+def get_signal_name_from_exit_code(exit_code: int | None) -> str | None:
+	# Add signal name decoding for negative exit codes on POSIX
+	if exit_code is None or exit_code >= 0:
+		return None
+
+	signal_number = -exit_code
+	try:
+		return signal.Signals(signal_number).name
+	except Exception:
+		return f"SIG{signal_number}"
+
 def run_job(qasm_text: str, shots: int, queue: mp.Queue) -> None:
 	install_signal_handlers()
 	apply_limits()
@@ -89,7 +160,7 @@ def run_job(qasm_text: str, shots: int, queue: mp.Queue) -> None:
 
 		queue.put({"ok": True, "counts": counts})
 	except Exception as ex:
-		queue.put({"ok": False, "error": str(ex)})
+		queue.put({"ok": False, "error": build_error_payload(ex)})
 
 
 @app.post("/execute")
@@ -126,9 +197,17 @@ async def execute(request: ExecuteRequest) -> Any:
 					process.join()
 		  
 				exit_code = process.exitcode
+				signal_name = get_signal_name_from_exit_code(exit_code)
+
 				raise HTTPException(
 					status_code=408,
-					detail=f"Simulation exceeded time limit ({TIMEOUT_SECONDS}s). exitCode={exit_code}"
+					detail={
+						"type": "Timeout",
+						"message": f"Simulation exceeded time limit ({TIMEOUT_SECONDS}s).",
+						"elapsedSeconds": elapsed,
+						"exitCode": exit_code,
+						"signal": signal_name,
+					}
 				)
 
 			await asyncio.sleep(0.05)
@@ -137,21 +216,28 @@ async def execute(request: ExecuteRequest) -> Any:
 
 		if queue.empty():
 			exit_code = process.exitcode
+			signal_name = get_signal_name_from_exit_code(exit_code)
+
 			raise HTTPException(
 				status_code=500,
-				detail=f"Simulator worker exited without output (exitCode={exit_code}). "
-					   f"This usually indicates a hard kill (CPU/memory limit) or native crash."
+				detail={
+					"type": "WorkerCrashed",
+					"message": "Simulator worker exited without output."
+							   "This usually indicates a hard kill "
+							   "(CPU/memory limit) or a native crash.",
+					"exitCode": exit_code,
+					"signal": signal_name,
+					"elapsedSeconds": time.monotonic() - start_time,
+				}
 			)
 
 		payload = queue.get()
 
 		if not payload.get("ok", False):
-			error_text = payload.get("error", "Unknown error.")
-		
-			if "SIGXCPU" in error_text or "SIGTERM" in error_text:
-				raise HTTPException(status_code=408, detail=error_text)
-		
-			raise HTTPException(status_code=400, detail=error_text)
+			error = payload.get("error") or {"type": "UnknownError", "message": "Unknown error."}
+
+			status_code = classify_http_status(error)
+			raise HTTPException(status_code=status_code, detail=error)
 
 		return {
 			"counts": payload["counts"],

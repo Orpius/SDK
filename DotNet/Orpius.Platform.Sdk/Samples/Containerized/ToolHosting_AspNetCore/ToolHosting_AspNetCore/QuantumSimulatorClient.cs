@@ -1,6 +1,4 @@
-﻿using Orpius.Platform.Tooling;
-
-namespace ToolHosting_AspNetCore
+﻿namespace ToolHosting_AspNetCore
 {
 	public sealed class QuantumSimulatorClient
 	{
@@ -44,29 +42,13 @@ namespace ToolHosting_AspNetCore
 
 		sealed class ExecuteRequest
 		{
-			[ToolProperty(
-				Required = true,
-				Description
-					= """
-					  The OpenQASM 3 program text to execute. For example:
-					  OPENQASM 3;
-					  include "stdgates.inc";
-
-					  qubit q;
-					  bit c;
-
-					  h q;
-					  measure q -> c;
-					  """)]
 			public required string Qasm { get; init; }
 
-			[ToolProperty]
 			public int Shots { get; init; } = 1024;
 		}
 
 		sealed class ExecuteResponse
 		{
-			[ToolProperty]
 			public Dictionary<string, int>? Counts { get; init; }
 		}
 	}
