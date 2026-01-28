@@ -127,6 +127,7 @@ It includes:
 * **Integration with external systems** through API-driven events 
   or customer-facing AI agents.
 * **Isolated code execution environment** – agents can write compilable code and run it securely in a sandboxed environment.
+* **Orchestration** – manage complex workflows and interactions between agents.
 * **Events** – agents are triggered by external systems or internal processes.
 * **Notifications, messaging, and team awareness** – agents communicate via notifications and email, and are time-zone aware, enabling collaboration across teams.
 * **Scheduling** – a flexible system for performing activities at predefined times or intervals.
@@ -141,6 +142,9 @@ It includes:
 * **Secrets management** – handle sensitive information securely without exposing it to language-model providers.
 * **Orchestration** – manage complex workflows and interactions between agents.
 * **Tool integration** – use built-in tools that provide core capabilities out of the box, with powerful support for custom tooling.
+* **Web Publishing** – expose generated content automatically. Files written to the `web` directory in isolated storage are served online, making it trivial for agents to publish and update content.
+* **Operation Relay** – allow one agent to trigger operations on another agent. This provides a simple, explicit mechanism for inter-agent coordination and delegation.
+
 
 ### Built-in Productivity Features
 
@@ -367,13 +371,13 @@ Follow these steps:
 4. Enter the **Server URL** into the field provided.
 5. Enter the **Access Key** (system owners only).
 
-### Trial Version
+### Free to Try Version
 If you would like to evaluate Orpius before requesting a dedicated single-tenant production instance, you can download the trial version from our website:
-<a href="https://orpius.com/contact.html">Download the Orpius Console (Trial)</a>
+<a href="https://orpius.com/get-started.html">Download the Orpius Console (Trial)</a>
 
 The trial environment runs on a shared, capacity-limited multi-tenant instance.
 The trial stack may be reset or removed without notice.
-A launch link is provided on the website that opens the Console directly, bypassing the need to enter the Orpius Server URL.
+
 
 ## Setting up Orpius for the First Time
 
@@ -484,7 +488,7 @@ To switch to another **Space**, sign out of your current session. When you sign 
 
 ### Working with Large Language Models (LLM)
 
-The system is designed to work with any LLM, whether hosted on-premises or in the cloud. Currently, OpenAI, Azure OpenAI, and Google Gemini are supported, with more providers to follow. Many providers already support the OpenAI Chat Completions format, making them compatible with Orpius.
+The system is designed to work with any LLM, whether hosted on-premises or in the cloud. Currently, OpenAI, Azure OpenAI, Google Gemini, DeepSeek, and Mistral are supported today, with more to follow. Any provider that implements the OpenAI Chat Completions format can be used with Orpius.
 
 You can configure as many models as you need, from different providers. For example, some agents might use GPT-4o for complex tasks, while others can run on a lower-cost model such as OpenAI gpt-4o-mini.
 
