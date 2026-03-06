@@ -1,4 +1,4 @@
-﻿# Orpius User Guide
+﻿# Orpius Technical User Guide
 
 <!--TOC-->
   - [Introducing Orpius](#introducing-orpius)
