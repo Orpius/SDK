@@ -1,4 +1,5 @@
 ﻿// ReSharper disable RedundantUsingDirective
+using System;
 using System.Collections.Generic;
 
 using ProtoBuf;
@@ -47,6 +48,13 @@ namespace Orpius.Platform.Tooling.RpcToolProviderService
 		public required string ParameterAsJson { get; set; }
 #else
 		public string ParameterAsJson { get; set; }
+#endif
+
+		[ProtoMember(5, IsRequired = true)]
+#if NET7_0_OR_GREATER
+		public required Guid ApiCallPublicId { get; set; }
+#else
+		public Guid ApiCallPublicId { get; set; }
 #endif
 	}
 
