@@ -1,6 +1,7 @@
 ﻿# Orpius SDK Developer Guide for .NET
 
-<!--TOC-->
+<!-- TOC-->
+  - [Start building with Orpius](#start-building-with-orpius)
   - [Getting Started with the Orpius SDK](#getting-started-with-the-orpius-sdk)
   - [Overview of the Orpius SDK Libraries](#overview-of-the-orpius-sdk-libraries)
   - [Setting Up Your Middle-Tier Application](#setting-up-your-middle-tier-application)
@@ -14,7 +15,17 @@
     - [Initializing the Tooling Subsystem](#initializing-the-tooling-subsystem)
     - [Sharing Data between Tools and Operations](#sharing-data-between-tools-and-operations)
   - [Wrapping Up](#wrapping-up)
-<!--/TOC-->
+<!-- TOC -->
+
+## Start building with Orpius
+
+This guide shows you how to integrate Orpius into your application.
+
+Orpius gives your application the secure AI infrastructure to run AI agents safely across your systems, users, data, and external services. It manages data security, communication pipelines, tool calling, and long-running workflow execution, giving you a ready-to-use environment for building AI-powered software without having to build and maintain that environment yourself.
+
+The Orpius SDK is not required for every integration, but it gives you an easier starting point. It includes client types, helper libraries, code generation support, and sample applications that show how your own application can connect securely to Orpius.
+
+In this guide, you will learn how to run the sample, connect your application to Orpius, call an AI agent from your own API, stream responses back to a client, and expose selected server-side functions as tools the agent can use.
 
 ## Getting Started with the Orpius SDK
 
