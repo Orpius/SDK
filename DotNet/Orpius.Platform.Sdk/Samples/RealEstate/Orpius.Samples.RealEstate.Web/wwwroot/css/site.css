@@ -1,0 +1,88 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.real-estate-form {
+	max-width: 900px;
+	margin-bottom: 2rem;
+}
+
+.dictation-input {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 0.75rem;
+	align-items: start;
+}
+
+.dictation-button {
+	min-width: 3rem;
+	min-height: 3rem;
+	border-radius: 999px;
+	border: 1px solid #bbb;
+	background: #fff;
+	font-size: 1.25rem;
+}
+
+.dictation-button.recording {
+	font-weight: 700;
+}
+
+.operation-messages {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	max-width: 900px;
+}
+
+.operation-message {
+	padding: 0.75rem 1rem;
+	border-radius: 0.75rem;
+	max-width: 760px;
+	white-space: pre-wrap;
+}
+
+.user-message {
+	align-self: flex-end;
+	background: #0d6efd;
+	color: white;
+}
+
+.assistant-message {
+	align-self: flex-start;
+	background: #2f2f2f;
+	color: white;
+}
+
+.system-message {
+	align-self: flex-start;
+	background: #d6d6d6;
+	color: #111;
+	font-size: 0.9rem;
+}
+
+.message-meta {
+	display: flex;
+	gap: 0.75rem;
+	margin-top: 0.4rem;
+	font-size: 0.8rem;
+	opacity: 0.8;
+}

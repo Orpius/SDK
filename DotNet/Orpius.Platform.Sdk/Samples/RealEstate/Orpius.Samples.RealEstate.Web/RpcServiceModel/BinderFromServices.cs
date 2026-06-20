@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
-
 using ProtoBuf.Grpc.Configuration;
 
-namespace Sample_AspNetCore_ProtobufNet
+namespace Orpius.Samples.RealEstate.RpcServiceModel
 {
 	class BinderFromServices : ServiceBinder
 	{

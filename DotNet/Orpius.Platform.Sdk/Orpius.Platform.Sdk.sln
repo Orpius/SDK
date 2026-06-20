@@ -17,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample_AspNetCore_ProtobufN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orpius.Platform.ClientSdk.ProtobufNet.Generators", "Orpius.Platform.ClientSdk.ProtobufNet.Generators\Orpius.Platform.ClientSdk.ProtobufNet.Generators.csproj", "{0253EE63-6575-4B91-8E67-78582E2093DE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D98686E3-26FB-4BB8-909A-A9B6E2CBF12B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstate", "RealEstate", "{F2FCE2C6-DC5A-4F4A-A902-2541C819E672}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orpius.Samples.RealEstate.Web", "Samples\RealEstate\Orpius.Samples.RealEstate.Web\Orpius.Samples.RealEstate.Web.csproj", "{8346C04E-C221-44E3-957D-28B5547A2ED0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +53,10 @@ Global
 		{0253EE63-6575-4B91-8E67-78582E2093DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0253EE63-6575-4B91-8E67-78582E2093DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0253EE63-6575-4B91-8E67-78582E2093DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8346C04E-C221-44E3-957D-28B5547A2ED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8346C04E-C221-44E3-957D-28B5547A2ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8346C04E-C221-44E3-957D-28B5547A2ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8346C04E-C221-44E3-957D-28B5547A2ED0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +65,8 @@ Global
 		{F6DC1A8E-CC34-4A23-A38B-4FC732E1E765} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{98AE6C49-9773-4C31-A199-6D734E6F581D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{0253EE63-6575-4B91-8E67-78582E2093DE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F2FCE2C6-DC5A-4F4A-A902-2541C819E672} = {D98686E3-26FB-4BB8-909A-A9B6E2CBF12B}
+		{8346C04E-C221-44E3-957D-28B5547A2ED0} = {F2FCE2C6-DC5A-4F4A-A902-2541C819E672}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31B56899-3819-40BD-B4C6-9DB8EB77FE1A}

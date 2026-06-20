@@ -1,0 +1,46 @@
+﻿@page
+@model Orpius.Samples.RealEstate.Web.Pages.Listings.AddModel
+
+@{
+    ViewData["Title"] = "Add listing";
+}
+
+<h1>Add listing</h1>
+
+<p>
+    Enter the property listing as a natural language description.
+    Orpius will turn it into a listing and then try to match it to known applicants.
+</p>
+
+<form method="post" class="real-estate-form">
+    <div class="form-group">
+        <label asp-for="ListingText">Property listing details</label>
+
+        <div class="dictation-input">
+            <textarea asp-for="ListingText"
+					  id="listingText"
+					  rows="8"
+					  class="form-control"
+					  placeholder="Example: New 4 bedroom house in Lausanne with a garden, parking, two bathrooms, and an asking price of 1.4 million CHF."></textarea>
+
+            <button type="button"
+                    class="dictation-button"
+                    data-dictation-target="#listingText"
+                    aria-label="Dictate listing details">
+                🎙
+            </button>
+        </div>
+
+        <span asp-validation-for="ListingText" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Send to Orpius
+    </button>
+</form>
+
+<partial name="_OperationMessages" model="Model.Messages" />
+
+@section Scripts {
+    <script src="~/js/dictation.js" asp-append-version="true"></script>
+}

@@ -245,6 +245,10 @@ namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 		}
 #endif
 
+		/// <summary>
+		/// For list contracts, TypeName is the item/element
+		/// contract type name, not the list contract's own storage type name.
+		/// </summary>
 		[ProtoMember(1, IsRequired = true)]
 #if NET7_0_OR_GREATER
 		public required string TypeName { get; set; }

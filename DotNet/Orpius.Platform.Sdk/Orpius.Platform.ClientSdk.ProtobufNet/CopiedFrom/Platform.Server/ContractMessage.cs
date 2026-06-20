@@ -1,4 +1,10 @@
-﻿/* Auto-generated from the content of ContractMessage.tt */
+﻿/* Auto-generated from the content of ContractMessage.tt 
+   NOTE:
+	If you are trying to regenerate this in the SDK project,
+	you need to have the Orpius.Platform.Server project build
+	because it is that project that pushes the ContractMessage.cs
+	into the SDK project.
+*/
 
 using System;
 
@@ -49,6 +55,15 @@ namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 
 		public bool ShouldSerializeListContract() => payload.Is(4);
 		public void ResetListContract() => DiscriminatedUnionObject.Reset(ref payload, 4);
+		[ProtoMember(5)]
+		public DictionaryContractMessage? DictionaryContract
+		{
+			get => payload.Is(5) ? (DictionaryContractMessage?)payload.Object : null;
+			set => payload = new DiscriminatedUnionObject(5, value);
+		}
+
+		public bool ShouldSerializeDictionaryContract() => payload.Is(5);
+		public void ResetDictionaryContract() => DiscriminatedUnionObject.Reset(ref payload, 5);
 
 		/* Convenience members, ignored by the serializer. */
 
@@ -79,6 +94,9 @@ namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 					case ListContractMessage tempListContractMessage:
 						ListContract = tempListContractMessage;
 						break;
+					case DictionaryContractMessage tempDictionaryContractMessage:
+						DictionaryContract = tempDictionaryContractMessage;
+						break;
 					default:
 					{
 						throw new ArgumentException(
@@ -97,6 +115,7 @@ namespace Orpius.Platform.Tooling.RpcToolsRegistrationService
 			SimpleContract = 2, 
 			EnumContract = 3, 
 			ListContract = 4, 
+			DictionaryContract = 5, 
 		}
 	}
 }

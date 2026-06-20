@@ -1,0 +1,42 @@
+﻿@using Orpius.Samples.RealEstate
+@model IReadOnlyList<OperationMessageView>
+
+@if (Model.Count > 0)
+{
+    <section class="operation-messages" aria-label="Messages from Orpius">
+        @foreach (OperationMessageView message in Model)
+        {
+            string messageClass = "operation-message system-message";
+
+            if (message.Role == OperationMessageRole.User)
+            {
+                messageClass = "operation-message user-message";
+            }
+            else if (message.Role == OperationMessageRole.Assistant)
+            {
+                messageClass = "operation-message assistant-message";
+            }
+
+            <div class="@messageClass">
+                <div class="message-text">@message.Text</div>
+
+                @if (message.Role == OperationMessageRole.System)
+                {
+                    <div class="message-meta">
+                        @if (!string.IsNullOrWhiteSpace(message.ToolName))
+                        {
+                            <span>@message.ToolName</span>
+                        }
+
+                        @if (message.Success is not null)
+                        {
+                            <span>
+                                @(message.Success.Value ? "Succeeded" : "Failed")
+                            </span>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </section>
+}

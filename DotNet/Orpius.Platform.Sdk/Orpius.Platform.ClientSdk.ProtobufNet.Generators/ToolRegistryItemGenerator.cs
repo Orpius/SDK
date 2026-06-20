@@ -8,6 +8,8 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
+using static Orpius.Platform.Generators.StringLiteralConverter;
+
 namespace Orpius.Platform.Generators;
 
 /// <summary>
@@ -15,7 +17,7 @@ namespace Orpius.Platform.Generators;
 /// <c>[assembly: GenerateToolRegistryItemAttribute("Namespace.ClassName")]</c>.
 /// </summary>
 [Generator(LanguageNames.CSharp)]
-public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
+public sealed partial class ToolRegistryItemGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -129,13 +131,13 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 			});
 	}
 
-	sealed record AssemblyInfo(bool Enabled, 
-							   string? FullClassName, 
-							   ImmutableHashSet<IAssemblySymbol> AllowedAssemblies)
+	static string GetContractTypeNameExpression(ITypeSymbol type)
 	{
-		public static readonly AssemblyInfo None 
-			= new(false, null, ImmutableHashSet<IAssemblySymbol>.Empty);
+		return ToCSharpStringLiteral(
+			ContractTypeNameProvider.GetContractTypeName(type));
 	}
+
+
 
 	#region Tool / Method model
 	sealed record ToolMethodModel(
@@ -155,26 +157,53 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 	abstract record ContractModel(ITypeSymbol Type)
 	{
 		protected static readonly SymbolDisplayFormat Fqn = SymbolDisplayFormat.FullyQualifiedFormat;
-		protected string TypeOf => $$"""typeof({{Type.ToDisplayString(Fqn)}}).FullName!""";
-		internal abstract string Expression { get; }
+		
+		protected string TypeNameExpression => GetContractTypeNameExpression(Type);
+
+		internal abstract string Expression         { get; }
 	}
 
 	sealed record SimpleContractModel(ITypeSymbol T) : ContractModel(T)
 	{
 		internal override string Expression =>
-			$$"""new ContractMessage { SimpleContract = new SimpleContractMessage({{TypeOf}}) }""";
+			$$"""new ContractMessage { SimpleContract = new SimpleContractMessage({{TypeNameExpression}}) }""";
 	}
 
-	sealed record ListContractModel(ITypeSymbol T) : ContractModel(T)
+	//sealed record ListContractModel(ITypeSymbol T) : ContractModel(T)
+	//{
+	//	internal override string Expression =>
+	//		$$"""new ContractMessage { ListContract = new ListContractMessage({{TypeNameExpression}}) }""";
+	//}
+
+	sealed record ListContractModel(
+		ITypeSymbol T,
+		ITypeSymbol ElementType) : ContractModel(T)
 	{
 		internal override string Expression =>
-			$$"""new ContractMessage { ListContract = new ListContractMessage({{TypeOf}}) }""";
+			$$"""new ContractMessage { ListContract = new ListContractMessage({{GetContractTypeNameExpression(ElementType)}}) }""";
+	}
+
+	sealed record DictionaryContractModel(
+		ITypeSymbol T,
+		ITypeSymbol KeyType,
+		ITypeSymbol ValueType) : ContractModel(T)
+	{
+		internal override string Expression =>
+			$$"""
+			new ContractMessage
+						{
+							DictionaryContract = new DictionaryContractMessage(
+								{{TypeNameExpression}},
+								{{GetContractTypeNameExpression(KeyType)}},
+								{{GetContractTypeNameExpression(ValueType)}})
+						}
+			""";
 	}
 
 	sealed record EnumContractModel(INamedTypeSymbol Enum) : ContractModel(Enum)
 	{
 		internal override string Expression =>
-			$$"""new ContractMessage { EnumContract = new EnumContractMessage({{TypeOf}}, enumConverter.GetEnumDictionary<{{Enum.ToDisplayString(Fqn)}}>() ) }""";
+			$$"""new ContractMessage { EnumContract = new EnumContractMessage({{TypeNameExpression}}, enumConverter.GetEnumDictionary<{{Enum.ToDisplayString(Fqn)}}>() ) }""";
 	}
 
 	sealed record ComplexContractModel(
@@ -190,7 +219,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 					
 								new ContractMessage
 								{
-									ComplexContract = new ComplexContractMessage({{TypeOf}})
+									ComplexContract = new ComplexContractMessage({{TypeNameExpression}})
 									{
 										Properties = new List<ContractPropertyMessage>
 										{
@@ -215,11 +244,11 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 												  as INamedTypeSymbol;
 
 					sb.Append($$"""
-									
-											new ContractPropertyMessage("{{displayName}}", typeof({{p.Type.ToDisplayString(Fqn)}}).FullName!)
-											{
-					
-					""");
+												
+														new ContractPropertyMessage({{ToCSharpStringLiteral(displayName)}}, {{GetContractTypeNameExpression(p.Type)}})
+														{
+										
+								""");
 
 					if (required)
 					{
@@ -228,24 +257,27 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 						
 						""");
 					}
+
 					if (description is not null)
 					{
 						sb.Append($$"""
-													Description = "{{description.Replace("\"", "\\\"")}}", 
-						
-						""");
+																Description = {{ToCSharpStringLiteral(description)}}, 
+											
+									""");
 					}
+
 					if (format is not null)
 					{
 						sb.Append($$"""
-													OpenApiFormat = "{{format}}", 
-						
-						""");
+																OpenApiFormat = {{ToCSharpStringLiteral(format)}}, 
+											
+									""");
 					}
+
 					if (repAs is not null)
 					{
 						sb.Append($$"""
-													RepresentAs = typeof({{repAs.ToDisplayString(Fqn)}}).FullName!, 
+													RepresentAs = {{GetContractTypeNameExpression(repAs)}}, 
 						
 						""");
 					}
@@ -369,85 +401,6 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 		}
 	}
 
-	sealed class ContractCollector
-	{
-		readonly Dictionary<ITypeSymbol, ContractModel> map 
-			= new(SymbolEqualityComparer.Default);
-
-		public void Add(ITypeSymbol t)
-		{
-			Visit(t);
-		}
-
-		public IReadOnlyList<ContractModel> All() => map.Values.ToList();
-
-		void Visit(ITypeSymbol t)
-		{
-			if (map.ContainsKey(t))
-			{
-				return;
-			}
-
-			/* enum */
-			if (t is INamedTypeSymbol en && en.TypeKind == TypeKind.Enum)
-			{
-				map[t] = new EnumContractModel(en);
-				return;
-			}
-
-			/* primitive */
-			if (t.SpecialType != SpecialType.None)
-			{
-				map[t] = new SimpleContractModel(t);
-				return;
-			}
-
-			/* array */
-			if (t is IArrayTypeSymbol arr)
-			{
-				Visit(arr.ElementType);
-				map[t] = new ListContractModel(arr);
-				return;
-			}
-
-			/* generic list */
-			if (t is INamedTypeSymbol nt &&
-				nt.IsGenericType &&
-				nt.ConstructedFrom?.ToDisplayString() is
-					"System.Collections.Generic.IList<T>" or
-					"System.Collections.Generic.List<T>" or
-					"System.Collections.Generic.IEnumerable<T>")
-			{
-				Visit(nt.TypeArguments[0]);
-				map[t] = new ListContractModel(nt);
-				return;
-			}
-
-			/* complex */
-			if (t is INamedTypeSymbol complex)
-			{
-				List<IPropertySymbol> propertySymbols 
-					= complex.GetMembers()
-							 .OfType<IPropertySymbol>()
-							 .Where(symbol => symbol.GetAttributes()
-										  .Any(data => data.AttributeClass?.Name
-													 is "ToolPropertyAttribute"
-													 or "ToolStringPropertyAttribute"))
-							 .ToList();
-
-				foreach (IPropertySymbol p in propertySymbols)
-				{
-					Visit(p.Type);
-				}
-
-				map[t] = new ComplexContractModel(complex, propertySymbols);
-				return;
-			}
-
-			/* fallback */
-			map[t] = new SimpleContractModel(t);
-		}
-	}
 	#endregion
 
 	#region SourceBuilder
@@ -522,7 +475,7 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 				
 						ToolMessage {{variableName}} = new ToolMessage(
 							toolName: "{{t.ExposedName}}",
-							typeName: typeof({{t.Symbol.ToDisplayString(fqn)}}).FullName!)
+							typeName: {{GetContractTypeNameExpression(t.Symbol)}})
 						{
 							Methods = new List<ToolMethodMessage>
 							{
@@ -531,14 +484,14 @@ public sealed class ToolRegistryItemGenerator : IIncrementalGenerator
 				foreach (ToolMethodModel mm in t.Methods)
 				{
 					string descArg = mm.Description is null
-						? "description: null"
-						: $"description: \"{mm.Description.Replace("\"", "\\\"")}\"";
+										 ? "description: null"
+										 : $"description: {ToCSharpStringLiteral(mm.Description)}";
 
 					sb.Append($$"""
 								new ToolMethodMessage(
 									methodName: "{{mm.ExposedName}}",
-									parameterContractTypeName: typeof({{mm.ParameterType.ToDisplayString(fqn)}}).FullName!,
-									returnsContractTypeName:   typeof({{mm.ReturnType.ToDisplayString(fqn)}}).FullName!,
+									parameterContractTypeName: {{GetContractTypeNameExpression(mm.ParameterType)}},
+									returnsContractTypeName:   {{GetContractTypeNameExpression(mm.ReturnType)}},
 									{{descArg}}),
 				""");
 				}

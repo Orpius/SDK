@@ -42,7 +42,7 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 		Task<UseToolResponse> UseToolAsync(UseToolRequest request, object? nativeContext);
 	}
 
-	public class ToolRegistry : IToolRegistry, IToolCaller
+	public partial class ToolRegistry : IToolRegistry, IToolCaller
 	{
 		readonly IRegistrationMediator mediator;
 		readonly IEnumerable<IToolRegistrationParameters> registrationParameters;
@@ -80,12 +80,13 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			var tools = new Dictionary<string, ToolMessage>();
 
 			/* Flatten items. */
-			foreach (IToolRegistryItem item in registryItems.Values)
+			foreach (IToolRegistryItem item in registryItems.Values.Distinct())
 			{
-				foreach (ContractMessage? contractMessage in item.ToolsMetadata.Contracts)
+				foreach (ContractMessage contractMessage in item.ToolsMetadata.Contracts)
 				{
-					var contract = contractMessage.Contract;
-					contracts[contract.TypeName] = contractMessage;
+					string storageTypeName = GetContractStorageTypeName(contractMessage);
+
+					contracts[storageTypeName] = contractMessage;
 				}
 
 				foreach (ToolMessage toolMessage in item.ToolsMetadata.Tools)

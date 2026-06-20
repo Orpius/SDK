@@ -1,0 +1,56 @@
+﻿@page
+@model Orpius.Samples.RealEstate.Web.Pages.Applicants.AddModel
+
+@{
+    ViewData["Title"] = "Add applicant";
+}
+
+<h1>Add applicant</h1>
+
+<p>
+    Enter the applicant's email address, then type or dictate what the person is looking for.
+    The email address is passed securely to the tool context and is not included in the LLM prompt.
+</p>
+
+<form method="post" class="real-estate-form">
+    <div class="form-group">
+        <label asp-for="EmailAddress">Email address</label>
+        <input asp-for="EmailAddress"
+               class="form-control"
+               type="email"
+               placeholder="jane@example.com" />
+
+        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ApplicantText">Applicant details</label>
+
+        <div class="dictation-input">
+            <textarea asp-for="ApplicantText"
+					  id="applicantText"
+					  rows="8"
+					  class="form-control"
+					  placeholder="Example: Jane Smith is looking for a 4 bedroom house near Lausanne with a garden."></textarea>
+
+            <button type="button"
+                    class="dictation-button"
+                    data-dictation-target="#applicantText"
+                    aria-label="Dictate applicant details">
+                🎙
+            </button>
+        </div>
+
+        <span asp-validation-for="ApplicantText" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Send to Orpius
+    </button>
+</form>
+
+<partial name="_OperationMessages" model="Model.Messages" />
+
+@section Scripts {
+    <script src="~/js/dictation.js" asp-append-version="true"></script>
+}
