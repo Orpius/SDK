@@ -7,13 +7,16 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Listings
 {
 	public class AddModel : PageModel
 	{
-		readonly RealEstateConversationService conversationService;
+		readonly ListingConversationService conversationService;
 
-		public AddModel(RealEstateConversationService conversationService)
+		public AddModel(ListingConversationService conversationService)
 		{
 			this.conversationService = conversationService
 									   ?? throw new ArgumentNullException(nameof(conversationService));
 		}
+
+		[BindProperty]
+		public Guid? ConversationId { get; set; }
 
 		[BindProperty]
 		public string ListingText { get; set; } = "";
@@ -53,6 +56,7 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Listings
 			await foreach (OperationMessageView message in
 						   conversationService.AddListingFromTextAsync(
 							   ListingText,
+							   ConversationId,
 							   token))
 			{
 				await OperationMessageStreamWriter.WriteAsync(

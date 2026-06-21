@@ -7,13 +7,16 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Applicants
 {
 	public class AddModel : PageModel
 	{
-		readonly RealEstateConversationService conversationService;
+		readonly ApplicantConversationService conversationService;
 
-		public AddModel(RealEstateConversationService conversationService)
+		public AddModel(ApplicantConversationService conversationService)
 		{
 			this.conversationService = conversationService
 									   ?? throw new ArgumentNullException(nameof(conversationService));
 		}
+
+		[BindProperty]
+		public Guid? ConversationId { get; set; }
 
 		[BindProperty]
 		public string EmailAddress { get; set; } = "";
@@ -74,6 +77,7 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Applicants
 						   conversationService.AddApplicantFromTextAsync(
 							   EmailAddress,
 							   ApplicantText,
+							   ConversationId,
 							   token))
 			{
 				await OperationMessageStreamWriter.WriteAsync(

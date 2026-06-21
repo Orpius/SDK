@@ -1,12 +1,11 @@
 ﻿namespace Orpius.Samples.RealEstate
 {
-	public interface IRealEstateAgentAuthenticationService
+	public interface IRealEstateAgentIdentityService
 	{
 		Guid GetCurrentRealEstateAgentId();
 	}
 
-	public class DemoRealEstateAgentAuthenticationService
-		: IRealEstateAgentAuthenticationService
+	public class DemoIdentityService : IRealEstateAgentIdentityService
 	{
 		static readonly Guid demoRealEstateAgentId = new(
 			"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");

@@ -48,9 +48,7 @@
 		public void Validate(string sectionName)
 		{
 			ValidateGuid(ExternalId, $"{sectionName}:{nameof(ExternalId)}");
-
-			ValidateGuid(AccessKey, $"{sectionName}:{nameof(AccessKey)}");
-
+			ValidateGuid(AccessKey,  $"{sectionName}:{nameof(AccessKey)}");
 			ValidateUri(IncomingUrl, $"{sectionName}:{nameof(IncomingUrl)}");
 		}
 
@@ -109,10 +107,10 @@
 			IConfigurationSection section = configuration.GetRequiredSection(
 				OrpiusSampleOptions.SectionName);
 
-			OrpiusSampleOptions options =
-				section.Get<OrpiusSampleOptions>()
-				?? throw new InvalidOperationException(
-					$"The '{OrpiusSampleOptions.SectionName}' configuration section is missing.");
+			OrpiusSampleOptions options
+				= section.Get<OrpiusSampleOptions>()
+				  ?? throw new InvalidOperationException(
+					  $"The '{OrpiusSampleOptions.SectionName}' configuration section is missing.");
 
 			options.Validate();
 

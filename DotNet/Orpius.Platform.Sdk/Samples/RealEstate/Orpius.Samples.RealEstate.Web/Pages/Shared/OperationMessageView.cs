@@ -16,5 +16,7 @@
 		public string? ToolName { get; set; }
 
 		public bool? Success { get; set; }
+
+		public Guid? ConversationId { get; set; }
 	}
 }

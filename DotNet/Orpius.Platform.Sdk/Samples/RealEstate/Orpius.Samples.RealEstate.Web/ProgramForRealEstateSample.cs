@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+
 using Orpius.Platform.OperationsModel;
 using Orpius.Platform.OperationsModel.ServiceCollectionExtensions;
 using Orpius.Platform.RpcServices;
@@ -6,6 +7,7 @@ using Orpius.Platform.Tooling;
 using Orpius.Platform.Tooling.RpcToolsRegistrationService;
 using Orpius.Platform.Tooling.ToolRegistration;
 using Orpius.Samples.RealEstate.RpcServiceModel;
+
 using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Server;
 
@@ -37,8 +39,12 @@ namespace Orpius.Samples.RealEstate.Web
 			services.AddSingleton<RealEstateAgentMessenger>();
 
 			services.AddScoped<RealEstateConversationService>();
-			services.AddScoped<IRealEstateAgentAuthenticationService,
-				DemoRealEstateAgentAuthenticationService>();
+			services.AddScoped<ApplicantConversationService>();
+			services.AddScoped<ListingConversationService>();
+
+			services.AddScoped<
+				IRealEstateAgentIdentityService,
+				DemoIdentityService>();
 
 			services.AddRazorPages();
 			services.AddGrpc();
@@ -104,7 +110,7 @@ namespace Orpius.Samples.RealEstate.Web
 
 			WebApplication app = builder.Build();
 
-			/* We must resolve the generated registry item so that it adds itself
+			/* We resolve the generated registry item so that it adds itself
 			   to the IToolRegistry. */
 			_ = app.Services.GetRequiredService<Orpius.Samples.RealEstate.AllTools>();
 

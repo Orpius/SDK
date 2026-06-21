@@ -13,6 +13,7 @@
 		const messagesContainer = document.querySelector(messagesTargetSelector);
 		const promptInput = document.querySelector(promptTargetSelector);
 		const submitButton = form.querySelector("[type='submit']");
+		const conversationInput = form.querySelector("[data-conversation-id]");
 
 		if (!messagesContainer || !promptInput) {
 			return;
@@ -45,7 +46,7 @@
 					return;
 				}
 
-				await readMessageStream(response, messagesContainer);
+				await readMessageStream(response, messagesContainer, conversationInput);
 
 				if (response.ok && clearTargets) {
 					clearInputs(clearTargets);
@@ -64,7 +65,10 @@
 		});
 	}
 
-	async function readMessageStream(response, messagesContainer) {
+	async function readMessageStream(
+		response,
+		messagesContainer,
+		conversationInput) {
 		const reader = response.body.getReader();
 		const decoder = new TextDecoder();
 
@@ -78,24 +82,27 @@
 			}
 
 			buffer += decoder.decode(result.value, { stream: true });
-			buffer = processBuffer(buffer, messagesContainer);
+			buffer = processBuffer(buffer, messagesContainer, conversationInput);
 		}
 
 		buffer += decoder.decode();
 
 		if (buffer.trim().length > 0) {
-			processLine(buffer.trim(), messagesContainer);
+			processLine(buffer.trim(), messagesContainer, conversationInput);
 		}
 	}
 
-	function processBuffer(buffer, messagesContainer) {
+	function processBuffer(
+		buffer,
+		messagesContainer,
+		conversationInput) {
 		let newlineIndex = buffer.indexOf("\n");
 
 		while (newlineIndex >= 0) {
 			const line = buffer.substring(0, newlineIndex).trim();
 
 			if (line.length > 0) {
-				processLine(line, messagesContainer);
+				processLine(line, messagesContainer, conversationInput);
 			}
 
 			buffer = buffer.substring(newlineIndex + 1);
@@ -105,10 +112,26 @@
 		return buffer;
 	}
 
-	function processLine(line, messagesContainer) {
+	function processLine(
+		line,
+		messagesContainer,
+		conversationInput) {
 		const message = JSON.parse(line);
 
+		updateConversationId(conversationInput, message);
 		appendMessage(messagesContainer, message);
+	}
+
+	function updateConversationId(conversationInput, message) {
+		if (!conversationInput) {
+			return;
+		}
+
+		if (!message.conversationId) {
+			return;
+		}
+
+		conversationInput.value = message.conversationId;
 	}
 
 	function appendMessage(messagesContainer, message) {

@@ -12,9 +12,8 @@ namespace Orpius.Samples.RealEstate
 						  ?? throw new ArgumentNullException(nameof(logger));
 		}
 
-		public async Task SendAsync(
-			NotificationMessage message,
-			CancellationToken token = default)
+		public async Task SendAsync(NotificationMessage message,
+									CancellationToken token = default)
 		{
 			ArgumentNullException.ThrowIfNull(message);
 

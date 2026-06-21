@@ -84,10 +84,10 @@ namespace Orpius.Samples.RealEstate
 			lock (syncRoot)
 			{
 				return applicantsById
-					.Values
-					.OrderBy(applicant => applicant.Surname)
-					.ThenBy(applicant => applicant.FirstName)
-					.ToArray();
+					   .Values
+					   .OrderBy(applicant => applicant.Surname)
+					   .ThenBy(applicant => applicant.FirstName)
+					   .ToArray();
 			}
 		}
 
@@ -96,17 +96,17 @@ namespace Orpius.Samples.RealEstate
 			lock (syncRoot)
 			{
 				return applicantsById
-					.Values
-					.OrderBy(applicant => applicant.Surname)
-					.ThenBy(applicant => applicant.FirstName)
-					.Select(applicant => new ApplicantMatchCandidate
-					{
-						ApplicantId = applicant.Id,
-						//FirstName = applicant.FirstName,
-						//Surname = applicant.Surname,
-						IdealPropertyFeatures = applicant.IdealPropertyFeatures
-					})
-					.ToArray();
+					   .Values
+					   .OrderBy(applicant => applicant.Surname)
+					   .ThenBy(applicant => applicant.FirstName)
+					   .Select(applicant => new ApplicantMatchCandidate
+					   {
+						   ApplicantId = applicant.Id,
+						   //FirstName = applicant.FirstName,
+						   //Surname = applicant.Surname,
+						   IdealPropertyFeatures = applicant.IdealPropertyFeatures
+					   })
+					   .ToArray();
 			}
 		}
 
@@ -202,18 +202,19 @@ namespace Orpius.Samples.RealEstate
 
 				matchesByListingId[listingId] = record;
 
-				notificationTargets = validMatches
-									  .Select(match => applicantsById[match.ApplicantId])
-									  .GroupBy(applicant => applicant.RealEstateAgentId)
-									  .Select(group => new RealEstateAgentNotificationTarget
-									  {
-										  RealEstateAgentId = group.Key,
-										  ApplicantLabels = group
-															.Select(CreateApplicantLabel)
-															.OrderBy(label => label)
-															.ToList()
-									  })
-									  .ToList();
+				notificationTargets
+					= validMatches
+					  .Select(match => applicantsById[match.ApplicantId])
+					  .GroupBy(applicant => applicant.RealEstateAgentId)
+					  .Select(group => new RealEstateAgentNotificationTarget
+					  {
+						  RealEstateAgentId = group.Key,
+						  ApplicantLabels = group
+											.Select(CreateApplicantLabel)
+											.OrderBy(label => label)
+											.ToList()
+					  })
+					  .ToList();
 			}
 
 			return new RecordListingMatchesResult(
@@ -239,10 +240,6 @@ namespace Orpius.Samples.RealEstate
 	public class ApplicantMatchCandidate
 	{
 		public Guid ApplicantId { get; set; }
-
-		//public required string FirstName { get; set; }
-
-		//public required string Surname { get; set; }
 
 		public required string IdealPropertyFeatures { get; set; }
 	}

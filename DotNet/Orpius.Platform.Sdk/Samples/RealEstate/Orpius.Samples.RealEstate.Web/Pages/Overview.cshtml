@@ -1,0 +1,153 @@
+﻿@page
+
+@{
+	ViewData["Title"] = "Demo Overview";
+}
+
+<div class="overviewPage">
+	<header class="overviewHeader">
+		<div>
+			<p class="eyebrow">Orpius SDK sample</p>
+			<h1>Real Estate Flow</h1>
+		</div>
+
+		<nav class="overviewActions" aria-label="Demo actions">
+			<a asp-page="/Applicants/Add">Add applicant</a>
+			<a asp-page="/Listings/Add">Add listing</a>
+		</nav>
+	</header>
+
+	<section class="overviewStage" aria-label="Animated overview of the real estate assistant flow">
+		<div class="stageCaption">
+			<span>Unstructured input</span>
+			<span>Structured tools</span>
+			<span>Business action</span>
+		</div>
+
+		<div class="diagramCanvas">
+			<svg class="flowSvg" viewBox="0 0 1200 620" preserveAspectRatio="none" aria-hidden="true">
+				<defs>
+					<marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+						<path d="M0,0 L0,6 L9,3 z" class="arrowHeadPath" />
+					</marker>
+
+					<filter id="tokenGlow">
+						<feGaussianBlur stdDeviation="3.5" result="blur" />
+						<feMerge>
+							<feMergeNode in="blur" />
+							<feMergeNode in="SourceGraphic" />
+						</feMerge>
+					</filter>
+				</defs>
+
+				<path class="flowPath"
+					  d="M 185 145 C 310 150, 390 230, 500 292"
+					  marker-end="url(#arrowHead)" />
+
+				<path class="flowPath"
+					  d="M 620 292 C 700 220, 755 165, 810 160"
+					  marker-end="url(#arrowHead)" />
+
+				<path class="flowPath"
+					  d="M 185 475 C 315 465, 390 385, 500 330"
+					  marker-end="url(#arrowHead)" />
+
+				<path class="flowPath"
+					  d="M 620 330 C 700 392, 755 450, 810 460"
+					  marker-end="url(#arrowHead)" />
+
+				<path class="flowPath retrievalPath"
+					  d="M 820 145 C 735 185, 655 245, 600 300"
+					  marker-end="url(#arrowHead)" />
+
+				<path class="flowPath notifyPath"
+					  d="M 625 310 C 760 334, 860 366, 960 366"
+					  marker-end="url(#arrowHead)" />
+
+				<circle class="flowToken tokenOne" r="7" filter="url(#tokenGlow)">
+					<animateMotion dur="6s"
+								   repeatCount="indefinite"
+								   path="M 185 145 C 310 150, 390 230, 500 292" />
+				</circle>
+
+				<circle class="flowToken tokenTwo" r="7" filter="url(#tokenGlow)">
+					<animateMotion dur="6s"
+								   begin="0.9s"
+								   repeatCount="indefinite"
+								   path="M 620 292 C 700 220, 755 165, 810 160" />
+				</circle>
+
+				<circle class="flowToken tokenThree" r="7" filter="url(#tokenGlow)">
+					<animateMotion dur="6s"
+								   begin="1.8s"
+								   repeatCount="indefinite"
+								   path="M 185 475 C 315 465, 390 385, 500 330" />
+				</circle>
+
+				<circle class="flowToken tokenFour" r="7" filter="url(#tokenGlow)">
+					<animateMotion dur="6s"
+								   begin="2.7s"
+								   repeatCount="indefinite"
+								   path="M 620 330 C 700 392, 755 450, 810 460" />
+				</circle>
+
+				<circle class="flowToken tokenFive" r="7" filter="url(#tokenGlow)">
+					<animateMotion dur="6s"
+								   begin="3.6s"
+								   repeatCount="indefinite"
+								   path="M 820 145 C 735 185, 655 245, 600 300" />
+				</circle>
+
+				<circle class="flowToken tokenSix" r="7" filter="url(#tokenGlow)">
+					<animateMotion dur="6s"
+								   begin="4.5s"
+								   repeatCount="indefinite"
+								   path="M 625 310 C 760 334, 860 366, 960 366" />
+				</circle>
+			</svg>
+
+			<div class="diagramNode inputNode applicantNode">
+				<div class="nodeIcon">👤</div>
+				<strong>Applicant</strong>
+				<span>notes</span>
+			</div>
+
+			<div class="diagramNode dataNode applicantDataNode">
+				<div class="nodeIcon">▦</div>
+				<strong>Applicant DB</strong>
+				<span>preferences</span>
+			</div>
+
+			<div class="diagramNode inputNode listingNode">
+				<div class="nodeIcon">🏠</div>
+				<strong>Listing</strong>
+				<span>description</span>
+			</div>
+
+			<div class="diagramNode dataNode listingDataNode">
+				<div class="nodeIcon">▦</div>
+				<strong>Listing DB</strong>
+				<span>property</span>
+			</div>
+
+			<div class="orpiusNode">
+				<div class="orpiusRing"></div>
+				<div class="orpiusCore">
+					<span>✦</span>
+					<strong>Orpius</strong>
+					<small>extract · call tools · match</small>
+				</div>
+			</div>
+
+			<div class="diagramNode notifyNode">
+				<div class="nodeIcon">✉</div>
+				<strong>Notify</strong>
+				<span>agents</span>
+			</div>
+		</div>
+	</section>
+
+	<footer class="overviewFooter">
+		<a asp-page="/Index">Full explanation</a>
+	</footer>
+</div>
