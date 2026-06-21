@@ -12,7 +12,18 @@
     The email address is passed securely to the tool context and is not included in the LLM prompt.
 </p>
 
-<form method="post" class="real-estate-form">
+<section id="operationMessages"
+         class="operation-messages"
+         aria-label="Messages from Orpius"></section>
+
+<form method="post"
+      asp-page-handler="Stream"
+      class="real-estate-form"
+      data-operation-form
+      data-messages-target="#operationMessages"
+      data-prompt-target="#applicantText"
+      data-clear-targets="#applicantText">
+
     <div class="form-group">
         <label asp-for="EmailAddress">Email address</label>
         <input asp-for="EmailAddress"
@@ -28,10 +39,10 @@
 
         <div class="dictation-input">
             <textarea asp-for="ApplicantText"
-					  id="applicantText"
-					  rows="8"
-					  class="form-control"
-					  placeholder="Example: Jane Smith is looking for a 4 bedroom house near Lausanne with a garden."></textarea>
+                      id="applicantText"
+                      rows="8"
+                      class="form-control"
+                      placeholder="Example: Jane Smith is looking for a 4 bedroom house near Lausanne with a garden."></textarea>
 
             <button type="button"
                     class="dictation-button"
@@ -49,8 +60,7 @@
     </button>
 </form>
 
-<partial name="_OperationMessages" model="Model.Messages" />
-
 @section Scripts {
     <script src="~/js/dictation.js" asp-append-version="true"></script>
+    <script src="~/js/operation-chat.js" asp-append-version="true"></script>
 }

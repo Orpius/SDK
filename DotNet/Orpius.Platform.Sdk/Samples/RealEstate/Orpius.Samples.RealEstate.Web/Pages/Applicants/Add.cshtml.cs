@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+using Orpius.Samples.RealEstate.Pages.Shared;
+
 namespace Orpius.Samples.RealEstate.Web.Pages.Applicants
 {
 	public class AddModel : PageModel
@@ -19,28 +21,54 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Applicants
 		[BindProperty]
 		public string ApplicantText { get; set; } = "";
 
-		public List<OperationMessageView> Messages { get; } = new();
-
-		public async Task<IActionResult> OnPostAsync(CancellationToken token)
+		public async Task<IActionResult> OnPostStreamAsync(CancellationToken token)
 		{
+			await OperationMessageStreamWriter.PrepareResponseAsync(
+				Response,
+				token);
+
 			if (string.IsNullOrWhiteSpace(EmailAddress))
 			{
-				ModelState.AddModelError(
-					nameof(EmailAddress),
-					"Enter the applicant's email address.");
+				Response.StatusCode = StatusCodes.Status400BadRequest;
+
+				await OperationMessageStreamWriter.WriteAsync(
+					Response,
+					new OperationMessageView
+					{
+						Role = OperationMessageRole.System,
+						Text = "Enter the applicant's email address.",
+						Success = false
+					},
+					token);
+
+				return new EmptyResult();
 			}
 
 			if (string.IsNullOrWhiteSpace(ApplicantText))
 			{
-				ModelState.AddModelError(
-					nameof(ApplicantText),
-					"Enter the applicant details first.");
+				Response.StatusCode = StatusCodes.Status400BadRequest;
+
+				await OperationMessageStreamWriter.WriteAsync(
+					Response,
+					new OperationMessageView
+					{
+						Role = OperationMessageRole.System,
+						Text = "Enter the applicant details first.",
+						Success = false
+					},
+					token);
+
+				return new EmptyResult();
 			}
 
-			if (!ModelState.IsValid)
-			{
-				return Page();
-			}
+			await OperationMessageStreamWriter.WriteAsync(
+				Response,
+				new OperationMessageView
+				{
+					Role = OperationMessageRole.User,
+					Text = ApplicantText
+				},
+				token);
 
 			await foreach (OperationMessageView message in
 						   conversationService.AddApplicantFromTextAsync(
@@ -48,12 +76,13 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Applicants
 							   ApplicantText,
 							   token))
 			{
-				Messages.Add(message);
+				await OperationMessageStreamWriter.WriteAsync(
+					Response,
+					message,
+					token);
 			}
 
-			ApplicantText = "";
-
-			return Page();
+			return new EmptyResult();
 		}
 	}
 }

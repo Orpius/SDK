@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Orpius.Samples.RealEstate;
+using Orpius.Samples.RealEstate.Pages.Shared;
 
 namespace Orpius.Samples.RealEstate.Web.Pages.Listings
 {
@@ -18,30 +18,50 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Listings
 		[BindProperty]
 		public string ListingText { get; set; } = "";
 
-		public List<OperationMessageView> Messages { get; } = new();
-
-		public async Task<IActionResult> OnPostAsync(CancellationToken token)
+		public async Task<IActionResult> OnPostStreamAsync(CancellationToken token)
 		{
+			await OperationMessageStreamWriter.PrepareResponseAsync(
+				Response,
+				token);
+
 			if (string.IsNullOrWhiteSpace(ListingText))
 			{
-				ModelState.AddModelError(
-					nameof(ListingText),
-					"Enter the listing details first.");
+				Response.StatusCode = StatusCodes.Status400BadRequest;
 
-				return Page();
+				await OperationMessageStreamWriter.WriteAsync(
+					Response,
+					new OperationMessageView
+					{
+						Role    = OperationMessageRole.System,
+						Text    = "Enter the listing details first.",
+						Success = false
+					},
+					token);
+
+				return new EmptyResult();
 			}
+
+			await OperationMessageStreamWriter.WriteAsync(
+				Response,
+				new OperationMessageView
+				{
+					Role = OperationMessageRole.User,
+					Text = ListingText
+				},
+				token);
 
 			await foreach (OperationMessageView message in
 						   conversationService.AddListingFromTextAsync(
 							   ListingText,
 							   token))
 			{
-				Messages.Add(message);
+				await OperationMessageStreamWriter.WriteAsync(
+					Response,
+					message,
+					token);
 			}
 
-			ListingText = "";
-
-			return Page();
+			return new EmptyResult();
 		}
 	}
 }

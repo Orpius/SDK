@@ -67,9 +67,8 @@ namespace Orpius.Samples.RealEstate
 
 			await foreach (OperationMessageView message in SendToOrpiusAsync(
 							   prompt,
-							   tools,
-							   sharedContext,
-							   token))
+							   false,
+							   tools, sharedContext, token))
 			{
 				yield return message;
 			}
@@ -121,9 +120,8 @@ namespace Orpius.Samples.RealEstate
 
 			await foreach (OperationMessageView message in SendToOrpiusAsync(
 							   prompt,
-							   tools,
-							   new Dictionary<string, string>(),
-							   token))
+							   false,
+							   tools, new Dictionary<string, string>(), token))
 			{
 				yield return message;
 			}
@@ -131,6 +129,7 @@ namespace Orpius.Samples.RealEstate
 
 		async IAsyncEnumerable<OperationMessageView> SendToOrpiusAsync(
 			string prompt,
+			bool showPromptAsUserMessage,
 			List<Tool> tools,
 			Dictionary<string, string> sharedContext,
 			[EnumeratorCancellation] CancellationToken token)
@@ -140,11 +139,14 @@ namespace Orpius.Samples.RealEstate
 				Text = prompt
 			};
 
-			yield return new OperationMessageView
+			if (showPromptAsUserMessage)
 			{
-				Role = OperationMessageRole.User,
-				Text = prompt
-			};
+				yield return new OperationMessageView
+				{
+					Role = OperationMessageRole.User,
+					Text = prompt
+				};
+			}
 
 			ChatRequest chatRequest = new(
 				operationExternalId: sampleOptions.Operations.ExternalId,

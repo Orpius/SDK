@@ -114,7 +114,15 @@ namespace Orpius.Platform.OperationsModel.RpcOperationsService
 	[ProtoContract]
 	public enum ToolPresence
 	{
+		/// <summary>
+		/// If the tool is not found,
+		/// then the Operation call will not proceed.
+		/// </summary>
 		Required = 0,
+		/// <summary>
+		/// The tool does not need to be found
+		/// for the Operation to proceed.
+		/// </summary>
 		NotRequired = 1
 	}
 
