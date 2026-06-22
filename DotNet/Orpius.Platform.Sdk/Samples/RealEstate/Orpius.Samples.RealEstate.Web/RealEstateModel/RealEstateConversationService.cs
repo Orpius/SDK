@@ -10,16 +10,19 @@ namespace Orpius.Samples.RealEstate
 	{
 		readonly IOperationsService operationsClient;
 		readonly OrpiusSampleOptions sampleOptions;
+		readonly MarkdownRenderer markdownRenderer;
 
 		public RealEstateConversationService(
 			IOperationsService operationsClient,
-			OrpiusSampleOptions sampleOptions)
+			OrpiusSampleOptions sampleOptions,
+			MarkdownRenderer markdownRenderer)
 		{
 			this.operationsClient = operationsClient
 									?? throw new ArgumentNullException(nameof(operationsClient));
-
 			this.sampleOptions = sampleOptions
 								 ?? throw new ArgumentNullException(nameof(sampleOptions));
+			this.markdownRenderer = markdownRenderer
+									?? throw new ArgumentNullException(nameof(markdownRenderer));
 		}
 
 		public async IAsyncEnumerable<OperationMessageView> SendAsync(
@@ -54,6 +57,11 @@ namespace Orpius.Samples.RealEstate
 				ConversationId = conversationId
 			};
 
+			if (!string.IsNullOrWhiteSpace(request.JsonProvidedToAgent))
+			{
+				chatRequest.JsonProvidedToAgent = request.JsonProvidedToAgent;
+			}
+
 			await foreach (ChatResponse response in
 						   operationsClient.Chat(chatRequest).WithCancellation(token))
 			{
@@ -72,11 +80,14 @@ namespace Orpius.Samples.RealEstate
 
 				if (assistantMessage is not null)
 				{
+					string text = NormaliseAssistantText(assistantMessage.Text);
+
 					yield return new OperationMessageView
 					{
 						Role           = OperationMessageRole.Assistant,
-						Text           = assistantMessage.Text ?? string.Empty,
-						ConversationId = returnedConversationId
+						Text           = text,
+						ConversationId = returnedConversationId,
+						Html           = markdownRenderer.ToHtml(text)
 					};
 				}
 			}
@@ -90,6 +101,19 @@ namespace Orpius.Samples.RealEstate
 					   : conversationId;
 		}
 
+		static string NormaliseAssistantText(string? text)
+		{
+			if (string.IsNullOrEmpty(text))
+			{
+				return string.Empty;
+			}
+
+			return text
+				   .Replace("\\r\\n", Environment.NewLine)
+				   .Replace("\\n",    Environment.NewLine)
+				   .Replace("\\r",    Environment.NewLine);
+		}
+
 		static OperationMessageView CreateSystemMessageView(
 			SystemMessage systemMessage,
 			Guid conversationId)
@@ -100,7 +124,7 @@ namespace Orpius.Samples.RealEstate
 				Text           = systemMessage.Text ?? string.Empty,
 				ToolName       = systemMessage.ApiCallInfo?.PluginName,
 				Success        = systemMessage.ApiCallInfo?.Success,
-				ConversationId = conversationId
+				ConversationId = conversationId,
 			};
 		}
 	}

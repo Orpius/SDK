@@ -13,5 +13,7 @@ namespace Orpius.Samples.RealEstate
 		public Dictionary<string, string> SharedContext { get; set; } = new();
 
 		public bool ShowMessageAsUserMessage { get; set; }
+
+		public string? JsonProvidedToAgent { get; set; }
 	}
 }

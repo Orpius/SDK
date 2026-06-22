@@ -21,7 +21,7 @@ namespace Orpius.Samples.RealEstate.Web
 {
 	public class ProgramForRealEstateSample
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +45,11 @@ namespace Orpius.Samples.RealEstate.Web
 			services.AddScoped<
 				IRealEstateAgentIdentityService,
 				DemoIdentityService>();
+
+			services.AddSingleton<MarkdownRenderer>();
+			
+			// Add some dummy data
+			services.AddScoped<RealEstateSampleDataSeeder>();
 
 			services.AddRazorPages();
 			services.AddGrpc();
@@ -114,6 +119,8 @@ namespace Orpius.Samples.RealEstate.Web
 			   to the IToolRegistry. */
 			_ = app.Services.GetRequiredService<Orpius.Samples.RealEstate.AllTools>();
 
+			await SeedSampleDataAsync(app);
+
 			/* This allows Orpius to call your server to use tools. */
 			app.MapGrpcService<IToolProviderService>();
 
@@ -133,7 +140,17 @@ namespace Orpius.Samples.RealEstate.Web
 
 			app.MapRazorPages();
 
-			app.Run();
+			await app.RunAsync();
+		}
+
+		static async Task SeedSampleDataAsync(WebApplication app)
+		{
+			using IServiceScope scope = app.Services.CreateScope();
+
+			RealEstateSampleDataSeeder seeder =
+				scope.ServiceProvider.GetRequiredService<RealEstateSampleDataSeeder>();
+
+			await seeder.SeedAsync();
 		}
 	}
 }

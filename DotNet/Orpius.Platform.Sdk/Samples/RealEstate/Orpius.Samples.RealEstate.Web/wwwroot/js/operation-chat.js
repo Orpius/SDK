@@ -140,7 +140,12 @@
 
 		const textElement = document.createElement("div");
 		textElement.className = "message-text";
-		textElement.textContent = message.text || "";
+		if (message.html) {
+			textElement.innerHTML = message.html;
+		}
+		else {
+			textElement.textContent = message.text || "";
+		}
 
 		messageElement.appendChild(textElement);
 

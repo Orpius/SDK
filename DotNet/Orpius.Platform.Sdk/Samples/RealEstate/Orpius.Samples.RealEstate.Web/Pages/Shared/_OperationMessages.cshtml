@@ -18,7 +18,17 @@
             }
 
             <div class="@messageClass">
-                <div class="message-text">@message.Text</div>
+                @if (message.Role == OperationMessageRole.Assistant
+                     && !string.IsNullOrWhiteSpace(message.Html))
+                {
+                    <div class="message-text markdown-message">
+                        @Html.Raw(message.Html)
+                    </div>
+                }
+                else
+                {
+                    <div class="message-text">@message.Text</div>
+                }
 
                 @if (message.Role == OperationMessageRole.System)
                 {

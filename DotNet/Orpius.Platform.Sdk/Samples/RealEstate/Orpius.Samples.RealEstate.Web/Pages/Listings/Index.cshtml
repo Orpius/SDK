@@ -1,0 +1,101 @@
+﻿@page
+@model Orpius.Samples.RealEstate.Pages.Listings.IndexModel
+
+@{
+    ViewData["Title"] = "Listings";
+}
+
+<h1>Listings</h1>
+
+<p>
+    These are the property listings registered during this demo session.
+</p>
+
+<p>
+    <a asp-page="/Listings/Add" class="btn btn-primary">Add listing</a>
+</p>
+
+@if (Model.Listings.Count == 0)
+{
+    <div class="alert alert-info">
+        No listings have been registered yet.
+    </div>
+}
+else
+{
+    <div class="listing-grid">
+        @foreach (ListingRecord listing in Model.Listings)
+        {
+            <article class="listing-card">
+                <header class="listing-card-header">
+                    <h2>@listing.PropertyType in @listing.Location</h2>
+
+                    @if (listing.Price is not null)
+                    {
+                        <div class="listing-price">
+                            CHF @listing.Price.Value.ToString("N0")
+                        </div>
+                    }
+                </header>
+
+                <dl class="listing-facts">
+                    @if (listing.BedroomCount is not null)
+                    {
+                        <div>
+                            <dt>Bedrooms</dt>
+                            <dd>@listing.BedroomCount</dd>
+                        </div>
+                    }
+
+                    @if (listing.BathroomCount is not null)
+                    {
+                        <div>
+                            <dt>Bathrooms</dt>
+                            <dd>@listing.BathroomCount</dd>
+                        </div>
+                    }
+
+                    <div>
+                        <dt>Garden</dt>
+                        <dd>@FormatBoolean(listing.Garden)</dd>
+                    </div>
+
+                    <div>
+                        <dt>Swimming pool</dt>
+                        <dd>@FormatBoolean(listing.SwimmingPool)</dd>
+                    </div>
+
+                    <div>
+                        <dt>Parking</dt>
+                        <dd>@FormatBoolean(listing.Parking)</dd>
+                    </div>
+
+                    <div>
+                        <dt>Balcony</dt>
+                        <dd>@FormatBoolean(listing.Balcony)</dd>
+                    </div>
+                </dl>
+
+                <p class="listing-description">
+                    @listing.Description
+                </p>
+
+                <footer class="listing-id">
+                    Listing ID: @listing.Id
+                </footer>
+            </article>
+        }
+    </div>
+}
+
+@functions {
+    static string FormatBoolean(bool value)
+    {
+        if (value)
+        {
+            return "Yes";
+        }
+
+        return "No";
+    }
+}

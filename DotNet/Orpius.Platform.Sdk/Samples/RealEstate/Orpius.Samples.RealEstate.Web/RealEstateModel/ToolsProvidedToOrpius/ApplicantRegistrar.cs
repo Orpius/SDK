@@ -30,10 +30,11 @@ namespace Orpius.Samples.RealEstate
 			Guid realEstateAgentId = context.GetRequiredGuidContextValue(
 				RealEstateContextKeys.RealEstateAgentId);
 
-			RegisterApplicantResult result = await applicantDatabase.RegisterAsync(
-												 request,
-												 emailAddress,
-												 realEstateAgentId);
+			RegisterApplicantResult result
+				= await applicantDatabase.RegisterAsync(
+					  request,
+					  emailAddress,
+					  realEstateAgentId);
 
 			RegisterApplicantResponse response = new()
 			{
@@ -82,10 +83,10 @@ namespace Orpius.Samples.RealEstate
 			RecordListingMatchesRequest request,
 			ICombinedContext context)
 		{
-			RecordListingMatchesResult result =
-				await applicantDatabase.RecordListingMatchesAsync(
-					request.ListingId,
-					request.MatchedApplicants);
+			RecordListingMatchesResult result
+				= await applicantDatabase.RecordListingMatchesAsync(
+					  request.ListingId,
+					  request.MatchedApplicants);
 
 			RecordListingMatchesResponse response = new()
 			{

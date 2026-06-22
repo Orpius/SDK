@@ -34,13 +34,7 @@ namespace Orpius.Samples.RealEstate
 
 			await notificationService.SendAsync(message);
 
-			SendRealEstateAgentNotificationResponse response = new()
-			{
-				RealEstateAgentId = request.RealEstateAgentId,
-				Sent = true
-			};
-
-			return response;
+			return new SendRealEstateAgentNotificationResponse();
 		}
 	}
 
@@ -68,14 +62,5 @@ namespace Orpius.Samples.RealEstate
 
 	public class SendRealEstateAgentNotificationResponse
 	{
-		[ToolProperty(
-			Required = true,
-			Description = "The real estate agent identifier that the notification was sent to.")]
-		public Guid RealEstateAgentId { get; set; }
-
-		[ToolProperty(
-			Required = true,
-			Description = "Indicates whether the notification was sent.")]
-		public bool Sent { get; set; }
 	}
 }

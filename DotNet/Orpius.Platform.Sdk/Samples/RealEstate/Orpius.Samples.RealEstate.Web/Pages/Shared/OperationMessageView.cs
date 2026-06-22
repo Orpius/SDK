@@ -18,5 +18,7 @@
 		public bool? Success { get; set; }
 
 		public Guid? ConversationId { get; set; }
+
+		public string? Html { get; set; }
 	}
 }

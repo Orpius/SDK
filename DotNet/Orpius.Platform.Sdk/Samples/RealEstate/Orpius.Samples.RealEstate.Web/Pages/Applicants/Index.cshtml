@@ -1,0 +1,61 @@
+﻿@page
+@model Orpius.Samples.RealEstate.Pages.Applicants.IndexModel
+
+@{
+    ViewData["Title"] = "Applicants";
+}
+
+<h1>Applicants</h1>
+
+<p>
+    These are the applicants registered during this demo session.
+</p>
+
+<p>
+    <a asp-page="/Applicants/Add" class="btn btn-primary">Add applicant</a>
+</p>
+
+@if (Model.Applicants.Count == 0)
+{
+    <div class="alert alert-info">
+        No applicants have been registered yet.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email address</th>
+                <th>Ideal property features</th>
+                <th>Applicant ID</th>
+                <th>Real estate agent ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (ApplicantRecord applicant in Model.Applicants)
+            {
+                <tr>
+                    <td>
+                        @($"{applicant.FirstName} {applicant.Surname}")
+                    </td>
+                    <td>
+                            @applicant.EmailAddress
+                    </td>
+                    <td class="applicant-features">
+                        @applicant.IdealPropertyFeatures
+                    </td>
+                    <td class="small text-muted">
+                        @applicant.Id
+                    </td>
+                    <td class="small text-muted">
+                        @applicant.RealEstateAgentId
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
