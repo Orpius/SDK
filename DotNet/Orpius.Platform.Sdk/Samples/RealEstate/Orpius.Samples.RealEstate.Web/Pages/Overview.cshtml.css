@@ -165,13 +165,13 @@
 		"icon sub";
 	column-gap: 0.75rem;
 	align-items: center;
-	width: clamp(8.5rem, 14vw, 12rem);
+	width: clamp(11.5rem, 15vw, 13rem);
+	box-sizing: border-box;
 	padding: 0.9rem 1rem;
 	border: 1px solid var(--cardBorder);
 	border-radius: 1.25rem;
 	background: var(--surfaceStrong);
 	box-shadow: 0 16px 34px rgba(46, 37, 25, 0.10);
-	animation: nodeBreathe 4.8s ease-in-out infinite;
 }
 
 	.diagramNode strong {

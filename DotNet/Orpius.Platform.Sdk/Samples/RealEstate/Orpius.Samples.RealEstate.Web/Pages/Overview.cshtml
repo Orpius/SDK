@@ -10,11 +10,6 @@
 			<p class="eyebrow">Orpius SDK sample</p>
 			<h1>Real Estate Flow</h1>
 		</div>
-
-		<nav class="overviewActions" aria-label="Demo actions">
-			<a asp-page="/Applicants/Add">Add applicant</a>
-			<a asp-page="/Listings/Add">Add listing</a>
-		</nav>
 	</header>
 
 	<section class="overviewStage" aria-label="Animated overview of the real estate assistant flow">
@@ -56,54 +51,9 @@
 					  d="M 620 330 C 700 392, 755 450, 810 460"
 					  marker-end="url(#arrowHead)" />
 
-				<path class="flowPath retrievalPath"
-					  d="M 820 145 C 735 185, 655 245, 600 300"
-					  marker-end="url(#arrowHead)" />
-
 				<path class="flowPath notifyPath"
-					  d="M 625 310 C 760 334, 860 366, 960 366"
+					  d="M 625 310 C 745 310, 855 310, 960 310"
 					  marker-end="url(#arrowHead)" />
-
-				<circle class="flowToken tokenOne" r="7" filter="url(#tokenGlow)">
-					<animateMotion dur="6s"
-								   repeatCount="indefinite"
-								   path="M 185 145 C 310 150, 390 230, 500 292" />
-				</circle>
-
-				<circle class="flowToken tokenTwo" r="7" filter="url(#tokenGlow)">
-					<animateMotion dur="6s"
-								   begin="0.9s"
-								   repeatCount="indefinite"
-								   path="M 620 292 C 700 220, 755 165, 810 160" />
-				</circle>
-
-				<circle class="flowToken tokenThree" r="7" filter="url(#tokenGlow)">
-					<animateMotion dur="6s"
-								   begin="1.8s"
-								   repeatCount="indefinite"
-								   path="M 185 475 C 315 465, 390 385, 500 330" />
-				</circle>
-
-				<circle class="flowToken tokenFour" r="7" filter="url(#tokenGlow)">
-					<animateMotion dur="6s"
-								   begin="2.7s"
-								   repeatCount="indefinite"
-								   path="M 620 330 C 700 392, 755 450, 810 460" />
-				</circle>
-
-				<circle class="flowToken tokenFive" r="7" filter="url(#tokenGlow)">
-					<animateMotion dur="6s"
-								   begin="3.6s"
-								   repeatCount="indefinite"
-								   path="M 820 145 C 735 185, 655 245, 600 300" />
-				</circle>
-
-				<circle class="flowToken tokenSix" r="7" filter="url(#tokenGlow)">
-					<animateMotion dur="6s"
-								   begin="4.5s"
-								   repeatCount="indefinite"
-								   path="M 625 310 C 760 334, 860 366, 960 366" />
-				</circle>
 			</svg>
 
 			<div class="diagramNode inputNode applicantNode">
