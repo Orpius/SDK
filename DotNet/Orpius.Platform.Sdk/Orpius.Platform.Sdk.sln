@@ -23,6 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstate", "RealEstate", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orpius.Samples.RealEstate.Web", "Samples\RealEstate\Orpius.Samples.RealEstate.Web\Orpius.Samples.RealEstate.Web.csproj", "{8346C04E-C221-44E3-957D-28B5547A2ED0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscellanea", "Miscellanea", "{15FDEC66-68E6-485D-AB24-8CB77F85870B}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
