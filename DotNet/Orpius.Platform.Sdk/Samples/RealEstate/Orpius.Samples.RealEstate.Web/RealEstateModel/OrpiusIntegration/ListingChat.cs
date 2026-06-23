@@ -1,18 +1,22 @@
 ﻿using System.Runtime.CompilerServices;
 
+using Orpius.Platform.Inferencing;
 using Orpius.Platform.OperationsModel.RpcOperationsService;
+using Orpius.Platform.RpcServices;
 
 namespace Orpius.Samples.RealEstate
 {
-	public class ListingConversationService
+	public class ListingChat
 	{
-		readonly RealEstateConversationService conversationService;
+		readonly IOperationsService operationsService;
+		readonly SampleOptions options;
+		readonly MarkdownRenderer markdownRenderer = new();
 
-		public ListingConversationService(
-			RealEstateConversationService conversationService)
+		public ListingChat(IOperationsService operationsService,
+						   SampleOptions options)
 		{
-			this.conversationService = conversationService
-									   ?? throw new ArgumentNullException(nameof(conversationService));
+			this.operationsService = operationsService ?? throw new ArgumentNullException(nameof(operationsService));
+			this.options           = options           ?? throw new ArgumentNullException(nameof(options));
 		}
 
 		public async IAsyncEnumerable<OperationMessageView> AddListingFromTextAsync(
@@ -21,14 +25,16 @@ namespace Orpius.Samples.RealEstate
 			string? jsonProvidedToAgent,
 			[EnumeratorCancellation] CancellationToken token)
 		{
-			RealEstateConversationRequest request = new()
+			UserMessage userMessage = new()
 			{
-				MessageText              = CreateMessageText(listingText, conversationId),
-				ConversationId           = conversationId,
-				ShowMessageAsUserMessage = false,
-				JsonProvidedToAgent = ShouldProvideImageToAgent(conversationId)
-										  ? jsonProvidedToAgent
-										  : null,
+				Text = CreateMessageText(listingText, conversationId)
+			};
+
+			ChatRequest chatRequest = new(
+				operationExternalId: options.Operations.ExternalId,
+				userMessage: userMessage)
+			{
+				ConversationId = ChatSupport.NormaliseConversationId(conversationId),
 				Tools = new List<Tool>
 				{
 					new(name: nameof(PropertyLister))
@@ -46,17 +52,14 @@ namespace Orpius.Samples.RealEstate
 				}
 			};
 
-			await foreach (OperationMessageView message in conversationService.SendAsync(
-							   request,
+			await foreach (OperationMessageView message in ChatSupport.SendAsync(
+							   operationsService,
+							   chatRequest,
+							   markdownRenderer,
 							   token))
 			{
 				yield return message;
 			}
-		}
-
-		static bool ShouldProvideImageToAgent(Guid? conversationId)
-		{
-			return conversationId is null || conversationId == Guid.Empty;
 		}
 
 		static string CreateMessageText(string listingText,

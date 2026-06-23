@@ -7,12 +7,12 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Listings
 {
 	public class AddModel : PageModel
 	{
-		readonly ListingConversationService conversationService;
+		readonly ListingChat listingChat;
 
-		public AddModel(ListingConversationService conversationService)
+		public AddModel(ListingChat listingChat)
 		{
-			this.conversationService = conversationService
-									   ?? throw new ArgumentNullException(nameof(conversationService));
+			this.listingChat = listingChat
+									   ?? throw new ArgumentNullException(nameof(listingChat));
 		}
 
 		[BindProperty]
@@ -83,7 +83,7 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Listings
 			}
 
 			await foreach (OperationMessageView message in
-						   conversationService.AddListingFromTextAsync(
+						   listingChat.AddListingFromTextAsync(
 							   ListingText,
 							   ConversationId,
 							   // Disabled until file attachment in place.

@@ -1,6 +1,6 @@
 ﻿namespace Orpius.Samples.RealEstate
 {
-	public static class RealEstateContextKeys
+	public static class ContextKeys
 	{
 		public const string ApplicantEmailAddress = "ApplicantEmailAddress";
 

@@ -1,6 +1,6 @@
 ﻿namespace Orpius.Samples
 {
-	public class OrpiusSampleOptions
+	public class SampleOptions
 	{
 		public const string SectionName = "OrpiusSample";
 
@@ -102,15 +102,15 @@
 
 	public class SampleOptionsRetriever
 	{
-		public static OrpiusSampleOptions GetOptions(IConfiguration configuration)
+		public static SampleOptions GetOptions(IConfiguration configuration)
 		{
 			IConfigurationSection section = configuration.GetRequiredSection(
-				OrpiusSampleOptions.SectionName);
+				SampleOptions.SectionName);
 
-			OrpiusSampleOptions options
-				= section.Get<OrpiusSampleOptions>()
+			SampleOptions options
+				= section.Get<SampleOptions>()
 				  ?? throw new InvalidOperationException(
-					  $"The '{OrpiusSampleOptions.SectionName}' configuration section is missing.");
+					  $"The '{SampleOptions.SectionName}' configuration section is missing.");
 
 			options.Validate();
 

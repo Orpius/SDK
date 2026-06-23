@@ -1,23 +1,25 @@
 ﻿using System.Runtime.CompilerServices;
 
+using Orpius.Platform.Inferencing;
 using Orpius.Platform.OperationsModel.RpcOperationsService;
+using Orpius.Platform.RpcServices;
 
 namespace Orpius.Samples.RealEstate
 {
-	public class ApplicantConversationService
+	public class ApplicantChat
 	{
-		readonly RealEstateConversationService conversationService;
+		readonly IOperationsService operationsService;
+		readonly SampleOptions options;
 		readonly IRealEstateAgentIdentityService identityService;
+		readonly MarkdownRenderer markdownRenderer = new();
 
-		public ApplicantConversationService(
-			RealEstateConversationService conversationService,
-			IRealEstateAgentIdentityService identityService)
+		public ApplicantChat(IOperationsService operationsService,
+							 SampleOptions options,
+							 IRealEstateAgentIdentityService identityService)
 		{
-			this.conversationService = conversationService
-									   ?? throw new ArgumentNullException(nameof(conversationService));
-
-			this.identityService = identityService
-										 ?? throw new ArgumentNullException(nameof(identityService));
+			this.operationsService = operationsService ?? throw new ArgumentNullException(nameof(operationsService));
+			this.options           = options           ?? throw new ArgumentNullException(nameof(options));
+			this.identityService   = identityService   ?? throw new ArgumentNullException(nameof(identityService));
 		}
 
 		public async IAsyncEnumerable<OperationMessageView> AddApplicantFromTextAsync(
@@ -28,11 +30,16 @@ namespace Orpius.Samples.RealEstate
 		{
 			Guid realEstateAgentId = identityService.GetCurrentRealEstateAgentId();
 
-			RealEstateConversationRequest request = new()
+			UserMessage userMessage = new()
 			{
-				MessageText = CreateMessageText(applicantText, conversationId),
-				ConversationId = conversationId,
-				ShowMessageAsUserMessage = false,
+				Text = CreateMessageText(applicantText, conversationId)
+			};
+
+			ChatRequest chatRequest = new(
+				operationExternalId: options.Operations.ExternalId,
+				userMessage: userMessage)
+			{
+				ConversationId = ChatSupport.NormaliseConversationId(conversationId),
 				Tools = new List<Tool>
 				{
 					new(name: nameof(ApplicantRegistrar))
@@ -40,15 +47,18 @@ namespace Orpius.Samples.RealEstate
 						ToolPresence = ToolPresence.Required
 					}
 				},
-				SharedContext = new Dictionary<string, string>
+				Context = new Dictionary<string, string>
 				{
-					[RealEstateContextKeys.ApplicantEmailAddress] = emailAddress.Trim(),
-					[RealEstateContextKeys.RealEstateAgentId] = realEstateAgentId.ToString()
+					[ContextKeys.ApplicantEmailAddress] = emailAddress.Trim(),
+					[ContextKeys.RealEstateAgentId]     = realEstateAgentId.ToString()
 				}
 			};
 
-			await foreach (OperationMessageView message
-						   in conversationService.SendAsync(request, token))
+			await foreach (OperationMessageView message in ChatSupport.SendAsync(
+							   operationsService,
+							   chatRequest,
+							   markdownRenderer,
+							   token))
 			{
 				yield return message;
 			}

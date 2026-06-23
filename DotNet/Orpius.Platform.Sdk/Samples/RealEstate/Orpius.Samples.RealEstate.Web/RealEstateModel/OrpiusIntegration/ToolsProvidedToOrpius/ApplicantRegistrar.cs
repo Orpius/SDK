@@ -25,10 +25,10 @@ namespace Orpius.Samples.RealEstate
 			ICombinedContext context)
 		{
 			string emailAddress = context.GetRequiredContextValue(
-				RealEstateContextKeys.ApplicantEmailAddress);
+				ContextKeys.ApplicantEmailAddress);
 
 			Guid realEstateAgentId = context.GetRequiredGuidContextValue(
-				RealEstateContextKeys.RealEstateAgentId);
+				ContextKeys.RealEstateAgentId);
 
 			RegisterApplicantResult result
 				= await applicantDatabase.RegisterAsync(

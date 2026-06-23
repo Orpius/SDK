@@ -27,7 +27,7 @@ namespace Orpius.Samples.RealEstate.Web
 
 			IServiceCollection services = builder.Services;
 
-			OrpiusSampleOptions sampleOptions
+			SampleOptions sampleOptions
 				= SampleOptionsRetriever.GetOptions(builder.Configuration);
 
 			services.AddSingleton(sampleOptions);
@@ -38,9 +38,8 @@ namespace Orpius.Samples.RealEstate.Web
 			services.AddSingleton<NotificationService>();
 			services.AddSingleton<RealEstateAgentMessenger>();
 
-			services.AddScoped<RealEstateConversationService>();
-			services.AddScoped<ApplicantConversationService>();
-			services.AddScoped<ListingConversationService>();
+			services.AddScoped<ApplicantChat>();
+			services.AddScoped<ListingChat>();
 
 			services.AddScoped<
 				IRealEstateAgentIdentityService,

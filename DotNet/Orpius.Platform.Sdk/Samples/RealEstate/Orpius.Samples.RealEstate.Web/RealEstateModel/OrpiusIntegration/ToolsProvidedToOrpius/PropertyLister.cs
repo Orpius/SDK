@@ -13,13 +13,14 @@ namespace Orpius.Samples.RealEstate
 								   ?? throw new ArgumentNullException(nameof(listingDatabase));
 		}
 
-		[ToolMethod(Description
-			= """
-			  Register a new property listing.
-			  Use this when an estate agent provides a description of a house,
-			  flat, apartment, or other property that is available for sale.
-			  The property details should be extracted from the estate agent's description.
-			  """)]
+		[ToolMethod(
+			Description
+				= """
+				  Register a new property listing.
+				  Use this when an estate agent provides a description of a house,
+				  flat, apartment, or other property that is available for sale.
+				  The property details should be extracted from the estate agent's description.
+				  """)]
 		public async Task<RegisterPropertyListingResponse> RegisterPropertyListing(
 			RegisterPropertyListingRequest request,
 			ICombinedContext context)

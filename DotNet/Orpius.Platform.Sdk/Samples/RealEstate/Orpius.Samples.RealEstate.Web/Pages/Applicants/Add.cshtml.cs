@@ -7,12 +7,12 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Applicants
 {
 	public class AddModel : PageModel
 	{
-		readonly ApplicantConversationService conversationService;
+		readonly ApplicantChat applicantChat;
 
-		public AddModel(ApplicantConversationService conversationService)
+		public AddModel(ApplicantChat applicantChat)
 		{
-			this.conversationService = conversationService
-									   ?? throw new ArgumentNullException(nameof(conversationService));
+			this.applicantChat = applicantChat
+									   ?? throw new ArgumentNullException(nameof(applicantChat));
 		}
 
 		[BindProperty]
@@ -74,7 +74,7 @@ namespace Orpius.Samples.RealEstate.Web.Pages.Applicants
 				token);
 
 			await foreach (OperationMessageView message in
-						   conversationService.AddApplicantFromTextAsync(
+						   applicantChat.AddApplicantFromTextAsync(
 							   EmailAddress,
 							   ApplicantText,
 							   ConversationId,
