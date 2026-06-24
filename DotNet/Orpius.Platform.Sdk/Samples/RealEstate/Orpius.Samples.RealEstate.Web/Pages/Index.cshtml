@@ -6,177 +6,245 @@
 }
 
 <div class="realEstateLanding">
-<section class="hero">
-	<div class="heroText">
-		<p class="eyebrow">Orpius SDK sample</p>
-		<h1>Real Estate Assistant</h1>
-		<p class="lead">
-			This sample shows how Orpius can sit inside a real estate application,
-			turn unstructured information into structured business data, and then
-			continue the workflow by matching applicants to new property listings.
-		</p>
-
-		<div class="heroActions">
-			<a class="primaryAction" asp-page="/Applicants/Add">
-				Add an applicant
-			</a>
-
-			<a class="secondaryAction" asp-page="/Listings/Add">
-				Add a property listing
-			</a>
-		</div>
-	</div>
-
-	<div class="heroPanel">
-		<div class="agentCard">
-			<div class="agentIcon">🏠</div>
-			<div>
-				<strong>Estate agent</strong>
-				<span>Uses natural language instead of rigid forms</span>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section class="workflowSection">
-	<div class="sectionIntro">
-		<p class="eyebrow">Demo flow</p>
-		<h2>From conversation to business action</h2>
-		<p>
-			The real estate application exposes ordinary operations as tools.
-			The LLM understands the goal, chooses the right tools, and Orpius
-			provides the controlled execution layer.
-		</p>
-	</div>
-
-	<div class="workflowDiagram" aria-label="Real estate assistant workflow">
-		<div class="flowColumn applicantFlow">
-			<div class="flowLabel">Applicant flow</div>
-
-			<div class="flowStep step1">
-				<div class="stepNumber">1</div>
-				<h3>Agent adds applicant</h3>
-				<p>
-					During an exhibition or enquiry, the agent describes what the
-					applicant is looking for.
-				</p>
-			</div>
-
-			<div class="flowArrow"></div>
-
-			<div class="flowStep step2">
-				<div class="stepNumber">2</div>
-				<h3>LLM extracts preferences</h3>
-				<p>
-					Orpius turns the unstructured description into a structured
-					applicant registration request.
-				</p>
-			</div>
-
-			<div class="flowArrow"></div>
-
-			<div class="flowStep databaseStep step3">
-				<div class="stepNumber">3</div>
-				<h3>Applicant profile saved</h3>
-				<p>
-					The application stores the applicant’s structured property
-					preferences.
-				</p>
-			</div>
+	<section class="hero">
+		<div class="heroText">
+			<p class="eyebrow">Orpius SDK sample</p>
+			<h1>Real Estate Assistant</h1>
+			<p class="lead">
+				This sample shows how Orpius can sit inside a real estate application,
+				turn unstructured information into structured business data, and then
+				continue the workflow by matching applicants to new property listings.
+			</p>
 		</div>
 
-		<div class="flowColumn listingFlow">
-			<div class="flowLabel">Listing flow</div>
+		<div class="heroPanel">
+			<div class="demoSummaryCard">
+				<p class="eyebrow">What you can try</p>
+				<h2>Natural language workflows</h2>
 
-			<div class="flowStep step4">
-				<div class="stepNumber">4</div>
-				<h3>Agent adds listing</h3>
-				<p>
-					Later, the agent describes a new property listing in natural
-					language.
-				</p>
+				<ul>
+					<li>Add an applicant from a plain English description.</li>
+					<li>Create a property listing without filling in a rigid form.</li>
+					<li>Let Orpius match applicants to listings and trigger notifications.</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="setupSection">
+		<div class="sectionIntro">
+			<p class="eyebrow">Setup</p>
+			<h2>Configure the Orpius Agent and Operation</h2>
+			<p>
+				Before running the sample, create an Agent and Operation in the
+				Orpius Console. The Agent defines how the LLM should behave, while
+				the Operation provides the communication layer between this application
+				and Orpius.
+			</p>
+		</div>
+
+		<div class="setupSteps">
+			<div class="setupCard">
+				<h2>1. Create the Agent</h2>
+
+				<ol>
+					<li>Create a new Agent in the Orpius Console.</li>
+					<li>Assign the Agent to a language model.</li>
+					<li>Set the Agent <strong>Persona</strong> to:</li>
+				</ol>
+
+				<pre class="promptBlock"><code>You are a helpful assistant for handling real estate operations for estate agents. You use tools to help estate agents create property listings and match potential buyers, known as applicants, to property listings.</code></pre>
 			</div>
 
-			<div class="flowArrow"></div>
+			<div class="setupCard">
+				<h2>2. Create the Operation</h2>
 
-			<div class="flowStep step5">
-				<div class="stepNumber">5</div>
-				<h3>LLM structures the listing</h3>
-				<p>
-					Orpius converts the listing description into a structured
-					property registration request.
-				</p>
+				<ol>
+					<li>Create a new Operation.</li>
+					<li>Give it a name, such as <strong>RealEstate</strong>.</li>
+					<li>Assign the Agent you created above to the Operation.</li>
+					<li>Set the Operation <strong>Instructions</strong> to:</li>
+				</ol>
+
+				<pre class="promptBlock"><code>Handle real estate agent requests to create property listings, add applicants, match applicants to property listings, and notify estate agents when suitable matches are found.</code></pre>
 			</div>
 
-			<div class="flowArrow"></div>
+			<div class="setupCard">
+				<h2>3. Update launch settings</h2>
 
-			<div class="flowStep databaseStep step6">
-				<div class="stepNumber">6</div>
-				<h3>Listing saved</h3>
 				<p>
-					The application stores the property listing in its own database.
+					Update the <code>Properties/launchSettings.json</code> file in this project
+					with the Operation credentials from the Orpius Console.
+				</p>
+
+				<ol>
+					<li>
+						In the Operation view, copy the Operation <strong>External Id</strong>
+						and <strong>Access Key 1</strong>.
+					</li>
+					<li>
+						Set the tool registration values using the <strong>External ID</strong>
+						and <strong>Access Key</strong> found under
+						<strong>Agent Tools / Custom Tools</strong>.
+					</li>
+					<li>
+						Set <code>IncomingUrl</code> to the URL provided by your Cloudflare
+						secure channel.
+					</li>
+				</ol>
+
+				<p>
+					For local development, Orpius needs a secure channel back to this sample
+					application so it can call the registered tools.
+					See the
+					<a href="https://github.com/Orpius/SDK/blob/main/docs/UserGuide/CreatingAChannel/index.md"
+					   target="_blank"
+					   rel="noopener noreferrer">SDK User Guide</a>
+					for more information on creating a secure channel.
 				</p>
 			</div>
 		</div>
+	</section>
 
-		<div class="flowColumn matchingFlow">
-			<div class="flowLabel">Orpius continuation</div>
-
-			<div class="flowStep step7">
-				<div class="stepNumber">7</div>
-				<h3>Applicant profiles retrieved</h3>
-				<p>
-					Orpius calls a tool to get the existing applicant profiles and
-					their desired features.
-				</p>
-			</div>
-
-			<div class="flowArrow"></div>
-
-			<div class="flowStep step8">
-				<div class="stepNumber">8</div>
-				<h3>Matches identified</h3>
-				<p>
-					The LLM compares the new property against applicant preferences
-					and records suitable matches.
-				</p>
-			</div>
-
-			<div class="flowArrow"></div>
-
-			<div class="flowStep notifyStep step9">
-				<div class="stepNumber">9</div>
-				<h3>Agents notified</h3>
-				<p>
-					If matches are found, notifications are sent to the estate agents
-					who own the matched applicants.
-				</p>
-			</div>
+	<section class="workflowSection">
+		<div class="sectionIntro">
+			<p class="eyebrow">Demo flow</p>
+			<h2>From conversation to business action</h2>
+			<p>
+				The real estate application exposes ordinary operations as tools.
+				The LLM understands the goal, chooses the right tools, and Orpius
+				provides the controlled execution layer.
+			</p>
 		</div>
 
-		<div class="pulseLine lineOne"></div>
-		<div class="pulseLine lineTwo"></div>
-	</div>
-</section>
+		<div class="workflowDiagram" aria-label="Real estate assistant workflow">
+			<div class="flowColumn applicantFlow">
+				<div class="flowLabel">Applicant flow</div>
 
-<section class="explanationSection">
-    <div class="explanationCard">
-        <h2>What this demonstrates</h2>
-        <p>
-            The sample is not just showing text extraction. It demonstrates an
-            AI-driven workflow where the LLM can call application tools, pass
-            structured data, retrieve existing business records, make decisions,
-            record results, and trigger follow-up actions.
-        </p>
-    </div>
+				<div class="flowStep step1">
+					<div class="stepNumber">1</div>
+					<h3>Agent adds applicant</h3>
+					<p>
+						During an exhibition or enquiry, the agent describes what the
+						applicant is looking for.
+					</p>
+				</div>
 
-    <div class="explanationCard">
-        <h2>Why Orpius matters</h2>
-        <p>
-            Orpius provides the operational layer around the LLM: tool execution,
-            structured contracts, application integration, controlled access, state,
-            and continuation of work beyond a single prompt.
-        </p>
-    </div>
-</section>
+				<div class="flowArrow"></div>
+
+				<div class="flowStep step2">
+					<div class="stepNumber">2</div>
+					<h3>LLM extracts preferences</h3>
+					<p>
+						Orpius turns the unstructured description into a structured
+						applicant registration request.
+					</p>
+				</div>
+
+				<div class="flowArrow"></div>
+
+				<div class="flowStep databaseStep step3">
+					<div class="stepNumber">3</div>
+					<h3>Applicant profile saved</h3>
+					<p>
+						The application stores the applicant’s structured property
+						preferences.
+					</p>
+				</div>
+			</div>
+
+			<div class="flowColumn listingFlow">
+				<div class="flowLabel">Listing flow</div>
+
+				<div class="flowStep step4">
+					<div class="stepNumber">4</div>
+					<h3>Agent adds listing</h3>
+					<p>
+						Later, the agent describes a new property listing in natural
+						language.
+					</p>
+				</div>
+
+				<div class="flowArrow"></div>
+
+				<div class="flowStep step5">
+					<div class="stepNumber">5</div>
+					<h3>LLM structures the listing</h3>
+					<p>
+						Orpius converts the listing description into a structured
+						property registration request.
+					</p>
+				</div>
+
+				<div class="flowArrow"></div>
+
+				<div class="flowStep databaseStep step6">
+					<div class="stepNumber">6</div>
+					<h3>Listing saved</h3>
+					<p>
+						The application stores the property listing in its own database.
+					</p>
+				</div>
+			</div>
+
+			<div class="flowColumn matchingFlow">
+				<div class="flowLabel">Orpius continuation</div>
+
+				<div class="flowStep step7">
+					<div class="stepNumber">7</div>
+					<h3>Applicant profiles retrieved</h3>
+					<p>
+						Orpius calls a tool to get the existing applicant profiles and
+						their desired features.
+					</p>
+				</div>
+
+				<div class="flowArrow"></div>
+
+				<div class="flowStep step8">
+					<div class="stepNumber">8</div>
+					<h3>Matches identified</h3>
+					<p>
+						The LLM compares the new property against applicant preferences
+						and records suitable matches.
+					</p>
+				</div>
+
+				<div class="flowArrow"></div>
+
+				<div class="flowStep notifyStep step9">
+					<div class="stepNumber">9</div>
+					<h3>Agents notified</h3>
+					<p>
+						If matches are found, notifications are sent to the estate agents
+						who own the matched applicants.
+					</p>
+				</div>
+			</div>
+
+			<div class="pulseLine lineOne"></div>
+			<div class="pulseLine lineTwo"></div>
+		</div>
+	</section>
+
+	<section class="explanationSection">
+		<div class="explanationCard">
+			<h2>What this demonstrates</h2>
+			<p>
+				The sample is not just showing text extraction. It demonstrates an
+				AI-driven workflow where the LLM can call application tools, pass
+				structured data, retrieve existing business records, make decisions,
+				record results, and trigger follow-up actions.
+			</p>
+		</div>
+
+		<div class="explanationCard">
+			<h2>Why Orpius matters</h2>
+			<p>
+				Orpius provides the operational layer around the LLM: tool execution,
+				structured contracts, application integration, controlled access, state,
+				and continuation of work beyond a single prompt.
+			</p>
+		</div>
+	</section>
 </div>
