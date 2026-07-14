@@ -29,9 +29,9 @@ add applicants, match applicants to property listings,
 and notify estate agents when suitable matches are found.
 ```
 
-## 3. Update the `launchSettings.json` File
+## 3. Update the `appsettings.Development.json` File
 
-Update the `Properties/launchSettings.json` file in this project with the Operation credentials from the Orpius Console.
+Update the `appsettings.Development.json` file in this project with the Operation credentials from the Orpius Console.
 
 1. In the Operation view, copy the Operation **External Id** and **Access Key 1**.
 
