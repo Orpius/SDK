@@ -3,7 +3,7 @@
 # Orpius SDK
 Software Development Kit for the Orpius Platform
 
-Orpius is a standalone platform that provides the entire intelligence and execution layer as infrastructure: orchestration, memory, tools, security, and sandboxed code execution are already part of the engine. Applications integrate with Orpius much like they integrate with a DBMS: by connecting to the engine.
+Orpius provides an AI execution and orchestration engine that your applications can integrate with as infrastructure. This allows existing applications to become agentic without being rebuilt from scratch, and without requiring you to build the orchestration, memory, tools, security, or sandboxed execution layer yourself.
 
 Please see the documentation for more details:
 
