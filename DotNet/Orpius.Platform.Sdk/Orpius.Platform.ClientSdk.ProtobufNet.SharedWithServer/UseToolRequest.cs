@@ -12,12 +12,14 @@ namespace Orpius.Platform.Tooling.RpcToolProviderService
 		public UseToolRequest(Dictionary<string, string> context,
 							  string toolName,
 							  string toolMember,
-							  string parameterAsJson)
+							  string parameterAsJson,
+							  Guid apiCallId)
 		{
-			Context     = AssertArg.IsNotNull(context, nameof(context));
-			ToolName    = AssertArg.IsNotNullOrWhiteSpace(toolName,   nameof(toolName));
-			ToolMember  = AssertArg.IsNotNullOrWhiteSpace(toolMember, nameof(toolMember));
+			Context         = AssertArg.IsNotNull(context, nameof(context));
+			ToolName        = AssertArg.IsNotNullOrWhiteSpace(toolName,   nameof(toolName));
+			ToolMember      = AssertArg.IsNotNullOrWhiteSpace(toolMember, nameof(toolMember));
 			ParameterAsJson = parameterAsJson;
+			ApiCallPublicId = apiCallId;
 		}
 #endif
 

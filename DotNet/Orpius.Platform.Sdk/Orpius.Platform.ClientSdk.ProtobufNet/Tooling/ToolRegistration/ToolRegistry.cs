@@ -171,7 +171,10 @@ namespace Orpius.Platform.Tooling.ToolRegistration
 			}
 
 			var trackedDictionary = new TrackedDictionary(request.Context);
-			var combinedContext = new CombinedContext(trackedDictionary, nativeContext);
+
+			var combinedContext = new CombinedContext(trackedDictionary,
+													  nativeContext,
+													  request.ApiCallPublicId);
 
 			return await registryItem.ToolInvoker.InvokeToolAsync(
 					   request,

@@ -5,6 +5,8 @@ namespace Orpius.Platform.Tooling
 {
 	public interface ICombinedContext
 	{
+		Guid           ApiCallId     { get; set; }
+
 		public object? NativeContext { get; set; }
 
 		IDictionary<string, string> SharedContext { get; set; }
@@ -12,12 +14,17 @@ namespace Orpius.Platform.Tooling
 
 	public class CombinedContext : ICombinedContext
 	{
-		public CombinedContext(IDictionary<string, string> sharedDictionary, object? nativeContext)
+		public CombinedContext(IDictionary<string, string> sharedDictionary,
+							   object? nativeContext,
+							   Guid apiCallId)
 		{
-			this.SharedContext = sharedDictionary
-								 ?? throw new ArgumentNullException(nameof(sharedDictionary));
+			SharedContext = sharedDictionary
+							?? throw new ArgumentNullException(nameof(sharedDictionary));
 			NativeContext = nativeContext;
+			ApiCallId     = apiCallId;
 		}
+
+		public Guid ApiCallId { get; set; }
 
 		public object?                     NativeContext { get; set; }
 		public IDictionary<string, string> SharedContext { get; set; }
