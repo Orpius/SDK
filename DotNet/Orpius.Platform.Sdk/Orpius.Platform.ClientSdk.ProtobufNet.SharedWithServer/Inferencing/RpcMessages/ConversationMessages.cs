@@ -90,10 +90,11 @@ namespace Orpius.Platform.Inferencing
 	[ProtoContract]
 	public enum SystemMessageType
 	{
-		ApiCallStart,
-		ApiCallEnd,
-		UserVisibleMessage,
-		UserVisibleError
+		ApiCallStart       = 0,
+		ApiCallEnd         = 1,
+		UserVisibleMessage = 2,
+		UserVisibleError   = 3,
+		ApiCallDeferred    = 4,
 	}
 
 	[ProtoContract]
