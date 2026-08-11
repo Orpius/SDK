@@ -95,69 +95,78 @@
 
 ## Introducing Orpius
 
-Welcome to Orpius, the secure AI platform that gives you everything you need to integrate, build, and use generative AI in your systems without the complexity of building and managing the underlying technology.
+Welcome to Orpius, a secure AI platform for working with AI, automating work, and building intelligent systems.
 
-Security and privacy are built into Orpius from the ground up. Data is secured both at rest and in transit, secrets are managed safely through dedicated tools that never expose them to models, and all server 
-and internal components follow industry best practices for infrastructure and data protection.
+Orpius brings AI agents, conversations, tools, events, schedules, integrations, and team collaboration together in one platform. You can use it directly to get work done, configure agents to work on your behalf, automate recurring or event-driven tasks, or extend it with your own applications and services.
+
+Agents can also involve people directly in their work. They can ask questions, request information or confirmation, and wait for a response before continuing. This allows people to remain part of automated processes whenever their input or judgement is required.
+
+Security and privacy are fundamental to Orpius. Data is protected both at rest and in transit, access is controlled through the platform's permissions system, and secrets are managed separately from AI conversations so that sensitive credentials do not need to be exposed to models. Orpius is designed so that organisations can use AI while retaining control over their data, infrastructure, users, and integrations.
+
+### For Individuals and Teams
+
+Orpius provides a common environment where people, agents, tools, files, applications, and automated processes can work together.
+
+You do not need to be a developer to use Orpius. Much of the platform can be used and configured simply by talking to an AI agent, either through the Orpius Console or by email.
+
+Agents understand the Orpius environment they operate in and can work with the platform itself on your behalf. You can say, "Send me a joke every day at 9 am," and the agent can create the schedule, ask "What work will you do tomorrow?" to see what it has planned, or ask "Who changed this file and what did they change?" to inspect its history.
+
+Orpius also helps you discover its capabilities conversationally. Ask how a feature works and the agent can explain it and, where appropriate, demonstrate it. For example, it can explain the Dialog service and then send you an email requesting your response.
+
+Through the Orpius Console, agents can:
+
+* Work with you through natural conversations.
+* Use tools and connected systems on your behalf.
+* Create and respond to schedules and events.
+* Ask for information, confirmation, or decisions when needed.
+* Work with version-controlled files, including their history and previous states.
+* Work alongside people and other agents within shared spaces.
+* Explain and demonstrate the capabilities available to them.
+
 
 ### For Developers
 
-Orpius provides a complete, secure AI infrastructure for adding intelligence to your applications, without engineering or maintaining the infrastructure yourself.
+Orpius provides a complete AI application platform without requiring you to build and maintain the underlying AI infrastructure yourself.
 
-Use Orpius as a:
+You can use Orpius as a:
 
-* **Foundation for integrating AI into existing applications**  
-  Integrate models, automation, and intelligent processing into your existing systems. Orpius manages the infrastructure, data security, and communication pipelines, allowing you to focus on application design and functionality.
+  * **Foundation for integrating AI into existing applications**:  Add agents, models, tools, automation, conversations, and intelligent processing to existing systems while Orpius manages the supporting infrastructure, security, routing, and communication.
 
-* **Foundation for developing new AI systems, applications, and tools**  
-  Build AI-powered solutions from the ground up in a ready-to-use environment designed for rapid development, flexibility, and robust security.
+* **Foundation for building new AI applications and services**:  Build AI-powered products on top of an existing platform for agents, tools, conversations, events, schedules, permissions, and integration.
 
-### For Productivity and Operations Users
+* **Runtime for tools used by AI agents**:  Expose capabilities from your own applications and services so that authorised agents can use them as part of their work.
 
-Orpius isn't just for developers, it's also a powerful productivity platform.
+Platform for event-driven and automated AI workflows
+Connect AI behaviour to events, schedules, applications, and external systems without having to construct the entire orchestration layer yourself.
 
-All configuration and management are handled through the *Orpius Console*, a desktop client that runs on the same infrastructure as your applications. The Console provides an interactive, chat-based interface that understands the system itself, allowing you to set up and manage AI agents, models, schedules, events, and even your team without writing code.
+Developers can therefore concentrate on the capabilities that are specific to their application while Orpius provides the common foundation required to run them securely.
 
 ### What Orpius Provides
 
-Orpius provides a complete foundation for building AI applications.
+Our aim with Orpius is to make AI useful in everyday work without making people deal with the complexity behind it.
 
-It includes:
+We are building Orpius so that great results do not depend on always using the biggest or most expensive frontier model. Orpius gives models tools, context, memory, automation, and access to the systems around them, allowing even smaller models to do far more than they could on their own.
 
-* **Integration with external systems** through API-driven events 
-  or customer-facing AI agents.
-* **Isolated code execution environment** – agents can write compilable code and run it securely in a sandboxed environment.
-* **Orchestration** – manage complex workflows and interactions between agents.
-* **Events** – agents are triggered by external systems or internal processes.
-* **Notifications, messaging, and team awareness** – agents communicate via notifications and email, and are time-zone aware, enabling collaboration across teams.
-* **Scheduling** – a flexible system for performing activities at predefined times or intervals.
-* **Memory** – agents manage their own memory, deciding what to retain and when to use it.
-* **Video feed image analysis** – analyze video streams in real time.
-* **Web page retrieval** – extract information from web pages or APIs.
-* **Custom agent creation** – define agents with specific personas 
-  and instructions, targeting different language models.
-* **Support for multiple LLM providers and formats** – use different models for different agents.
-* **Shared team storage** – share files and data between agents and team members.
-* **Permissions and security** – control what agents and users can access or perform.
-* **Secrets management** – handle sensitive information securely without exposing it to language-model providers.
-* **Orchestration** – manage complex workflows and interactions between agents.
-* **Tool integration** – use built-in tools that provide core capabilities out of the box, with powerful support for custom tooling.
-* **Web Publishing** – expose generated content automatically. Files written to the `web` directory in isolated storage are served online, making it trivial for agents to publish and update content.
-* **Operation Relay** – allow one agent to trigger operations on another agent. This provides a simple, explicit mechanism for inter-agent coordination and delegation.
+We also don't want you locked into a particular AI provider or model. You can use the LLMs that suit your needs, or combine different models for different kinds of work, while Orpius provides the common environment around them.
 
+Orpius provides the building blocks needed to use AI as part of real applications and ongoing work, including:
 
-### Built-in Productivity Features
-
-The following examples show some of the productivity features available directly in the Console. They offer a glimpse of what you can accomplish in your own applications, though with custom tooling you can extend 
-these capabilities much further.
-
-For example, you can use chat in the Console to instruct Orpius to:
-
-* Schedule and perform tasks
-* Read, analyze, and write files
-* Apply image analysis to video streams in real time
-* Send emails and notifications to team members
-* Organize meetings that suit everyone's time zone
+* AI agents and model integration.
+* Conversational interaction.
+* Spaces for organising users, agents, resources, and work.
+* Tools that allow agents to interact with applications and services.
+* Events for responding to things that happen.
+* Schedules for recurring and time-based work.
+* Memory that agents manage themselves, deciding what to retain and when to use it.
+* Isolated compiled-code execution for securely building and running compiled programs in sandboxed environments.
+* Shared team storage for files and data used by agents and team members.
+* Version-controlled storage for tracking, comparing, and restoring changes to files.
+* Web publishing for automatically making agent-created content available online.
+* Video feed and image analysis for understanding visual content, including real-time video streams.
+* APIs and SDKs for application integration.
+* User, role, and permission management.
+* Secure handling of sensitive configuration and secrets.
+* Infrastructure for communication between users, agents, applications, and automated processes.
 
 ## Orpius Architectural Overview
 
@@ -323,11 +332,16 @@ Before you can start working with Orpius, you will need:
 If you want to test drive Orpius, we provide a free trial version for evaluation.
 See the [Trial Version](#trial-version) section for details.
 
-### From Configuration to Production
+### For Developers: Integrating Orpius with Your Application
 
-1. **Configure**: Define your Models, Agents, Events, Tools, and Operations in the Orpius Console. (You can think of Operations as the integration mechanism that allows your application to communicate with your Orpius AI Agents.)
-2. **Integrate with your system** using events or with operations and tooling; using the Orpius SDK libraries, allowing you to embed your AI assistant directly into your application.
-3. **Execute**: The AI assistant can now call your server-side tools. The Orpius Server runs them and manages orchestration, integration, state, storage, and security.
+This section is intended for developers who want to integrate Orpius with an existing application or build new applications on top of the platform.
+
+A typical integration involves three steps:
+
+1. **Configure Orpius** - Define the agents, models, tools, events, and operations your application will use. Much of this can be configured through the Orpius Console.
+2. **Connect your application** - Use Orpius operations, events, tools, APIs, and SDK libraries to connect your application to Orpius. Operations provide a primary way for your application to invoke AI capabilities, while tools allow agents to call functionality exposed by your application.
+3. **Run and orchestrate** - Once connected, agents can use your application's tools and respond to operations and events. Orpius manages the supporting orchestration, state, storage, communication, and security.
+
 
 ```mermaid
 sequenceDiagram
@@ -674,6 +688,11 @@ Orpius includes the following set of built-in tools:
 * **Memory** – Allows an agent to add a record of an event or experience to the agents memory store, enabling it to track changes across multiple tasks.
 * **EventTrigger** - Triggers an event that was previously registered.
 * **OperationRelay** - Allows an agent to call an Operation directly; enabling agent-to-agent communication, and facilitates the testing of Operations via the Orpius Console.
+* **Git** - Every Orpius workspace is backed by a Git repository, with file changes committed automatically. Agents can inspect history, compare versions, identify changes, and restore earlier states, providing built-in traceability and version control without requiring users to manage Git themselves.
+* **Dialog** - Let agents start conversations with you or other team members when they need input, information, confirmation, or a decision. 
+Dialogs can support anything from a simple question to an ongoing conversation while work continues around it.
+* **Email** – You can think of Email as another interface into Orpius. You can send it a question, send it work, send it files, or address an operation designed for a particular purpose. And because the operation already has its tools, instructions and context, you do not have to explain the mechanics of what should happen with every email.
+ For example, you might email a Webmaster operation with changes you want made to your website and let Orpius handle the work.
 
 The following example shows how a simple instruction can lead the agent to autonomously combine multiple tools to complete the task.
 
