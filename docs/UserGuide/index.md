@@ -1402,8 +1402,6 @@ For example, you might create an Operation called **AskOrpius** with simple inst
 
 You can then select the tools you want the Operation to use. For example, you might enable **Git** and **CodeExecution** so that Orpius can inspect the workspace, analyse files or perform calculations when answering questions.
 
-![Creaing an AskQuestions Operation](Images/AskQuestionsOperation.png.png)
-
 Once the Operation is saved, you can find its generated email address at the bottom of the Operation configuration page.
 
 You can then send questions or work to that address in much the same way as you would through Chat. Replies within the same email thread remain part of the conversation context sent to the LLM, so for unrelated requests, or if you want to minimise token usage, it is best to start a new email.
