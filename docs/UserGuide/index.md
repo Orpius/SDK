@@ -4,7 +4,7 @@
   - [Introducing Orpius](#introducing-orpius)
     - [For Individuals and Teams](#for-individuals-and-teams)
     - [For Developers](#for-developers)
-    - [What Orpius Provides](#what-orpius-provides)
+    - [What You Can Do with Orpius](#what-you-can-do-with-orpius)
   - [Orpius Architectural Overview](#orpius-architectural-overview)
   - [How Orpius Protects Your Data](#how-orpius-protects-your-data)
     - [Default Hosting Location (managed service)](#default-hosting-location-managed-service)
@@ -48,6 +48,7 @@
   - [Using Secrets to Store Sensitive Information](#using-secrets-to-store-sensitive-information)
     - [Configuring a Secret](#configuring-a-secret)
     - [Using a Secret](#using-a-secret)
+  - [Understanding How Work Starts in Orpius](#understanding-how-work-starts-in-orpius)
   - [Using Operations to Connect Your Application to AI Agents](#using-operations-to-connect-your-application-to-ai-agents)
     - [Creating Custom Tools for Operations](#creating-custom-tools-for-operations)
     - [Calling Operations from Chats, Events, Schedules, and other Operations](#calling-operations-from-chats-events-schedules-and-other-operations)
@@ -81,6 +82,20 @@
     - [Uploading files](#uploading-files)
     - [Downloading files](#downloading-files)
     - [Creating files using chat](#creating-files-using-chat)
+  - [Tracking and Restoring Changes with Git](#tracking-and-restoring-changes-with-git)
+    - [You do not need to know Git](#you-do-not-need-to-know-git)
+    - [Restoring Earlier Versions](#restoring-earlier-versions)
+  - [Creating and Hosting Websites or Lightweight Apps with Orpius](#creating-and-hosting-websites-or-lightweight-apps-with-orpius)
+    - [Access to Published Content](#access-to-published-content)
+  - [Working with Orpius by Email](#working-with-orpius-by-email)
+    - [How safe is it?](#how-safe-is-it)
+    - [Using Email for General Questions](#using-email-for-general-questions)
+    - [Using Email for Specific Work](#using-email-for-specific-work)
+    - [Choosing Which Tools the Operation Can Use](#choosing-which-tools-the-operation-can-use)
+    - [Involving Other People](#involving-other-people)
+    - [Email Conversations and Context](#email-conversations-and-context)
+  - [Using Dialogs to Involve People](#using-dialogs-to-involve-people)
+    - [Dialogs vs Notifications](#dialogs-vs-notifications)
   - [Using Team Collaboration and Management](#using-team-collaboration-and-management)
     - [Leveraging Team Awareness in an Interactive Chat](#leveraging-team-awareness-in-an-interactive-chat)
     - [Applying Team Awareness in Agent Activities](#applying-team-awareness-in-agent-activities)
@@ -94,32 +109,63 @@
 
 ## Introducing Orpius
 
-Welcome to Orpius, a secure AI platform for working with AI, automating work, and building intelligent systems.
+Orpius is a collaborative cloud workspace with built-in agent infrastructure, where people, teams, departments and external participants can work together with AI in a shared environment.
 
-Orpius brings AI agents, conversations, tools, events, schedules, integrations, and team collaboration together in one platform. You can use it directly to get work done, configure agents to work on your behalf, automate recurring or event-driven tasks, or extend it with your own applications and services.
+The idea is to **move beyond AI as a one-to-one tool**, where everyone works with their own isolated AI, and create a shared environment where people, systems and AI can all participate in the work.
 
-Agents can also involve people directly in their work. They can ask questions, request information or confirmation, and wait for a response before continuing. This allows people to remain part of automated processes whenever their input or judgement is required, which is especially important for autonomous work that may continue over long periods of time.
+You can use Orpius directly because it already comes with a lot of built-in tools and capabilities. Or you can connect your own applications and services and extend it further.
 
-Security and privacy are fundamental to Orpius. Data is protected both at rest and in transit, access is controlled through the platform's permissions system, and secrets are managed separately from AI conversations so that sensitive credentials do not need to be exposed to models. Orpius is designed so that organisations can use AI while retaining control over their data, infrastructure, users, and integrations.
+Orpius is designed for work that does not require someone to sit in front of the AI all the time. Most of the work can happen in the background, while people are brought in whenever they are needed.
+
+Orpius has built-in ways for AI to ask questions, request information, seek confirmation or approval, and wait for a response before continuing with the work.
+
+Security and privacy are built into Orpius as well. Data is protected at rest and in transit, access is controlled through permissions, and secrets are kept separate from AI conversations so credentials do not need to be exposed to the models.
 
 ### For Individuals and Teams
 
-Orpius provides a common environment where people, agents, tools, files, applications, and automated processes can work together.
+Orpius provides a common environment where people and agents can work together.
 
 You do not need to be a developer to use Orpius. Much of the platform can be used and configured simply by talking to an AI agent, either through the Orpius Console or by email.
 
-Agents understand the Orpius environment they operate in and can use the platform itself on your behalf. You can say, *"Send me a joke every day at 9 am,"* and the agent will create the schedule for you. Or you can ask, *"What work will you do tomorrow?"* to see what it has planned, or *"Who changed this file and what did they change?"* to inspect the file's history.
+Agents understand the Orpius environment they operate in and can use the platform itself on your behalf. 
 
-Orpius also helps you discover its capabilities conversationally. Ask how a feature works and the agent can explain it and, where appropriate, demonstrate it. For example, it can explain the Dialog service and then send you an email requesting your response.
+For example, you can say:
+
+> *"Send Charlie an email with an interactive maths worksheet he can fill in and send back to you. Send it every second day, except weekends, so he can practise his times tables."* 
+
+Orpius will create the schedule and instruct itself to make it happen:
+
+> 1. Generate a worksheet containing 20 random multiplication questions for times tables from 1 to 10 (e.g., 1. 7 x 8 = ?, 2. 3 x 4 = ?).
+>
+> 2. Use the Dialog plugin to send this worksheet to @Charlie with the subject 'Times Table Practice Worksheet'.
+>
+> 3. Wait for the reply containing Charlie's answers.
+>
+> 4. Once the reply is received, grade the answers."
+
+You can change the schedule at any time simply by telling Orpius what you want to change, or you can edit it manually from the Schedule tab.
+
+For example, you can say:
+> "Please add to the instructions for the interactive times table practice schedule that if Charlie hasn't responded by 8pm that day, send him a reminder."
+
+Orpius will update the instructions for that schedule accordingly.
+
+In this example, Charlie is already a member of your Space, so Orpius knows who Charlie is and how to contact him.
+
+Orpius also helps you discover what it can do simply by asking.
+
+If you are not sure how something works, ask the agent. It can explain the feature and, where it makes sense, demonstrate it for you.
+
+For example, you can ask how the Dialog works. The agent can explain it, then actually use it to send you an email asking for a response.
 
 With Orpius, agents can:
 
-* Work with you through natural conversations.
+* Work with you through natural conversation.
 * Use tools and connected systems on your behalf.
-* Create and respond to schedules and events.
-* Ask for information, confirmation, or decisions when needed.
+* Create, manage and respond to schedules and events.
+* Ask for information, confirmation or decisions when needed.
 * Work with version-controlled files, including their history and previous states.
-* Work alongside people and other agents within shared spaces.
+* Work alongside people and other agents in shared spaces.
 * Explain and demonstrate the capabilities available to them.
 
 
@@ -139,32 +185,15 @@ You can use Orpius as a:
 
 Developers can concentrate on the capabilities that are specific to their application while Orpius provides the common foundation required to run them securely.
 
-### What Orpius Provides
+### What You Can Do with Orpius
 
-Our aim with Orpius is to make AI useful in everyday work without making people deal with the complexity behind it.
+Orpius is designed so that you can start with the work you want done. If you can describe what you want, you can usually just ask Orpius to do it.
 
-We are building Orpius so that great results do not depend on always using the biggest or most expensive frontier model. Orpius gives models tools, context, memory, automation, and access to the systems around them, allowing even smaller models to do far more than they could on their own.
+Of course, you can go much deeper if you want to. You can build sophisticated agentic environments, create Operations, connect internal and external systems, and control how everything works.
 
-We also don't want you locked into a particular AI provider or model. You can use the LLMs that suit your needs, or combine different models for different kinds of work, while Orpius provides the common environment around them.
+Orpius is built so AI can operate safely within a secure, auditable and reversible environment, where changes can be traced, and work can be reviewed or restored when needed. 
+This makes it suitable for an individual, a team, a department or an entire organisation.
 
-Orpius brings together the building blocks needed to use AI in everyday work and real applications, including:
-
-* AI agents and model integration.
-* Conversational interaction.
-* Spaces for organising users, agents, resources, and work.
-* Tools that allow agents to interact with applications and services.
-* Events for responding to things that happen.
-* Schedules for recurring and time-based work.
-* Memory that agents manage themselves, deciding what to retain and when to use it.
-* Isolated compiled-code execution for securely building and running compiled programs in sandboxed environments.
-* Shared team storage for files and data used by agents and team members.
-* Version-controlled storage for tracking, comparing, and restoring changes to files.
-* Web publishing for automatically making agent-created content available online.
-* Video feed and image analysis for understanding visual content, including real-time video streams.
-* APIs and SDKs for application integration.
-* User, role, and permission management.
-* Secure handling of sensitive configuration and secrets.
-* Infrastructure for communication between users, agents, applications, and automated processes.
 
 ## Orpius Architectural Overview
 
@@ -751,6 +780,14 @@ For a deep dive into custom tools, see the [SDK documentation](../DevelopmentGui
 
 Secrets are used to securely store sensitive information such as API keys, tokens, or passwords. These secrets can then be referenced in chat, code, or tool calls without exposing their actual values to language model providers.
 
+Agents are not automatically told which secrets are available. If you want an agent to use a secret, mention it in your prompt or instructions by name. For example:
+
+You can use the following secrets:
+- GoogleCalendarClientId
+- WeatherAPI
+
+The agent can then reference those secrets when carrying out the work, without needing to know their actual values.
+
 When interacting with an LLM provider, the system sends the secret reference (e.g., **<%=Key:SecretName%>**) rather than the actual value. The value itself is only resolved at runtime by the system when needed for a tool call.
 
 > **Note:** If a secret value is returned from an API or other external service as part of the agent's output, it may become visible to the LLM provider. Avoid exposing secret values in responses or messages wherever possible.
@@ -797,6 +834,22 @@ from https://www.weatherserviceexample.com?apikey=<%=Key:WeatherKey%>
 ```
 
 When the agent executes this instruction by calling a tool, the Orpius system replaces the secret reference with the actual API key value. This allows the API key to be securely injected at runtime without being exposed to the LLM provider.
+
+## Understanding How Work Starts in Orpius
+
+There are several ways to start work in Orpius. The appropriate one depends mainly on what should cause the work to begin.
+
+* **Chat** - Use Chat when you want to work with Orpius interactively.
+* **Operation** - Use an Operation to define a reusable kind of work that can be called when needed by a person, application, email or another part of Orpius.
+* **Event** - Use an Event when work should begin because something has happened.
+* **Schedule** - Use a Schedule when work should begin at a particular time or repeat at defined intervals.
+* **Email** - Use Email when it is a convenient way for a person or system to send work, information or files to Orpius. Email can also be routed directly to an Operation.
+
+These mechanisms define or initiate the work. They do not require you to create a separate AI agent for every individual task.
+
+For example, you do not need to create a separate AI agent just to handle customer complaints. Instead, you can create a Customer Complaint Operation that describes how that work should be done.
+
+A complaint might arrive when a customer submits a form, triggering an event, or when someone forwards a complaint by email. In either case, Orpius can invoke the same Operation and carry out the work using the agents, tools, instructions and context already available in the environment.
 
 ## Using Operations to Connect Your Application to AI Agents
 
@@ -1224,6 +1277,240 @@ Start a new **Chat**. Then, for example, you might enter:
 > *"Create a file called test.txt and insert 10 city names."*
 
 Orpius will create a new file named *test.txt* containing the 10 city names and save it in your isolated storage directory.
+
+## Tracking and Restoring Changes with Git
+
+Every Orpius space is backed by a Git repository. 
+When Orpius or a user changes files in the workspace, those changes are committed automatically.
+
+### You do not need to know Git
+
+You do not need to know Git or manage commits yourself. Orpius manages the repository in the background and gives agents access to the history when they need it.
+
+This means you can ask Orpius questions about that history: For example:
+
+User:
+>"When was the ledger.csv file last changed and what was changed?"
+
+Orpius:
+> "The ledger.csv file was last changed on August 27, 2026, at 11:58:52 UTC (by the AI agent Nyx as part of the receiptProcessing operation).
+What was changed:
+A new row was added to the ledger for a receipt (1005-receipt.jpg):
+• Filename: 1005-receipt.jpg
+• Date: 08/15/2017
+• Item: Draft Blackhouse, Cowboy 16oz Ribeye, Make It Blue, Add Lobster, CK Manhattan, Whistle Pig Rye 10yr, Duke 16oz Top Sirloin, Make It Blue
+• Price: 167.00
+• Tax: 12.94
+• Total: 179.94
+• Category: Meals & Entertainment"
+
+Orpius can use the Git history to determine not only what changed, but when it changed, who or what made the change, and the work that caused it.
+
+### Restoring Earlier Versions
+More importantly, you can ask Orpius to use that history to restore the workspace or individual files to an earlier state.
+
+You do not need to find a commit or know anything about Git. You can describe the point you want to return to in ordinary language.
+
+For example:
+
+> "Change the website back to how it was before 22 August."
+
+or
+
+> "Restore the files to the state they were in yesterday morning."
+
+or
+
+> "Undo the changes you just made."
+
+or
+
+> "The application was working before today's changes. Put it back to that state."
+
+Orpius can inspect the history, and restore the relevant files.
+
+Because the history itself is retained, going back does not mean losing everything that happened afterwards. You can inspect those later changes or ask Orpius to restore them again.
+
+For example, you can say:
+
+> "Actually, put it back to how it was before we reverted it."
+
+This gives you a workspace that can evolve freely while remaining traceable and reversible. You can let Orpius make substantial changes knowing that previous states remain available if you need to understand what happened, undo a change or return to an earlier point in time.
+
+## Creating and Hosting Websites or Lightweight Apps with Orpius
+
+Orpius can create and host web pages directly from your workspace and make them available through a web address. 
+
+Each Orpius Space has a dedicated Web folder. Anything placed in this folder is automatically published by Orpius. This makes it easy for an agent to create a web page, dashboard or lightweight application and make it immediately available without requiring you to set up a separate web server or hosting service.
+
+
+For example, you could ask:
+
+> "Create a simple dashboard from the data in sales.json."
+
+Or:
+
+> "Create an interactive HTML worksheet for practising French."
+
+Orpius will create the required files in the Web folder and make them available automatically.
+
+The main published page is normally index.html.
+
+You can find the link to this page from the top navigation bar in the Orpius Console. Where your Space name is shown, select the expand button to reveal the published web link.
+
+You can also ask Orpius directly for the link to a page it has created.
+
+For example:
+
+> "Give me the link to the sales dashboard."
+
+### Access to Published Content
+
+At present, content in the Web folder is published automatically.
+
+We plan to extend this with permission-based publishing, allowing you to control who can access published content, for example:
+
+* members of the Space only
+* selected users
+* publicly accessible pages
+
+This will allow the same publishing capability to be used for both internal applications and information that is intended to be shared publicly.
+
+## Working with Orpius by Email
+
+Email provides another way to work with Orpius without opening the Console.
+
+Behind the scenes, email works through Operations. Each Operation has its own generated email address, so sending an email to that address invokes the Operation.
+
+This means you can create different email addresses for different kinds of work, with each one having its own instructions, agent and permitted tools.
+
+### How safe is it?
+
+Orpius only accepts messages from authorised email addresses and verifies that the sender is genuine, helping protect against spoofed messages.
+Messages from other addresses are rejected and never reach the agent.
+
+The email address itself therefore does not need to be treated like a password or secret. Simply knowing the address is not enough to use the Operation.
+
+Any work started by email is also limited to the tools and permissions you have enabled for that Operation.
+
+
+### Using Email for General Questions
+
+For example, you might create an Operation called **AskOrpius** with simple instructions such as:
+
+>"Answer questions clearly and accurately. If you do not know something, say so rather than making it up."
+
+You can then select the tools you want the Operation to use. For example, you might enable **Git** and **CodeExecution** so that Orpius can inspect the workspace, analyse files or perform calculations when answering questions.
+
+![Creaing an AskQuestions Operation](Images/AskQuestionsOperation.png.png)
+
+Once the Operation is saved, you can find its generated email address at the bottom of the Operation configuration page.
+
+You can then send questions or work to that address in much the same way as you would through Chat. Replies within the same email thread remain part of the conversation context sent to the LLM, so for unrelated requests, or if you want to minimise token usage, it is best to start a new email.
+
+The full generated email address is not intended to be memorised. The recognisable part is the Operation name, which is included in the address so that you can easily identify its purpose.
+
+For example, you could send the following question to **AskQuestions**:
+
+> "When was ledger.csv last changed and what was changed?"
+
+Because the Operation has access to **Git**, Orpius can inspect the workspace history and answer the question.
+
+### Using Email for Specific Work
+
+An Operation can also be configured for a specific business process.
+
+For example, you might create an Operation called **ReceiptProcessing** and provide instructions describing how scanned receipts should be handled.
+
+Once that Operation has been configured, you can simply send or forward receipt images to its email address.
+
+You do not need to explain what should happen each time. The Operation already contains the instructions and tools required to carry out the work.
+
+In this case, the email may contain nothing more than the receipt images themselves.
+
+This makes email useful for repetitive work because the process is configured once and the sender only needs to provide the new information.
+
+### Choosing Which Tools the Operation Can Use
+
+The capabilities available when an email is processed depend on the tools enabled for the Operation.
+
+These are selected when configuring the Operation.
+
+For example:
+
+* A general question Operation might use Git and CodeExecution.
+* A receipt-processing Operation might use Image Analysis, CodeExecution and Git.
+* An Operation that needs input from other people might also be given access to Dialog.
+
+This allows each email address to expose only the capabilities required for its purpose.
+
+### Involving Other People
+
+If the Dialog tool is enabled for the Operation, Orpius can also involve other members of the Space while carrying out work started by email.
+
+For example, you might send:
+
+> "Ask Sarah for her view on the supplier's revised terms, consider her response together with the attached proposal, and email me your recommendation."
+
+Orpius can contact Sarah, wait for her response, continue the work using the information she provides, and then send the result back to you.
+
+This means an email can do more than trigger a simple request and response. It can start a longer-running piece of work involving tools, files, other people and further decisions.
+
+We will look at the Dialog tool in more deteail in the next section.
+
+### Email Conversations and Context
+
+Email conversations retain context in much the same way as Chat.
+
+If you reply within the same email thread, previous messages remain part of the conversation context. This means you can ask follow-up questions without repeating everything from the earlier messages.
+
+For unrelated work, it is generally better to start a new email rather than continue an existing thread. This gives the new request a clean context and avoids unnecessarily increasing the amount of previous conversation sent to the language model.
+
+## Using Dialogs to Involve People
+
+Orpius can carry out work in the background, and sometimes it may need input from a person before it can continue.
+
+The Dialog tool allows an agent to contact you or another member of the team and ask for that input.
+
+For example, you might forward a request from a customer and instruct the AI agent:
+
+> “Prepare the customer proposal. If you are unsure about the pricing, ask Sarah. Send the completed proposal to me for approval before it is sent to the customer.”
+
+The agent can carry out the work until it reaches the point where Sarah's input is needed, ask her the question, and continue once she responds.
+
+Dialogs can also be part of the normal work itself. In the earlier example where the agent sends Charlie an interactive maths worksheet every second day, the scheduled work can use a Dialog to send Charlie the worksheet and wait for his response. Once he sends it back, the agent can grade his answers and continue with the rest of the work.
+
+The Dialog can be used to:
+
+* ask for missing information
+* clarify something that should not be assumed
+* request a decision, confirmation or approval before taking an action
+* involve another member of the team
+* wait for a response that is part of the work itself
+* continue a longer conversation while the surrounding work remains in progress
+
+The important point is that work does not need to fail or end simply because another person needs to be involved. The agent can wait for a response and continue afterwards.
+
+Our aim with Orpius is for people and AI to work together as naturally as possible. You should not have to anticipate every possible decision or exception in advance. If something is unclear, or if the work needs something from another person, the AI can ask the right person, wait for a response, and then continue.
+
+### Dialogs vs Notifications
+
+A **Notification** is used when Orpius needs to tell someone something. Notifications are sent by email from a no-reply address and do not expect a response.
+
+A **Dialog** is used when Orpius needs a response.
+For example:
+
+> "Tell Robert that the report is ready."
+
+can be handled as a notification without the means or need for a response.
+
+Whereas:
+
+> "Ask Robert whether the figures have been approved before publishing the report."
+
+requires a Dialog because the agent needs Robert's answer before deciding what to do next.
+
+Dialogs allow people to remain part of automated work without requiring them to supervise every step.
 
 ## Using Team Collaboration and Management
 
