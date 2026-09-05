@@ -89,7 +89,7 @@
     - [Access to Published Content](#access-to-published-content)
   - [Working with Orpius by Email](#working-with-orpius-by-email)
     - [How safe is it?](#how-safe-is-it)
-    - [Using Email for General Questions](#using-email-for-general-questions)
+    - [Using Email to get insights from a file](#using-email-to-get-insights-from-a-file)
     - [Using Email for Specific Work](#using-email-for-specific-work)
     - [Choosing Which Tools the Operation Can Use](#choosing-which-tools-the-operation-can-use)
     - [Involving Other People](#involving-other-people)
@@ -1394,25 +1394,37 @@ The email address itself therefore does not need to be treated like a password o
 Any work started by email is also limited to the tools and permissions you have enabled for that Operation.
 
 
-### Using Email for General Questions
+### Using Email to get insights from a file
 
-For example, you might create an Operation called **AskOrpius** with simple instructions such as:
+For example, you might create an Operation called **AskFile** with simple instructions such as:
 
->"Answer questions clearly and accurately. If you do not know something, say so rather than making it up."
+>"Answer the user's question using the information contained in the file they specify.
 
-You can then select the tools you want the Operation to use. For example, you might enable **Git** and **CodeExecution** so that Orpius can inspect the workspace, analyse files or perform calculations when answering questions.
+> If no file is specified, determine which file is most likely relevant based on the question and your knowledge of the files available in the Space.
+
+
+> If there is genuine ambiguity about which file should be used, or any ambiguity in the user's request, use the Dialog plugin to ask the user to clarify before answering.
+
+> Base your answer only on information contained in the selected file. Do not invent, infer from outside knowledge, or supplement the answer with information from other sources.
+
+> If the file does not contain enough information to answer the question, explain what information is missing."
+
+You can then select the tools the Operation will use. For this Operation, enable **CodeExecution** so that Orpius can access and analyse files or perform calculations when answering questions, and **Dialog** so that the agent can ask you or your team members qualifying questions when clarification is needed.
+
+You can also enable **Git** if you want the agent to provide insights into a file's history, and **Memory** if you want it to retain information relevant to the task.
 
 Once the Operation is saved, you can find its generated email address at the bottom of the Operation configuration page.
+You can then send questions to that address in much the same way as you would through Chat. The file you want the agent to work with can already be stored in the Space, or you can simply attach it to the email along with your question.
 
-You can then send questions or work to that address in much the same way as you would through Chat. Replies within the same email thread remain part of the conversation context sent to the LLM, so for unrelated requests, or if you want to minimise token usage, it is best to start a new email.
+When you receive a response, you will see that the message has a different reply-to email address. Replies within this email thread remain part of the conversation context sent to the LLM. For unrelated requests, or if you want to minimise token usage, it is therefore best to start a new email.
 
 The full generated email address is not intended to be memorised. The recognisable part is the Operation name, which is included in the address so that you can easily identify its purpose.
 
-For example, you could send the following question to **AskQuestions**:
+For example, suppose you have a file containing your current property listings, either already in the Space or attached to an email to the AskFile Operation, and ask:
 
-> "When was ledger.csv last changed and what was changed?"
+> "Do we have anything suitable for an older couple who want to downsize? They are looking for properties in Fribourg."
 
-Because the Operation has access to **Git**, Orpius can inspect the workspace history and answer the question.
+Because the Operation has access to CodeExecution, Orpius can inspect and analyse the file and answer the question based on the information it contains.
 
 ### Using Email for Specific Work
 
@@ -1460,9 +1472,9 @@ We will look at the Dialog tool in more deteail in the next section.
 
 Email conversations retain context in much the same way as Chat.
 
-If you reply within the same email thread, previous messages remain part of the conversation context. This means you can ask follow-up questions without repeating everything from the earlier messages.
+When you receive a response or a question from Orpius, you will see that the message has a different reply-to email address. When you reply to that message, the previous messages in the thread remain part of the conversation context. This means you can ask follow-up questions without repeating information from earlier messages.
 
-For unrelated work, it is generally better to start a new email rather than continue an existing thread. This gives the new request a clean context and avoids unnecessarily increasing the amount of previous conversation sent to the language model.
+For unrelated work, start a new email rather than continuing an existing thread. This gives the new request a clean context and avoids unnecessarily increasing the amount of previous conversation sent to the language model.
 
 ## Using Dialogs to Involve People
 
